@@ -5,9 +5,9 @@ export default function Home() {
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=52772')
+    fetch('http://localhost:8000/api/v1/recipes')
       .then((res) => res.json())
-      .then((json) => setData(json.meals))
+      .then((json) => setData(json))
   }, [])
   return (
     <Card recipe={data[0]}/>

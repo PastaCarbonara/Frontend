@@ -70,12 +70,12 @@ export default function Card({ recipe }: any) {
       <ImageBackground
         style={styles.cardImg}
         source={{
-          uri: recipe?.strMealThumb,
+          uri: recipe?.image,
         }}
         imageStyle={styles.cardImg}
       >
         <View style={styles.cardContent}>
-          <Text style={styles.cardTitle}>{recipe?.strMeal}</Text>
+          <Text style={styles.cardTitle}>{recipe?.name}</Text>
           <View style={styles.controlRow}>
             <TouchableOpacity
               onPress={() => {
