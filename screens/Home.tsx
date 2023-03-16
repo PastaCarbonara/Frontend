@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import Card from "../components/Card";
+import Test from "../components/Swiper";
 
 export default function Home() {
   const [data, setData] = useState<any[]>([]);
@@ -10,6 +10,6 @@ export default function Home() {
       .then((json) => setData(json))
   }, [])
   return (
-    <Card recipe={data[0]}/>
+    <Test recipes={data}/>
   );
 }

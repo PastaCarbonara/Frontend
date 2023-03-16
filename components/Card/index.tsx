@@ -2,6 +2,7 @@ import React from 'react';
 import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'twrnc';
+import {Recipe} from "../../types";
 
 const styles = StyleSheet.create({
   card: {
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Card({ recipe }: any) {
+export default function Card({ recipe } : { recipe: Recipe }) {
   return (
     <View style={[styles.card]}>
       <ImageBackground
