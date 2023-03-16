@@ -1,6 +1,7 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import tw from 'twrnc';
 
 const styles = StyleSheet.create({
   card: {
@@ -19,13 +20,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.3,
     elevation: 6,
-  },
-  cardImg: {
-    flex: 1,
-    borderRadius: 13,
-    resizeMode: 'cover',
-    justifyContent: 'flex-end',
-    width: '100%',
   },
   cardContent: {
     padding: 15,
@@ -68,11 +62,12 @@ export default function Card({ recipe }: any) {
   return (
     <View style={[styles.card]}>
       <ImageBackground
-        style={styles.cardImg}
+        style={tw`rounded-xl justify-end w-full flex-1`}
+        resizeMode="cover"
         source={{
           uri: recipe?.image,
         }}
-        imageStyle={styles.cardImg}
+        imageStyle={tw`rounded-xl justify-end w-full flex-1`}
       >
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>{recipe?.name}</Text>
