@@ -1,6 +1,7 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   card: {
@@ -62,9 +63,31 @@ const styles = StyleSheet.create({
     shadowRadius: 3.3,
     elevation: 6,
   },
+  text_button: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+
+    height: 55,
+    padding: 5,
+    borderRadius: 35,
+    backgroundColor: '#fff',
+
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.3,
+    elevation: 6,
+  },
 });
 
+
 export default function Card({ recipe }: any) {
+  const navigation = useNavigation()
   return (
     <View style={[styles.card]}>
       <ImageBackground
@@ -83,6 +106,15 @@ export default function Card({ recipe }: any) {
               style={styles.button}
             >
               <MaterialCommunityIcons name="close-thick" size={28} color="#D94513" />
+            </TouchableOpacity>
+            <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Recipe", {
+                id: recipe.id
+              }); //this is correct, idk why TypeScript gives an error.
+            }}
+            style={styles.text_button}>
+              <Text>Bekijk recept</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
