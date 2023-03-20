@@ -13,7 +13,7 @@ export default function Test({recipes}: {recipes: Recipe[]}) {
 
     return (
         <Swiper
-            cards={recipes}
+            cards={recipes || []}
             renderCard={(card, index) => (<Card recipe={card} key={index}/>)}
             stackSize={3}
             stackSeparation={-20}
