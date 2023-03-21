@@ -1,18 +1,27 @@
 import React, {useEffect, useState} from 'react';
-import Test from "../components/Swiper";
+import CardStack from "../components/Swiper";
 import {Recipe} from "../types";
 import recipeService from "../services/recipeService";
 
 export default function Home() {
-  const [data, setData] = useState<Recipe[]>([]);
+    const [data, setData] = useState<Recipe[]>([]);
+    useEffect(() => {
+        recipeService.fetchRecipes()
+            .then((recipes) => {
+                setData(recipes)
+            })
+    }, [])
+    let ws = new WebSocket('ws://localhost:8000/api/latest/swipe_sessions/DMmQkBb7gbEv47q2/DMmQkBb7gbEv47q2')
 
-  useEffect(() => {
-    recipeService.fetchRecipes()
-      .then((recipes) => {
-        setData(recipes)
-      })
-  }, [])
-  return (
-    <Test recipes={data}/>
-  );
+    ws.onopen = () => {
+        console.log('connected to websocket')
+        ws.send(
+            JSON.stringify({
+                message: 'message'
+            })
+        )
+    }
+    return (
+        <CardStack recipes={data}/>
+    );
 }

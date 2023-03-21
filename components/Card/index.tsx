@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Card({ recipe } : { recipe: Recipe }) {
+export default function Card({ recipe, onLike, onDislike } : { recipe: Recipe, onLike: () => void, onDislike: () => void }) {
   return (
     <View style={[styles.card]}>
       <ImageBackground
@@ -74,15 +74,13 @@ export default function Card({ recipe } : { recipe: Recipe }) {
           <Text style={styles.cardTitle}>{recipe?.name}</Text>
           <View style={styles.controlRow}>
             <TouchableOpacity
-              onPress={() => {
-              }}
+              onPress={onDislike}
               style={styles.button}
             >
               <MaterialCommunityIcons name="close-thick" size={28} color="#D94513" />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {
-              }}
+              onPress={onLike}
               style={styles.button}
             >
               <MaterialCommunityIcons name="check-bold" size={28} color="#A8C899" />
