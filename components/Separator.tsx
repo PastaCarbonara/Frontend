@@ -13,8 +13,6 @@ const styles = StyleSheet.create({
 });
 export default function Separator () :any {
     return (
-        <View style={styles.separatingLine}>
-
-        </View>
+        <View style={styles.separatingLine}/>
     )
 }
