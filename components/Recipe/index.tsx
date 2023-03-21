@@ -63,15 +63,16 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     btn: {
-        alignSelf: 'flex-end',
+        alignSelf: 'flex-start',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         alignContent: 'center',
-        height: 55,
-        padding: 5,
+        height: 36,
+        margin: 9,
+        aspectRatio: 1,
         borderRadius: 35,
-        backgroundColor: '#FFF',
+        backgroundColor: '#00000054',
     },
     stepCounter: {
         borderColor: '#F79F5F',
@@ -102,7 +103,6 @@ const styles = StyleSheet.create({
 });
 export default function Recipe({recipeInfo, ingredientInfo}: any) {
     const navigation = useNavigation();
-    console.log(typeof recipeInfo);
     return (
         <View style={[styles.rcp, styles.flexColumn]}>
             <View style={{maxWidth: '100%',}}>
@@ -112,8 +112,16 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
                         uri: recipeInfo?.image,
                     }}
                     imageStyle={styles.img}>
+
                     <LinearGradient
                         colors={['#00000000', '#00000065', '#000000']}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                            style={styles.btn}>
+                            <AntDesign name="arrowleft" size={24} color="white"/>
+                        </TouchableOpacity>
                         <Text style={{textAlignVertical: 'bottom', color: '#FAFAFA',}}>
                             <View style={[styles.infoBox, styles.title,]}>
                                 <View style={[styles.flexRow, {alignItems: 'center',},]}>
@@ -123,7 +131,7 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
                                     <View style={[styles.flexColumn, styles.descriptionInfo,]}>
                                         <Text style={[styles.descriptionInfo, {textAlign: 'right',},]}>
                                             <MaterialCommunityIcons name="clock" size={24} style={{flex: 1,}}>
-                                                {recipeInfo.preparing_time}m
+                                                {recipeInfo?.preparing_time}m
                                             </MaterialCommunityIcons>
                                         </Text>
                                         <Text style={[styles.descriptionInfo, {textAlign: 'right',},]}>
@@ -138,7 +146,7 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
                     </LinearGradient>
                 </ImageBackground>
                 <View style={styles.description}>
-                    <Text style={styles.centerText}><i>{recipeInfo.description}</i></Text>
+                    <Text style={styles.centerText}><i>{recipeInfo?.description}</i></Text>
                     <Separator/>
                 </View>
             </View>
@@ -167,24 +175,16 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
                                 <View style={styles.infoBox}>
                                 <span style={styles.stepCounter}>
                                 <Text style={styles.centerText}><b>
-                                    {+(recipeInfo.instructions.indexOf(instruction) + 1).toString()}
+                                    {+(recipeInfo?.instructions.indexOf(instruction) + 1).toString()}
                                 </b></Text>
                                 </span>
-                                    <span style={{padding: 5}}/>
-                                    <Text style={styles.instructions}>{instruction}</Text>
+                                    <Text style={[styles.instructions, {paddingLeft: 10}]}>{instruction}</Text>
                                 </View>
                             </li>)}
                         </View>
                     </Text>
                 </View>
             </ScrollView>
-            <TouchableOpacity
-                onPress={() => {
-                    navigation.goBack();
-                }}
-                style={styles.btn}>
-                <AntDesign name="back" size={24} color="black"/>
-            </TouchableOpacity>
         </View>
     );
 }
