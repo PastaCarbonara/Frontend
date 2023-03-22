@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     },
     scrollBox: {
         maxWidth: '695px',
+        width: '100%',
         marginBottom:'2.5%',
         borderBottomRightRadius:13,
         borderBottomLeftRadius:13,
