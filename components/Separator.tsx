@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         height: 0,
     },
 });
-export default function Separator () :any {
+export default function Separator() {
     return (
         <View style={styles.separatingLine}/>
     )
