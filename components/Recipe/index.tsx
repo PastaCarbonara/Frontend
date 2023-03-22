@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         alignSelf: 'center',
-        padding: 9,
         borderRadius: 13,
         shadowColor: '#000000',
         shadowOffset: {
@@ -32,14 +31,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     description: {
-        paddingTop: 5,
+        // paddingTop: 5,
         width: '695px',
         backgroundColor: 'white',
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
         maxWidth: '100%',
         marginTop: '-10%',
-        paddingVertical: '5%',
+        paddingTop:'5%',
         paddingHorizontal: '2.5%',
     },
     descriptionInfo: {
@@ -100,6 +99,12 @@ const styles = StyleSheet.create({
         maxWidth: '695px',
         resizeMode: 'cover',
     },
+    scrollBox: {
+        maxWidth: '695px',
+        marginBottom:'2.5%',
+        borderBottomRightRadius:13,
+        borderBottomLeftRadius:13,
+    },
 });
 export default function Recipe({recipeInfo, ingredientInfo}: any) {
     const navigation = useNavigation();
@@ -150,7 +155,7 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
                     <Separator/>
                 </View>
             </View>
-            <ScrollView style={{maxWidth: '695px',}}>
+            <ScrollView style={styles.scrollBox}>
                 <View style={{width: '95%', alignSelf: 'center',}}>
                     <Text>
                         <h2 style={{color: '#3F3F3F'}}>Ingrediënten:</h2>
