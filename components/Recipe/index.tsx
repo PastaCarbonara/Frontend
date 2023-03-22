@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     instructions: {
         flex: 8,
         textAlignVertical: 'center',
-        color: '#434343'
+        color: '#434343',
     },
     img: {
         width: '100%',
@@ -150,7 +150,7 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
                     <Separator/>
                 </View>
             </View>
-            <ScrollView style={{maxWidth: '100%',}}>
+            <ScrollView style={{maxWidth: '695px',}}>
                 <View style={{width: '95%', alignSelf: 'center',}}>
                     <Text>
                         <h2 style={{color: '#3F3F3F'}}>Ingrediënten:</h2>
@@ -159,7 +159,7 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
                                 key={recipeInfo?.ingredients?.indexOf(ingredient)}>
                                 <View style={styles.infoBox}>
                                     <Text style={styles.instructions}>{ingredient}</Text>
-                                    <Text>??? gr/l/stk</Text>
+                                    <Text style={{marginLeft: 18,}}>??? gr/l/stk</Text>
                                 </View>
                             </li>)}
                         </View>
