@@ -4,10 +4,10 @@ import Card from "../Card";
 import {Recipe} from "../../types";
 import {SessionWebsocketContext} from "../../contexts/SessionContext";
 
-export default function CardStack({recipes}: { recipes: Recipe[] }) {
+export default function CardStack({recipes = []}: { recipes: Recipe[] }) {
 
     const swiper = useRef<Swiper<any>>(null);
-    const {isReady, val, send} = useContext(SessionWebsocketContext);
+    const {isReady, lastMessage, send} = useContext(SessionWebsocketContext);
 
     function onLike() {
         if (swiper.current) {
@@ -47,7 +47,7 @@ export default function CardStack({recipes}: { recipes: Recipe[] }) {
             ref={swiper}
             stackSize={3}
             stackSeparation={-20}
-            backgroundColor={''}
+            backgroundColor={'#fff'}
             onSwipedLeft={onSwipeLeft}
             onSwipedRight={onSwipeRight}
         />

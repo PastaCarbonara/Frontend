@@ -88,11 +88,13 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function Card({
-                                 recipe,
-                                 onLike,
-                                 onDislike
-                             }: { recipe: Recipe, onLike: () => void, onDislike: () => void }) {
+type cardProps = {
+    recipe: Recipe,
+    onLike: () => void,
+    onDislike: () => void
+}
+
+export default function Card({ recipe, onLike, onDislike }: cardProps) {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
     return (
         <View style={[styles.card]}>
@@ -116,7 +118,7 @@ export default function Card({
                             onPress={() => {
                                 navigation.navigate('Recipe', {
                                     id: recipe.id
-                                }); //this is correct, idk why TypeScript gives an error.
+                                });
                             }}
                             style={styles.text_button}>
                             <Text>Bekijk recept</Text>

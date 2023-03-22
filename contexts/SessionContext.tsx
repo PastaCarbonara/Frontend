@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 
 export type SessionContextType = {
     isReady: Boolean;
-    val: {};
+    lastMessage: {};
     send: (payload: any) => void;
 }
 
@@ -10,7 +10,7 @@ export const SessionWebsocketContext = React.createContext<SessionContextType>({
 
 export const SessionWebsocketProvider = ({children}) => {
     const [isReady, setIsReady] = useState(false);
-    const [val, setVal] = useState(null);
+    const [lastMessage, setLastMessage] = useState({});
 
     const ws = useRef(null);
 
@@ -27,8 +27,11 @@ export const SessionWebsocketProvider = ({children}) => {
         };
         socket.onclose = () => setIsReady(false);
         socket.onmessage = (event) => {
-            setVal(event.data)
+            setLastMessage(event.data)
         };
+        socket.onerror = (error) => {
+            console.log(error)
+        }
 
         ws.current = socket;
 
@@ -44,9 +47,9 @@ export const SessionWebsocketProvider = ({children}) => {
     const session: SessionContextType = React.useMemo(
         () => ({
             isReady,
-            val,
+            lastMessage,
             send,
-        }), [val, isReady]);
+        }), [lastMessage, isReady]);
 
 
     return (
