@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import Home from "./screens/Home";
 import Profile from "./screens/Profile";
 import {SessionWebsocketProvider} from "./contexts/SessionContext";
-import Recipe from "./screens/Recipe";
+import Recipe from "./screens/RecipeScreen";
 import { useFonts } from 'expo-font';
 
 export type RootStackParamList = {
