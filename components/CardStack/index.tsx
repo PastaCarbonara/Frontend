@@ -22,14 +22,23 @@ export default function CardStack({recipes = []}: { recipes: Recipe[] }) {
     }
 
     function onSwipeLeft(cardIndex) {
-        if(isReady) {
-            send(JSON.stringify({message: `${recipes[cardIndex].name}: Swiped left`}))
-        }
+        swipe(false, cardIndex)
     }
 
     function onSwipeRight(cardIndex) {
-        if(isReady) {
-            send(JSON.stringify({message: `${recipes[cardIndex].name}: Swiped right`}))
+        swipe(true, cardIndex)
+    }
+
+    function swipe(isLike: boolean, cardIndex: number) {
+        if (isReady) {
+            send(JSON.stringify({
+                    "action": "REQUEST_RECIPE_LIKE",
+                    "payload": {
+                        "like": isLike,
+                        "recipe_id": recipes[cardIndex].id
+                    }
+                }
+            ))
         }
     }
 
