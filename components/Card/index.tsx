@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     cardTitle: {
+        fontFamily:'Baloo-Regular',
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 48,

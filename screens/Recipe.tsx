@@ -4,20 +4,17 @@ import Recipe from "../components/Recipe";
 export default function Home({route}) {
     const {id} = route.params;
     const [recipeData, setRecipeData] = useState<Object[]>([]);
-    const [ingredientData, setIngredientData] = useState<Object[]>([]);
 
     useEffect(() => {
         Promise.all([
             fetch(`http://localhost:8000/api/v1/recipes/${id}`),
-            fetch(`http://localhost:8000/api/v1/recipes/${id}`),
-        ]).then(([resRecipe, resIngredients]) => Promise.all([resRecipe.json(), resIngredients.json()]))
-            .then(([resRecipeData, resIngredientData]) => {
+        ]).then(([resRecipe]) => Promise.all([resRecipe.json()]))
+            .then(([resRecipeData]) => {
                 setRecipeData(resRecipeData);
-                setIngredientData(resIngredientData);
             })
     }, [])
-    console.log(recipeData, ingredientData);
+    console.log(recipeData);
     return (
-        <Recipe recipeInfo={recipeData} ingredientInfo={ingredientData}/>
+        <Recipe recipeInfo={recipeData}/>
     );
 }
