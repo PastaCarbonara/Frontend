@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F79F5F',
         borderRadius: 100,
         borderWidth: 1,
-        color: '#FaFaFa',
+        color: '#FAFAFA',
         width: 25,
         aspectRatio: 1,
         alignContent: 'center',
@@ -131,9 +131,9 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
                         <Text style={{textAlignVertical: 'bottom', color: '#FAFAFA',}}>
                             <View style={[styles.infoBox, styles.title,]}>
                                 <View style={[styles.flexRow, {alignItems: 'center',},]}>
-                                    <Text style={{flex: 2,}}>
-                                        <h1>{recipeInfo?.name}<br/></h1>
-                                    </Text>
+                                    <View style={{flex: 2,}}>
+                                        <h1 style={{color:'#FAFAFA', fontFamily:'Baloo',}}>{recipeInfo?.name}</h1>
+                                    </View>
                                     <View style={[styles.flexColumn, styles.descriptionInfo,]}>
                                         <Text style={[styles.descriptionInfo, {textAlign: 'right',},]}>
                                             <MaterialCommunityIcons name="clock" size={24} style={{flex: 1,}}>
@@ -158,8 +158,8 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
             </View>
             <ScrollView style={styles.scrollBox}>
                 <View style={{width: '95%', alignSelf: 'center',}}>
-                    <Text>
-                        <h2 style={{color: '#3F3F3F'}}>Ingrediënten:</h2>
+                    <View>
+                        <h2 style={{color: '#3F3F3F', fontFamily:'Baloo',}}>Ingrediënten:</h2>
                         <View style={styles.flexColumn}>
                             {recipeInfo?.ingredients?.map((ingredient: string) => <li
                                 key={recipeInfo?.ingredients?.indexOf(ingredient)}>
@@ -169,13 +169,13 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
                                 </View>
                             </li>)}
                         </View>
-                    </Text>
+                    </View>
                     <View style={{maxWidth: '695px'}}>
                         <Separator/>
                     </View>
-                    <Text>
-                        <h2 style={{color: '#3F3F3F'}}>Bereidingswijze:</h2>
-                        <View style={styles.flexColumn}>
+                    <View>
+                        <h2 style={{color: '#3F3F3F', fontFamily:'Baloo',}}>Bereidingswijze:</h2>
+                        <Text style={styles.flexColumn}>
                             {recipeInfo?.instructions?.map((instruction: string) => <li
                                 key={recipeInfo?.instructions?.indexOf(instruction)}>
                                 <View style={styles.infoBox}>
@@ -187,8 +187,8 @@ export default function Recipe({recipeInfo, ingredientInfo}: any) {
                                     <Text style={[styles.instructions, {paddingLeft: 10}]}>{instruction}</Text>
                                 </View>
                             </li>)}
-                        </View>
-                    </Text>
+                        </Text>
+                    </View>
                 </View>
             </ScrollView>
         </View>
