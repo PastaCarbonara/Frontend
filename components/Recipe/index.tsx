@@ -8,20 +8,16 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 const styles = StyleSheet.create({
     rcp: {
-        height: '90%',
+        height: '100%',
         justifyContent: 'space-between',
         alignItems: 'center',
         alignSelf: 'center',
-        borderRadius: 13,
         shadowColor: '#000000',
         shadowOffset: {
             width: 0,
             height: 4,
         },
         backgroundColor: '#FFFFFF',
-        shadowOpacity: 0.25,
-        shadowRadius: 3.3,
-        elevation: 6,
     },
     title: {
         width: '100%',
