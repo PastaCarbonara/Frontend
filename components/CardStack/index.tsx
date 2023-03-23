@@ -30,15 +30,16 @@ export default function CardStack({recipes = []}: { recipes: Recipe[] }) {
     }
 
     function swipe(isLike: boolean, cardIndex: number) {
-        if (isReady) {
+        if (isReady && recipes[cardIndex]) {
             send(JSON.stringify({
-                    "action": "REQUEST_RECIPE_LIKE",
-                    "payload": {
-                        "like": isLike,
-                        "recipe_id": recipes[cardIndex].id
-                    }
+                "action": "REQUEST_RECIPE_LIKE",
+                "payload": {
+                    "like": isLike,
+                    "recipe_id": recipes[cardIndex].id
                 }
-            ))
+            }))
+        } else {
+            console.error('Something went wrong')
         }
     }
 
