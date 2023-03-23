@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Recipe from "../components/Recipe";
 
-export default function Home({route}: any) {
+export default function Home({route}) {
     const {id} = route.params;
     const [recipeData, setRecipeData] = useState<Object[]>([]);
     const [ingredientData, setIngredientData] = useState<Object[]>([]);

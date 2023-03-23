@@ -1,14 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import Card from "../components/Card";
+import CardStack from "../components/CardStack";
+import {Recipe} from "../types";
+import recipeService from "../services/recipeService";
 
 export default function Home() {
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<Recipe[]>([]);
+
     useEffect(() => {
-        fetch('http://localhost:8000/api/v1/recipes/')
-            .then((res) => res.json())
-            .then((json) => setData(json))
+        recipeService.fetchRecipes()
+            .then((recipes) => {
+                setData(recipes)
+            })
     }, [])
+
+
     return (
-        <Card recipe={data[0]}/>
+        <CardStack recipes={data}/>
     );
 }
