@@ -17,16 +17,16 @@ type cardProps = {
 export default function Card({recipe, onLike, onDislike}: cardProps) {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
     return (
-        <View style={tw`w-full h-9/10 flex-col rounded-xl shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}>
+        <View style={tw`w-full h-9/10 flex-col rounded-3xl shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}>
             <ImageBackground
-                style={tw`w-full rounded-xl flex-1 justify-between`}
+                style={tw`w-full rounded-3xl flex-1 justify-between`}
                 source={{
                     uri: recipe?.image,
                 }}
                 resizeMode={'cover'}
-                imageStyle={tw`w-full rounded-xl flex-1 justify-between`}
+                imageStyle={tw`w-full rounded-3xl flex-1 justify-between`}
             >
-                <LinearGradient colors={['#000000B8', '#00000000']} style={tw`flex-1 rounded-xl max-h-1/2`} end={{x:0, y:.5}}>
+                <LinearGradient colors={['#000000B8', '#00000000']} style={tw`flex-1 rounded-3xl max-h-1/2`} end={{x:0, y:.5}}>
                     <Text style={tw.style(`text-2xl text-white text-center mt-5`)}>{recipe?.name}</Text>
                 </LinearGradient>
                 <View style={tw`p-4`}>
