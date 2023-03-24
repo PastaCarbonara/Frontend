@@ -60,6 +60,8 @@ export default function CardStack({recipes = []}: { recipes: Recipe[] }) {
             backgroundColor={'#fff'}
             onSwipedLeft={onSwipeLeft}
             onSwipedRight={onSwipeRight}
+            disableBottomSwipe
+            disableTopSwipe
         />
     )
 }

@@ -1,92 +1,12 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {ImageBackground, Text, TouchableOpacity, View} from 'react-native';
+import {MaterialCommunityIcons, Ionicons} from '@expo/vector-icons';
 import {Recipe} from "../../types";
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from "../../App";
-
-const styles = StyleSheet.create({
-    card: {
-        width: '100%',
-        height: '90%',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-end',
-        borderRadius: 13,
-        shadowColor: '#000000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        backgroundColor: '#fff',
-        shadowOpacity: 0.25,
-        shadowRadius: 3.3,
-        elevation: 6,
-    },
-    cardImg: {
-        flex: 1,
-        borderRadius: 13,
-        resizeMode: 'cover',
-        justifyContent: 'flex-end',
-        width: '100%',
-    },
-    cardContent: {
-        padding: 15,
-    },
-    cardTitle: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 48,
-    },
-    controlRow: {
-        position: 'relative',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        width: '100%',
-    },
-    button: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignContent: 'center',
-        width: 55,
-        height: 55,
-        padding: 5,
-        borderRadius: 35,
-        backgroundColor: '#fff',
-
-        shadowColor: '#000000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.3,
-        elevation: 6,
-    },
-    text_button: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignContent: 'center',
-
-        height: 55,
-        padding: 5,
-        borderRadius: 35,
-        backgroundColor: '#fff',
-
-        shadowColor: '#000000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.3,
-        elevation: 6,
-    },
-});
+import {LinearGradient} from 'expo-linear-gradient';
+import tw from 'twrnc'
 
 type cardProps = {
     recipe: Recipe,
@@ -94,23 +14,26 @@ type cardProps = {
     onDislike: () => void
 }
 
-export default function Card({ recipe, onLike, onDislike }: cardProps) {
+export default function Card({recipe, onLike, onDislike}: cardProps) {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
     return (
-        <View style={[styles.card]}>
+        <View style={tw`w-full h-9/10 flex-col rounded-xl shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}>
             <ImageBackground
-                style={styles.cardImg}
+                style={tw`w-full rounded-xl flex-1 justify-between`}
                 source={{
                     uri: recipe?.image,
                 }}
-                imageStyle={styles.cardImg}
+                resizeMode={'cover'}
+                imageStyle={tw`w-full rounded-xl flex-1 justify-between`}
             >
-                <View style={styles.cardContent}>
-                    <Text style={styles.cardTitle}>{recipe?.name}</Text>
-                    <View style={styles.controlRow}>
+                <LinearGradient colors={['#000000B8', '#00000000']} style={tw`flex-1 rounded-xl max-h-1/2`} end={{x:0, y:.5}}>
+                    <Text style={tw.style(`text-2xl text-white text-center mt-5`)}>{recipe?.name}</Text>
+                </LinearGradient>
+                <View style={tw`p-4`}>
+                    <View style={tw`flex-row justify-between items-center w-full`}>
                         <TouchableOpacity
                             onPress={onDislike}
-                            style={styles.button}
+                            style={tw`flex-row justify-center items-center align-center w-16 h-16 p-1.5 rounded-full bg-white shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}
                         >
                             <MaterialCommunityIcons name="close-thick" size={28} color="#D94513"/>
                         </TouchableOpacity>
@@ -120,12 +43,12 @@ export default function Card({ recipe, onLike, onDislike }: cardProps) {
                                     id: recipe.id
                                 });
                             }}
-                            style={styles.text_button}>
-                            <Text>Bekijk recept</Text>
+                            style={tw`flex-row justify-center items-center align-center w-14 h-14 p-1.5 rounded-full bg-white shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}>
+                            <Ionicons name="information" size={28} color="#584DBB"/>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={onLike}
-                            style={styles.button}
+                            style={tw`flex-row justify-center items-center align-center w-16 h-16 p-1.5 rounded-full bg-white shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}
                         >
                             <MaterialCommunityIcons name="check-bold" size={28} color="#A8C899"/>
                         </TouchableOpacity>
