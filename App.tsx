@@ -5,7 +5,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import Home from "./screens/Home";
 import Profile from "./screens/Profile";
 import {SessionWebsocketProvider} from "./contexts/SessionContext";
-import Recipe from "./screens/Recipe";
+import Recipe from "./screens/RecipeScreen";
+import { useFonts } from 'expo-font';
 
 export type RootStackParamList = {
     Root: undefined;
@@ -20,6 +21,10 @@ const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+    const [fontsLoaded] = useFonts({
+        'Baloo-Regular': require('./assets/fonts/Baloo-Regular.ttf'),
+        'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf')
+    });
     return (
         <SessionWebsocketProvider>
             <NavigationContainer>

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import CardStack from "../components/CardStack";
 import {Recipe} from "../types";
-import recipeService from "../services/recipeService";
+import recipeService from "../services/RecipeService";
 
 export default function Home() {
     const [data, setData] = useState<Recipe[]>([]);
