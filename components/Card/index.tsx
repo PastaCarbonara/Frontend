@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from "../../App";
 import {LinearGradient} from 'expo-linear-gradient';
-import tw from 'twrnc'
+import tw from '../../lib/tailwind';
 
 type cardProps = {
     recipe: Recipe,
@@ -27,7 +27,7 @@ export default function Card({recipe, onLike, onDislike}: cardProps) {
                 imageStyle={tw`w-full rounded-3xl flex-1 justify-between`}
             >
                 <LinearGradient colors={['#000000B8', '#00000000']} style={tw`flex-1 rounded-3xl max-h-1/2`} end={{x:0, y:.5}}>
-                    <Text style={tw.style(`text-2xl text-white text-center mt-5`)}>{recipe?.name}</Text>
+                    <Text style={tw.style(`text-2xl text-white text-center mt-5 font-display`)}>{recipe?.name}</Text>
                 </LinearGradient>
                 <View style={tw`p-4`}>
                     <View style={tw`flex-row justify-between items-center w-full`}>
