@@ -15,12 +15,15 @@ export const SessionWebsocketProvider = ({children}) => {
     const ws = useRef(null);
 
     useEffect(() => {
-        const socket = new WebSocket("ws://localhost:8000/api/latest/swipe_sessions/DMmQkBb7gbEv47q2/DMmQkBb7gbEv47q2");
+        const socket = new WebSocket("ws://localhost:8000/api/latest/swipe_sessions/MNwEX2e8mo9OGWqQ/DMmQkBb7gbEv47q2");
 
         socket.onopen = () => {
             socket.send(
                 JSON.stringify({
-                    message: 'User connected to session'
+                    "action": "REQUEST_SESSION_MESSAGE",
+                    "payload": {
+                        "message": 'User connected succesfully'
+                    }
                 })
             )
             setIsReady(true)
