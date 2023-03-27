@@ -56,10 +56,13 @@ export default function CardStack({recipes = []}: { recipes: Recipe[] }) {
             )}
             ref={swiper}
             stackSize={3}
-            stackSeparation={-20}
+            stackSeparation={-35}
+            stackScale={5}
             backgroundColor={'#fff'}
             onSwipedLeft={onSwipeLeft}
             onSwipedRight={onSwipeRight}
+            disableBottomSwipe
+            disableTopSwipe
         />
     )
 }
