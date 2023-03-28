@@ -4,6 +4,7 @@ import {useNavigation} from "@react-navigation/native";
 import React from "react";
 import Separator from "../Separator";
 import {LinearGradient} from 'expo-linear-gradient';
+import { RecipeIngredient } from '../../types'
 
 
 const styles = StyleSheet.create({
@@ -157,11 +158,11 @@ export default function Recipe({recipeInfo}: any) {
                     <View>
                         <h2 style={{color: '#3F3F3F', fontFamily:'Baloo-Regular',}}>Ingrediënten:</h2>
                         <Text style={[styles.flexColumn, {fontFamily: 'Poppins-Regular'}]}>
-                            {recipeInfo?.ingredients?.map((ingredient: string) => <li
+                            {recipeInfo?.ingredients?.map((ingredient: RecipeIngredient) => <li
                                 key={recipeInfo?.ingredients?.indexOf(ingredient)}>
                                 <View style={styles.infoBox}>
-                                    <Text style={styles.instructions}>{ingredient}</Text>
-                                    <Text style={{marginLeft: 18,}}>??? gr/l/stk</Text>
+                                    <Text style={styles.instructions}>{ingredient.name}</Text>
+                                    <Text style={{marginLeft: 18}}>{ingredient.amount + ' ' + ingredient.unit}</Text>
                                 </View>
                             </li>)}
                         </Text>
