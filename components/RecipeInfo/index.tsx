@@ -1,11 +1,17 @@
-import {Text, TouchableOpacity, View, StyleSheet, ScrollView, ImageBackground} from 'react-native';
-import {AntDesign, MaterialCommunityIcons} from '@expo/vector-icons';
-import {useNavigation} from "@react-navigation/native";
-import React from "react";
-import Separator from "../Separator";
-import {LinearGradient} from 'expo-linear-gradient';
-import { RecipeIngredient } from '../../types'
-
+import {
+    Text,
+    TouchableOpacity,
+    View,
+    StyleSheet,
+    ScrollView,
+    ImageBackground,
+} from 'react-native';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import Separator from '../Separator';
+import { LinearGradient } from 'expo-linear-gradient';
+import { RecipeIngredient } from '../../types';
 
 const styles = StyleSheet.create({
     rcp: {
@@ -23,19 +29,19 @@ const styles = StyleSheet.create({
     title: {
         width: '100%',
         alignSelf: 'center',
-        paddingVertical: '10%',
-        padding: 10,
+        paddingVertical: '5%',
         alignItems: 'center',
+        textAlignVertical: 'bottom',
     },
     description: {
         // paddingTop: 5,
-        width: '695px',
+        width: '100%',
         backgroundColor: 'white',
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
         maxWidth: '100%',
-        marginTop: '-10%',
-        paddingTop:'5%',
+        marginTop: '-5%',
+        paddingTop: '2.5%',
         paddingHorizontal: '2.5%',
     },
     descriptionInfo: {
@@ -47,8 +53,9 @@ const styles = StyleSheet.create({
     infoBox: {
         flexDirection: 'row',
         alignContent: 'space-between',
-        width: '95%',
+        width: '100%',
         padding: 5,
+        alignItems: 'center',
     },
     flexColumn: {
         flexDirection: 'column',
@@ -93,54 +100,101 @@ const styles = StyleSheet.create({
     },
     img: {
         width: '100%',
-        maxWidth: '695px',
+        maxWidth: '100%',
         resizeMode: 'cover',
     },
     scrollBox: {
-        maxWidth: '695px',
+        maxWidth: '100%',
         width: '100%',
-        marginBottom:'2.5%',
-        borderBottomRightRadius:13,
-        borderBottomLeftRadius:13,
+        marginBottom: '2.5%',
+        borderBottomRightRadius: 13,
+        borderBottomLeftRadius: 13,
     },
 });
-export default function Recipe({recipeInfo}: any) {
+export default function Recipe({ recipeInfo }: any) {
     const navigation = useNavigation();
     return (
         <View style={[styles.rcp, styles.flexColumn]}>
-            <View style={{maxWidth: '100%',}}>
+            <View style={{ width: '100%' }}>
                 <ImageBackground
                     style={styles.img}
                     source={{
                         uri: recipeInfo?.image,
                     }}
-                    imageStyle={styles.img}>
-
+                    imageStyle={styles.img}
+                >
                     <LinearGradient
-                        colors={['#00000000', '#00000065', '#000000']}>
+                        colors={['#00000000', '#00000065', '#000000']}
+                    >
                         <TouchableOpacity
                             onPress={() => {
                                 navigation.goBack();
                             }}
-                            style={styles.btn}>
-                            <AntDesign name="arrowleft" size={24} color="white"/>
+                            style={styles.btn}
+                        >
+                            <AntDesign
+                                name="arrowleft"
+                                size={24}
+                                color="white"
+                            />
                         </TouchableOpacity>
-                        <Text style={{textAlignVertical: 'bottom', color: '#FAFAFA',}}>
-                            <View style={[styles.infoBox, styles.title,]}>
-                                <View style={[styles.flexRow, {alignItems: 'center',},]}>
-                                    <View style={{flex: 2,}}>
-                                        <h1 style={{color:'#FAFAFA', fontFamily:'Baloo-Regular',}}>{recipeInfo?.name}</h1>
+                        <Text
+                            style={{
+                                textAlignVertical: 'bottom',
+                                color: '#FAFAFA',
+                            }}
+                        >
+                            <View style={[styles.infoBox, styles.title]}>
+                                <View
+                                    style={[
+                                        styles.flexRow,
+                                        { alignItems: 'center' },
+                                    ]}
+                                >
+                                    <View style={{ flex: 2 }}>
+                                        <h1
+                                            style={{
+                                                color: '#FAFAFA',
+                                                fontFamily: 'Baloo-Regular',
+                                            }}
+                                        >
+                                            {recipeInfo?.name}
+                                        </h1>
                                     </View>
-                                    <View style={[styles.flexColumn, styles.descriptionInfo,]}>
-                                        <Text style={{textAlign: 'right',}}>
-                                            <MaterialCommunityIcons name="clock" size={20} style={{flex: 1, padding:5}}>
-                                                <Text style={{fontFamily:'Poppins-Regular',}}>
-                                                {" " + recipeInfo?.preparing_time}m
+                                    <View
+                                        style={[
+                                            styles.flexColumn,
+                                            styles.descriptionInfo,
+                                        ]}
+                                    >
+                                        <Text style={{ textAlign: 'right' }}>
+                                            <MaterialCommunityIcons
+                                                name="clock"
+                                                size={20}
+                                                style={{ flex: 1, padding: 5 }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        fontFamily:
+                                                            'Poppins-Regular',
+                                                    }}
+                                                >
+                                                    {' ' +
+                                                        recipeInfo?.preparing_time}
                                                 </Text>
                                             </MaterialCommunityIcons>
                                         </Text>
-                                        <Text style={[styles.descriptionInfo, {textAlign: 'right',}, styles.flexRow]}>
-                                            <MaterialCommunityIcons name="chili-hot" size={20}/>
+                                        <Text
+                                            style={[
+                                                styles.descriptionInfo,
+                                                { textAlign: 'right' },
+                                                styles.flexRow,
+                                            ]}
+                                        >
+                                            <MaterialCommunityIcons
+                                                name="chili-hot"
+                                                size={20}
+                                            />
                                         </Text>
                                     </View>
                                 </View>
@@ -149,41 +203,118 @@ export default function Recipe({recipeInfo}: any) {
                     </LinearGradient>
                 </ImageBackground>
                 <View style={styles.description}>
-                    <Text style={[styles.centerText, {fontFamily:'Poppins-Regular'}]}><i>{recipeInfo?.description}</i></Text>
-                    <Separator/>
+                    <Text
+                        style={[
+                            styles.centerText,
+                            {
+                                fontFamily: 'Poppins-Regular',
+                                marginBottom: '2.5%',
+                            },
+                        ]}
+                    >
+                        <i>{recipeInfo?.description}</i>
+                    </Text>
+                    <Separator />
                 </View>
             </View>
             <ScrollView style={styles.scrollBox}>
-                <View style={{width: '95%', alignSelf: 'center',}}>
+                <View style={{ width: '95%', alignSelf: 'center' }}>
                     <View>
-                        <h2 style={{color: '#3F3F3F', fontFamily:'Baloo-Regular',}}>Ingrediënten:</h2>
-                        <Text style={[styles.flexColumn, {fontFamily: 'Poppins-Regular'}]}>
-                            {recipeInfo?.ingredients?.map((ingredient: RecipeIngredient) => <li
-                                key={recipeInfo?.ingredients?.indexOf(ingredient)}>
-                                <View style={styles.infoBox}>
-                                    <Text style={styles.instructions}>{ingredient.name}</Text>
-                                    <Text style={{marginLeft: 18}}>{ingredient.amount + ' ' + ingredient.unit}</Text>
-                                </View>
-                            </li>)}
+                        <h2
+                            style={{
+                                color: '#3F3F3F',
+                                fontFamily: 'Baloo-Regular',
+                            }}
+                        >
+                            Ingrediënten:
+                        </h2>
+                        <Text
+                            style={[
+                                styles.flexColumn,
+                                { fontFamily: 'Poppins-Regular' },
+                            ]}
+                        >
+                            {recipeInfo?.ingredients?.map(
+                                (ingredient: RecipeIngredient) => (
+                                    <li
+                                        key={recipeInfo?.ingredients?.indexOf(
+                                            ingredient
+                                        )}
+                                    >
+                                        <View style={styles.infoBox}>
+                                            <Text
+                                                style={[
+                                                    styles.instructions,
+                                                    { flex: 7 },
+                                                ]}
+                                            >
+                                                {ingredient.name}
+                                            </Text>
+                                            <Text
+                                                style={{
+                                                    flex: 3,
+                                                    textAlign: 'right',
+                                                }}
+                                            >
+                                                {ingredient.amount +
+                                                    ' ' +
+                                                    ingredient.unit}
+                                            </Text>
+                                        </View>
+                                    </li>
+                                )
+                            )}
                         </Text>
                     </View>
-                    <View style={{maxWidth: '695px'}}>
-                        <Separator/>
+                    <View style={{ maxWidth: '100%' }}>
+                        <Separator />
                     </View>
                     <View>
-                        <h2 style={{color: '#3F3F3F', fontFamily:'Baloo-Regular',}}>Bereidingswijze:</h2>
-                        <Text style={[styles.flexColumn, {fontFamily: 'Poppins-Regular',},]}>
-                            {recipeInfo?.instructions?.map((instruction: string) => <li
-                                key={recipeInfo?.instructions?.indexOf(instruction)}>
-                                <View style={styles.infoBox}>
-                                <View style={styles.stepCounter}>
-                                <Text style={styles.centerText}>
-                                    {+(recipeInfo?.instructions.indexOf(instruction) + 1).toString()}
-                                </Text>
-                                </View>
-                                    <Text style={[styles.instructions, {paddingLeft: 10}]}>{instruction}</Text>
-                                </View>
-                            </li>)}
+                        <h2
+                            style={{
+                                color: '#3F3F3F',
+                                fontFamily: 'Baloo-Regular',
+                            }}
+                        >
+                            Bereidingswijze:
+                        </h2>
+                        <Text
+                            style={[
+                                styles.flexColumn,
+                                { fontFamily: 'Poppins-Regular' },
+                            ]}
+                        >
+                            {recipeInfo?.instructions?.map(
+                                (instruction: string) => (
+                                    <li
+                                        key={recipeInfo?.instructions?.indexOf(
+                                            instruction
+                                        )}
+                                    >
+                                        <View style={styles.infoBox}>
+                                            <View style={styles.stepCounter}>
+                                                <Text style={styles.centerText}>
+                                                    {
+                                                        +(
+                                                            recipeInfo?.instructions.indexOf(
+                                                                instruction
+                                                            ) + 1
+                                                        ).toString()
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <Text
+                                                style={[
+                                                    styles.instructions,
+                                                    { paddingLeft: 10 },
+                                                ]}
+                                            >
+                                                {instruction}
+                                            </Text>
+                                        </View>
+                                    </li>
+                                )
+                            )}
                         </Text>
                     </View>
                 </View>

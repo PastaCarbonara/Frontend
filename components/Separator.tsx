@@ -1,5 +1,5 @@
-import {StyleSheet, View} from "react-native";
-import React from "react";
+import { StyleSheet, View } from 'react-native';
+import React from 'react';
 
 const styles = StyleSheet.create({
     separatingLine: {
@@ -12,7 +12,5 @@ const styles = StyleSheet.create({
     },
 });
 export default function Separator() {
-    return (
-        <View style={styles.separatingLine}/>
-    )
+    return <View style={styles.separatingLine} />;
 }
