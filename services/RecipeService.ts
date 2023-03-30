@@ -4,23 +4,26 @@ async function fetchRecipes() {
             headers: {
                 'Content-Type': 'application/json',
             },
-        })
+        });
         return responseChecker(response);
     } catch (error) {
-        console.error(`Error fetching data: ${error}`)
+        console.error(`Error fetching data: ${error}`);
     }
 }
 
 async function fetchRecipeInfo(id: number) {
     try {
-        const response = await fetch(`http://localhost:8000/api/v1/recipes/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
+        const response = await fetch(
+            `http://localhost:8000/api/v1/recipes/${id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
         return responseChecker(response);
     } catch (error) {
-        console.error(`Error fetching data: ${error}`)
+        console.error(`Error fetching data: ${error}`);
     }
 }
 

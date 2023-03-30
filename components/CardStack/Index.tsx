@@ -1,13 +1,12 @@
-import React, {useContext, useRef} from 'react'
-import Swiper from 'react-native-deck-swiper'
-import Card from "../Card";
-import {Recipe} from "../../types";
-import {SessionWebsocketContext} from "../../contexts/SessionContext";
+import React, { useContext, useRef } from 'react';
+import Swiper from 'react-native-deck-swiper';
+import Card from '../Card';
+import { Recipe } from '../../types';
+import { SessionWebsocketContext } from '../../contexts/SessionContext';
 
-export default function CardStack({recipes = []}: { recipes: Recipe[] }) {
-
+export default function CardStack({ recipes = [] }: { recipes: Recipe[] }) {
     const swiper = useRef<Swiper<any>>(null);
-    const {isReady, lastMessage, send} = useContext(SessionWebsocketContext);
+    const { isReady, lastMessage, send } = useContext(SessionWebsocketContext);
 
     function onLike() {
         if (swiper.current) {
@@ -21,25 +20,27 @@ export default function CardStack({recipes = []}: { recipes: Recipe[] }) {
         }
     }
 
-    function onSwipeLeft(cardIndex) {
-        swipe(false, cardIndex)
+    function onSwipeLeft(cardIndex: number) {
+        swipe(false, cardIndex);
     }
 
-    function onSwipeRight(cardIndex) {
-        swipe(true, cardIndex)
+    function onSwipeRight(cardIndex: number) {
+        swipe(true, cardIndex);
     }
 
     function swipe(isLike: boolean, cardIndex: number) {
         if (isReady && recipes[cardIndex]) {
-            send(JSON.stringify({
-                "action": "REQUEST_RECIPE_LIKE",
-                "payload": {
-                    "like": isLike,
-                    "recipe_id": recipes[cardIndex].id
-                }
-            }))
+            send(
+                JSON.stringify({
+                    action: 'REQUEST_RECIPE_LIKE',
+                    payload: {
+                        like: isLike,
+                        recipe_id: recipes[cardIndex].id,
+                    },
+                })
+            );
         } else {
-            console.error('Something went wrong')
+            console.error('Something went wrong');
         }
     }
 
@@ -64,5 +65,5 @@ export default function CardStack({recipes = []}: { recipes: Recipe[] }) {
             disableBottomSwipe
             disableTopSwipe
         />
-    )
+    );
 }
