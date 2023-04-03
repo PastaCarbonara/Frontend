@@ -1,15 +1,16 @@
-import React from 'react';
-import 'react-native-gesture-handler';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
-import Home from './screens/Home';
-import Profile from './screens/Profile';
-import { SessionWebsocketProvider } from './contexts/SessionContext';
-import RecipeScreen from './screens/RecipeScreen';
-import { useFonts } from 'expo-font';
-import MatchScreen from "./screens/MatchScreen";
-import { Recipe } from './types';
+import React from 'react'
+import 'react-native-gesture-handler'
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { NavigationContainer } from '@react-navigation/native'
+import Home from './screens/Home'
+import Profile from './screens/Profile'
+import { SessionWebsocketProvider } from './contexts/SessionContext'
+import RecipeScreen from './screens/RecipeScreen'
+import { useFonts } from 'expo-font'
+import MatchScreen from './screens/MatchScreen'
+import { Recipe } from './types'
+import { navigationRef } from './RootNavigator'
 
 export type RootStackParamList = {
     Root: undefined;
@@ -32,7 +33,7 @@ export default function App() {
     });
     return (
         <SessionWebsocketProvider>
-            <NavigationContainer>
+            <NavigationContainer ref={navigationRef}>
                 <StackNavigator />
             </NavigationContainer>
         </SessionWebsocketProvider>
@@ -70,3 +71,4 @@ export function StackNavigator() {
         </Stack.Navigator>
     );
 }
+

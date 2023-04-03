@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
+import * as RootNavigator from '../RootNavigator'
 
 export type SessionContextType = {
     isReady: Boolean;
@@ -14,7 +15,7 @@ export const SessionWebsocketProvider = ({ children }) => {
     const [isReady, setIsReady] = useState(false);
     const [lastMessage, setLastMessage] = useState({});
 
-    const ws = useRef(null);
+    const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
     useEffect(() => {
         const socket = new WebSocket(
@@ -35,6 +36,8 @@ export const SessionWebsocketProvider = ({ children }) => {
         socket.onclose = () => setIsReady(false);
         socket.onmessage = (event) => {
             setLastMessage(event.data);
+
+            handleWebSocketEvent(JSON.parse(event.data));
         };
         socket.onerror = (error) => {
             console.log(error);
@@ -50,6 +53,16 @@ export const SessionWebsocketProvider = ({ children }) => {
     const send = (payload) => {
         ws.current?.send(payload);
     };
+
+    const handleWebSocketEvent = (messageEvent: { action: any; payload: any; }) => {
+        console.log(messageEvent)
+        switch(messageEvent.action) {
+            case 'RESPONSE_RECIPE_MATCH':
+                console.log('RESPONSE_RECIPE_MATCH', messageEvent.payload);
+                RootNavigator.navigate('Match', { recipe: messageEvent.payload?.recipe });
+                break;
+        }
+    }
 
     const session: SessionContextType = React.useMemo(
         () => ({
