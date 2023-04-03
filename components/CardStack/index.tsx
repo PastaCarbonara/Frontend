@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import Swiper from 'react-native-deck-swiper';
 import Card from '../Card';
-import { Recipe } from '../../types';
+import { Recipe, WebSocketAction } from '../../types'
 import { SessionWebsocketContext } from '../../contexts/SessionContext';
 
 export default function CardStack({ recipes = [] }: { recipes: Recipe[] }) {
@@ -30,14 +30,13 @@ export default function CardStack({ recipes = [] }: { recipes: Recipe[] }) {
 
     function swipe(isLike: boolean, cardIndex: number) {
         if (isReady && recipes[cardIndex]) {
-            send(
-                JSON.stringify({
-                    action: 'REQUEST_RECIPE_LIKE',
+            send({
+                    action: WebSocketAction.REQUEST_RECIPE_LIKE,
                     payload: {
                         like: isLike,
                         recipe_id: recipes[cardIndex].id,
                     },
-                })
+                }
             );
         } else {
             console.error('Something went wrong');

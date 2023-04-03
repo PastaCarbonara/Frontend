@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as RootNavigator from '../RootNavigator'
+import { WebSocketAction, WebSocketEvent } from '../types'
 
 export type SessionContextType = {
     isReady: Boolean;
     lastMessage: {};
-    send: (payload: any) => void;
+    send: (webSocketEvent: WebSocketEvent) => void;
 };
 
 export const SessionWebsocketContext = React.createContext<SessionContextType>(
     {} as SessionContextType
 );
 
-export const SessionWebsocketProvider = ({ children }) => {
+export const SessionWebsocketProvider = ({ children }: {children: React.ReactNode}) => {
     const [isReady, setIsReady] = useState(false);
     const [lastMessage, setLastMessage] = useState({});
 
@@ -25,7 +26,7 @@ export const SessionWebsocketProvider = ({ children }) => {
         socket.onopen = () => {
             socket.send(
                 JSON.stringify({
-                    action: 'REQUEST_SESSION_MESSAGE',
+                    action: WebSocketAction.REQUEST_SESSION_MESSAGE,
                     payload: {
                         message: 'User connected succesfully',
                     },
@@ -50,8 +51,8 @@ export const SessionWebsocketProvider = ({ children }) => {
         };
     }, []);
 
-    const send = (payload) => {
-        ws.current?.send(payload);
+    const send = (webSocketEvent: WebSocketEvent) => {
+        ws.current?.send(JSON.stringify(webSocketEvent));
     };
 
     const handleWebSocketEvent = (messageEvent: { action: any; payload: any; }) => {
