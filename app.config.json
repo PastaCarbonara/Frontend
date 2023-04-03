@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Munchie",
+    "slug": "Munchie",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    }
+  }
+}

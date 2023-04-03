@@ -6,16 +6,20 @@ import { NavigationContainer } from '@react-navigation/native';
 import Home from './screens/Home';
 import Profile from './screens/Profile';
 import { SessionWebsocketProvider } from './contexts/SessionContext';
-import Recipe from './screens/RecipeScreen';
+import RecipeScreen from './screens/RecipeScreen';
 import { useFonts } from 'expo-font';
+import MatchScreen from "./screens/MatchScreen";
+import { Recipe } from './types';
 
 export type RootStackParamList = {
     Root: undefined;
     Recipe: { id: number };
+    Match: { recipe: Recipe };
 };
 export type RootDrawerParamList = {
     Home: undefined;
     Profile: undefined;
+    Match: undefined;
 };
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
@@ -40,6 +44,7 @@ export function DrawerNavigator() {
         <Drawer.Navigator initialRouteName="Home">
             <Drawer.Screen name="Home" component={Home} />
             <Drawer.Screen name="Profile" component={Profile} />
+            <Drawer.Screen name="Match" component={MatchScreen} options={{headerShown: false}} />
         </Drawer.Navigator>
     );
 }
@@ -54,9 +59,14 @@ export function StackNavigator() {
             />
             <Stack.Screen
                 name="Recipe"
-                component={Recipe}
+                component={RecipeScreen}
                 options={{ headerShown: false }}
             />
+          <Stack.Screen
+            name="Match"
+            component={MatchScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
     );
 }
