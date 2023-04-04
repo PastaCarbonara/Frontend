@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import Profile from '../screens/Profile';
+import ProfileScreen from '../screens/ProfileScreen';
 
 test('renders correctly', () => {
-    const { getByText } = render(<Profile />);
+    const { getByText } = render(<ProfileScreen />);
     const element = getByText('Profile screen');
     expect(element).toBeDefined();
 });

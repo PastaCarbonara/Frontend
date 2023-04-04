@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
-import * as RootNavigator from '../RootNavigator'
-import { WebSocketAction, WebSocketEvent } from '../types'
+import React, { useEffect, useRef, useState } from 'react';
+import * as RootNavigator from '../RootNavigator';
+import { WebSocketAction, WebSocketEvent } from '../types';
 
 export type SessionContextType = {
-    isReady: Boolean;
+    isReady: boolean;
     lastMessage: {};
     send: (webSocketEvent: WebSocketEvent) => void;
 };
@@ -12,7 +12,11 @@ export const SessionWebsocketContext = React.createContext<SessionContextType>(
     {} as SessionContextType
 );
 
-export const SessionWebsocketProvider = ({ children }: {children: React.ReactNode}) => {
+export const SessionWebsocketProvider = ({
+    children,
+}: {
+    children: React.ReactNode;
+}) => {
     const [isReady, setIsReady] = useState(false);
     const [lastMessage, setLastMessage] = useState({});
 
@@ -55,15 +59,20 @@ export const SessionWebsocketProvider = ({ children }: {children: React.ReactNod
         ws.current?.send(JSON.stringify(webSocketEvent));
     };
 
-    const handleWebSocketEvent = (messageEvent: { action: any; payload: any; }) => {
-        console.log(messageEvent)
-        switch(messageEvent.action) {
+    const handleWebSocketEvent = (messageEvent: {
+        action: any;
+        payload: any;
+    }) => {
+        console.log(messageEvent);
+        switch (messageEvent.action) {
             case 'RESPONSE_RECIPE_MATCH':
                 console.log('RESPONSE_RECIPE_MATCH', messageEvent.payload);
-                RootNavigator.navigate('Match', { recipe: messageEvent.payload?.recipe });
+                RootNavigator.navigate('Match', {
+                    recipe: messageEvent.payload?.recipe,
+                });
                 break;
         }
-    }
+    };
 
     const session: SessionContextType = React.useMemo(
         () => ({

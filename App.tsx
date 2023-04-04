@@ -1,33 +1,22 @@
-import React from 'react'
-import 'react-native-gesture-handler'
-import { createDrawerNavigator } from '@react-navigation/drawer'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { NavigationContainer } from '@react-navigation/native'
-import Home from './screens/Home'
-import Profile from './screens/Profile'
-import { SessionWebsocketProvider } from './contexts/SessionContext'
-import RecipeScreen from './screens/RecipeScreen'
-import { useFonts } from 'expo-font'
-import MatchScreen from './screens/MatchScreen'
-import { Recipe } from './types'
-import { navigationRef } from './RootNavigator'
-
-export type RootStackParamList = {
-    Root: undefined;
-    Recipe: { id: number };
-    Match: { recipe: Recipe };
-};
-export type RootDrawerParamList = {
-    Home: undefined;
-    Profile: undefined;
-    Match: undefined;
-};
+import React from 'react';
+import 'react-native-gesture-handler';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import { SessionWebsocketProvider } from './contexts/SessionContext';
+import RecipeScreen from './screens/RecipeScreen';
+import MatchScreen from './screens/MatchScreen';
+import { RootDrawerParamList, RootStackParamList } from './types';
+import { navigationRef } from './RootNavigator';
+import { useFonts } from 'expo-font';
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-    const [fontsLoaded] = useFonts({
+    useFonts({
         'Baloo-Regular': require('./assets/fonts/Baloo-Regular.ttf'),
         'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
     });
@@ -43,9 +32,13 @@ export default function App() {
 export function DrawerNavigator() {
     return (
         <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name="Home" component={Home} />
-            <Drawer.Screen name="Profile" component={Profile} />
-            <Drawer.Screen name="Match" component={MatchScreen} options={{headerShown: false}} />
+            <Drawer.Screen name="Home" component={HomeScreen} />
+            <Drawer.Screen name="Profile" component={ProfileScreen} />
+            <Drawer.Screen
+                name="Match"
+                component={MatchScreen}
+                options={{ headerShown: false }}
+            />
         </Drawer.Navigator>
     );
 }
@@ -63,12 +56,11 @@ export function StackNavigator() {
                 component={RecipeScreen}
                 options={{ headerShown: false }}
             />
-          <Stack.Screen
-            name="Match"
-            component={MatchScreen}
-            options={{ headerShown: false }}
-          />
+            <Stack.Screen
+                name="Match"
+                component={MatchScreen}
+                options={{ headerShown: false }}
+            />
         </Stack.Navigator>
     );
 }
-
