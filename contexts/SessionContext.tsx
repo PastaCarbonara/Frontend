@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as RootNavigator from '../RootNavigator';
 import { WebSocketAction, WebSocketEvent } from '../types';
+import { SOCKET_URL } from '@env';
 
 export type SessionContextType = {
     isReady: boolean;
@@ -24,7 +25,7 @@ export const SessionWebsocketProvider = ({
 
     useEffect(() => {
         const socket = new WebSocket(
-            'ws://localhost:8000/api/latest/swipe_sessions/MNwEX2e8mo9OGWqQ/DMmQkBb7gbEv47q2'
+            `${SOCKET_URL}/swipe_sessions/MNwEX2e8mo9OGWqQ/DMmQkBb7gbEv47q2`
         );
 
         socket.onopen = () => {
