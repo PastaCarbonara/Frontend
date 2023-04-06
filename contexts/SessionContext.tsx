@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as RootNavigator from '../RootNavigator';
 import { WebSocketAction, WebSocketEvent } from '../types';
+import { SOCKET_URL } from '@env';
 
 export type SessionContextType = {
     isReady: boolean;
     lastMessage: {};
     send: (webSocketEvent: WebSocketEvent) => void;
+    currentSession: string | undefined;
+    setCurrentSession: (session: string | undefined) => void;
 };
 
 export const SessionWebsocketContext = React.createContext<SessionContextType>(
@@ -19,13 +22,18 @@ export const SessionWebsocketProvider = ({
 }) => {
     const [isReady, setIsReady] = useState(false);
     const [lastMessage, setLastMessage] = useState({});
+    const [currentSession, setCurrentSession] = useState<string | undefined>(
+        undefined
+    );
 
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
     useEffect(() => {
-        const socket = new WebSocket(
-            'ws://localhost:8000/api/latest/swipe_sessions/MNwEX2e8mo9OGWqQ/DMmQkBb7gbEv47q2'
-        );
+        if (!currentSession) {
+            return;
+        }
+        const sessionWebSocketAddress = `${SOCKET_URL}/swipe_sessions/${currentSession}`;
+        const socket = new WebSocket(sessionWebSocketAddress);
 
         socket.onopen = () => {
             socket.send(
@@ -53,7 +61,7 @@ export const SessionWebsocketProvider = ({
         return () => {
             socket.close();
         };
-    }, []);
+    }, [currentSession]);
 
     const send = (webSocketEvent: WebSocketEvent) => {
         ws.current?.send(JSON.stringify(webSocketEvent));
@@ -63,7 +71,6 @@ export const SessionWebsocketProvider = ({
         action: any;
         payload: any;
     }) => {
-        console.log(messageEvent);
         switch (messageEvent.action) {
             case 'RESPONSE_RECIPE_MATCH':
                 console.log('RESPONSE_RECIPE_MATCH', messageEvent.payload);
@@ -78,9 +85,11 @@ export const SessionWebsocketProvider = ({
         () => ({
             isReady,
             lastMessage,
+            currentSession,
+            setCurrentSession,
             send,
         }),
-        [lastMessage, isReady]
+        [isReady, lastMessage, currentSession]
     );
 
     return (

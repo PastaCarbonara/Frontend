@@ -1,6 +1,8 @@
+import { API_URL } from '@env';
+
 async function fetchRecipes() {
     try {
-        const response = await fetch('http://localhost:8000/api/v1/recipes', {
+        const response = await fetch(`${API_URL}/recipes`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -13,14 +15,11 @@ async function fetchRecipes() {
 
 async function fetchRecipeInfo(id: number) {
     try {
-        const response = await fetch(
-            `http://localhost:8000/api/v1/recipes/${id}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }
-        );
+        const response = await fetch(`${API_URL}/recipes/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
         return responseChecker(response);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);

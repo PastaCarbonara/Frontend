@@ -29,14 +29,18 @@ export default function CardStack({ recipes = [] }: { recipes: Recipe[] }) {
     }
 
     function swipe(isLike: boolean, cardIndex: number) {
-        if (isReady && recipes[cardIndex]) {
-            send({
-                action: WebSocketAction.REQUEST_RECIPE_LIKE,
-                payload: {
-                    like: isLike,
-                    recipe_id: recipes[cardIndex].id,
-                },
-            });
+        if (isReady) {
+            if (recipes[cardIndex]) {
+                send({
+                    action: WebSocketAction.REQUEST_RECIPE_LIKE,
+                    payload: {
+                        like: isLike,
+                        recipe_id: recipes[cardIndex].id,
+                    },
+                });
+            } else {
+                console.error('Recipe does not exist');
+            }
         } else {
             console.error('Something went wrong, websocket is not ready');
         }

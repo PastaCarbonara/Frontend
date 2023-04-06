@@ -1,16 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CardStack from '../components/CardStack';
 import { Recipe } from '../types';
 import recipeService from '../services/RecipeService';
+import { SessionWebsocketContext } from '../contexts/SessionContext';
 
 export default function HomeScreen() {
     const [data, setData] = useState<Recipe[]>([]);
+    const { currentSession, setCurrentSession } = useContext(
+        SessionWebsocketContext
+    );
+    const sessionId = 'MNwEX2e8mo9OGWqQ';
+    const userId = 'DMmQkBb7gbEv47q2';
+    // const sessionId = '5BdWlO3lzqxyEp8g';
+    // const userId = '5BdWlO3lzqxyEp8g';
 
     useEffect(() => {
+        setCurrentSession(`${sessionId}/${userId}`);
         recipeService.fetchRecipes().then((recipes) => {
             setData(recipes);
         });
-    }, []);
+    }, [currentSession, setCurrentSession]);
 
     return <CardStack recipes={data} />;
 }
