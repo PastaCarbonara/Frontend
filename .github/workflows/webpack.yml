@@ -23,12 +23,11 @@ jobs:
     - name: Build website
       run: npx expo export:web
         
-    - name: Deploy 🚀
+    - name: Commit to gh-pages branch
       run: |
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-        git checkout -B gh-pages
-        mv web-build/* . # Move contents of web-build folder to root
+        rm -rf gh-pages/*
+        mv web-build/* gh-pages/
+        cd gh-pages
         git add .
         git commit -m "Deploy to GitHub Pages"
-        git push -f origin gh-pages
+        git push origin gh-pages
