@@ -71,7 +71,6 @@ export const SessionWebsocketProvider = ({
         action: any;
         payload: any;
     }) => {
-        console.log(messageEvent);
         switch (messageEvent.action) {
             case 'RESPONSE_RECIPE_MATCH':
                 console.log('RESPONSE_RECIPE_MATCH', messageEvent.payload);
