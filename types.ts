@@ -12,7 +12,10 @@ export type Recipe = {
     id: number;
     name: string;
     description: string;
-    image: string;
+    image: {
+        file_url: string;
+        filename: string;
+    };
     creator: {};
     preparing_time: number;
     tags: string[];

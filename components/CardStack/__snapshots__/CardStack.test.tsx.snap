@@ -166,40 +166,37 @@ exports[`CardStack should render correctly 1`] = `
             >
               <View
                 style={
-                  [
-                    {
-                      "alignItems": "flex-end",
-                      "backgroundColor": "#fff",
-                      "borderRadius": 13,
-                      "elevation": 6,
-                      "flexDirection": "column",
-                      "height": "90%",
-                      "justifyContent": "flex-start",
-                      "shadowColor": "#000000",
-                      "shadowOffset": {
-                        "height": 4,
-                        "width": 0,
-                      },
-                      "shadowOpacity": 0.25,
-                      "shadowRadius": 3.3,
-                      "width": "100%",
+                  {
+                    "borderRadius": 24,
+                    "elevation": 6,
+                    "flexDirection": "column",
+                    "height": "90%",
+                    "shadowColor": "#000",
+                    "shadowOffset": {
+                      "height": 4,
+                      "width": 0,
                     },
-                  ]
+                    "shadowOpacity": 0.25,
+                    "shadowRadius": 4,
+                    "width": "100%",
+                  }
                 }
               >
                 <View
                   accessibilityIgnoresInvertColors={true}
                   style={
                     {
-                      "borderRadius": 13,
-                      "flex": 1,
-                      "justifyContent": "flex-end",
-                      "resizeMode": "cover",
+                      "borderRadius": 24,
+                      "flexBasis": "0%",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                      "justifyContent": "space-between",
                       "width": "100%",
                     }
                   }
                 >
                   <Image
+                    resizeMode="cover"
                     source={
                       {
                         "uri": undefined,
@@ -219,19 +216,38 @@ exports[`CardStack should render correctly 1`] = `
                           "width": "100%",
                         },
                         {
-                          "borderRadius": 13,
-                          "flex": 1,
-                          "justifyContent": "flex-end",
-                          "resizeMode": "cover",
+                          "borderRadius": 24,
+                          "flexBasis": "0%",
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "justifyContent": "space-between",
                           "width": "100%",
                         },
                       ]
                     }
                   />
-                  <View
+                  <ViewManagerAdapter_ExpoLinearGradient
+                    proxiedProperties={
+                      {
+                        "colors": [
+                          3087007744,
+                          0,
+                        ],
+                        "endPoint": [
+                          0,
+                          0.5,
+                        ],
+                        "locations": undefined,
+                        "startPoint": undefined,
+                      }
+                    }
                     style={
                       {
-                        "padding": 15,
+                        "borderRadius": 24,
+                        "flexBasis": "0%",
+                        "flexGrow": 1,
+                        "flexShrink": 1,
+                        "maxHeight": "50%",
                       }
                     }
                   >
@@ -239,18 +255,31 @@ exports[`CardStack should render correctly 1`] = `
                       style={
                         {
                           "color": "#fff",
-                          "fontSize": 48,
-                          "fontWeight": "bold",
+                          "fontFamily": "Baloo-Regular",
+                          "fontSize": 24,
+                          "lineHeight": 32,
+                          "marginTop": 20,
+                          "textAlign": "center",
                         }
                       }
                     />
+                  </ViewManagerAdapter_ExpoLinearGradient>
+                  <View
+                    style={
+                      {
+                        "paddingBottom": 16,
+                        "paddingLeft": 16,
+                        "paddingRight": 16,
+                        "paddingTop": 16,
+                      }
+                    }
+                  >
                     <View
                       style={
                         {
-                          "alignItems": "flex-start",
+                          "alignItems": "center",
                           "flexDirection": "row",
                           "justifyContent": "space-between",
-                          "position": "relative",
                           "width": "100%",
                         }
                       }
@@ -285,24 +314,26 @@ exports[`CardStack should render correctly 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
                             "backgroundColor": "#fff",
-                            "borderRadius": 35,
+                            "borderRadius": 9999,
                             "elevation": 6,
                             "flexDirection": "row",
-                            "height": 55,
+                            "height": 64,
                             "justifyContent": "center",
                             "opacity": 1,
-                            "padding": 5,
-                            "shadowColor": "#000000",
+                            "paddingBottom": 6,
+                            "paddingLeft": 6,
+                            "paddingRight": 6,
+                            "paddingTop": 6,
+                            "shadowColor": "#000",
                             "shadowOffset": {
                               "height": 4,
                               "width": 0,
                             },
                             "shadowOpacity": 0.25,
-                            "shadowRadius": 3.3,
-                            "width": 55,
+                            "shadowRadius": 4,
+                            "width": 64,
                           }
                         }
                       >
@@ -338,29 +369,30 @@ exports[`CardStack should render correctly 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
                             "backgroundColor": "#fff",
-                            "borderRadius": 35,
+                            "borderRadius": 9999,
                             "elevation": 6,
                             "flexDirection": "row",
-                            "height": 55,
+                            "height": 56,
                             "justifyContent": "center",
                             "opacity": 1,
-                            "padding": 5,
-                            "shadowColor": "#000000",
+                            "paddingBottom": 6,
+                            "paddingLeft": 6,
+                            "paddingRight": 6,
+                            "paddingTop": 6,
+                            "shadowColor": "#000",
                             "shadowOffset": {
                               "height": 4,
                               "width": 0,
                             },
                             "shadowOpacity": 0.25,
-                            "shadowRadius": 3.3,
+                            "shadowRadius": 4,
+                            "width": 56,
                           }
                         }
                       >
-                        <Text>
-                          Bekijk recept
-                        </Text>
+                        <Text />
                       </View>
                       <View
                         accessibilityState={
@@ -392,24 +424,26 @@ exports[`CardStack should render correctly 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
                             "backgroundColor": "#fff",
-                            "borderRadius": 35,
+                            "borderRadius": 9999,
                             "elevation": 6,
                             "flexDirection": "row",
-                            "height": 55,
+                            "height": 64,
                             "justifyContent": "center",
                             "opacity": 1,
-                            "padding": 5,
-                            "shadowColor": "#000000",
+                            "paddingBottom": 6,
+                            "paddingLeft": 6,
+                            "paddingRight": 6,
+                            "paddingTop": 6,
+                            "shadowColor": "#000",
                             "shadowOffset": {
                               "height": 4,
                               "width": 0,
                             },
                             "shadowOpacity": 0.25,
-                            "shadowRadius": 3.3,
-                            "width": 55,
+                            "shadowRadius": 4,
+                            "width": 64,
                           }
                         }
                       >
@@ -443,10 +477,10 @@ exports[`CardStack should render correctly 1`] = `
                   "top": 60,
                   "transform": [
                     {
-                      "scale": 0.97,
+                      "scale": 0.9500000000000001,
                     },
                     {
-                      "translateY": -20,
+                      "translateY": -35,
                     },
                   ],
                   "width": 710,
@@ -456,40 +490,37 @@ exports[`CardStack should render correctly 1`] = `
             >
               <View
                 style={
-                  [
-                    {
-                      "alignItems": "flex-end",
-                      "backgroundColor": "#fff",
-                      "borderRadius": 13,
-                      "elevation": 6,
-                      "flexDirection": "column",
-                      "height": "90%",
-                      "justifyContent": "flex-start",
-                      "shadowColor": "#000000",
-                      "shadowOffset": {
-                        "height": 4,
-                        "width": 0,
-                      },
-                      "shadowOpacity": 0.25,
-                      "shadowRadius": 3.3,
-                      "width": "100%",
+                  {
+                    "borderRadius": 24,
+                    "elevation": 6,
+                    "flexDirection": "column",
+                    "height": "90%",
+                    "shadowColor": "#000",
+                    "shadowOffset": {
+                      "height": 4,
+                      "width": 0,
                     },
-                  ]
+                    "shadowOpacity": 0.25,
+                    "shadowRadius": 4,
+                    "width": "100%",
+                  }
                 }
               >
                 <View
                   accessibilityIgnoresInvertColors={true}
                   style={
                     {
-                      "borderRadius": 13,
-                      "flex": 1,
-                      "justifyContent": "flex-end",
-                      "resizeMode": "cover",
+                      "borderRadius": 24,
+                      "flexBasis": "0%",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                      "justifyContent": "space-between",
                       "width": "100%",
                     }
                   }
                 >
                   <Image
+                    resizeMode="cover"
                     source={
                       {
                         "uri": undefined,
@@ -509,19 +540,38 @@ exports[`CardStack should render correctly 1`] = `
                           "width": "100%",
                         },
                         {
-                          "borderRadius": 13,
-                          "flex": 1,
-                          "justifyContent": "flex-end",
-                          "resizeMode": "cover",
+                          "borderRadius": 24,
+                          "flexBasis": "0%",
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "justifyContent": "space-between",
                           "width": "100%",
                         },
                       ]
                     }
                   />
-                  <View
+                  <ViewManagerAdapter_ExpoLinearGradient
+                    proxiedProperties={
+                      {
+                        "colors": [
+                          3087007744,
+                          0,
+                        ],
+                        "endPoint": [
+                          0,
+                          0.5,
+                        ],
+                        "locations": undefined,
+                        "startPoint": undefined,
+                      }
+                    }
                     style={
                       {
-                        "padding": 15,
+                        "borderRadius": 24,
+                        "flexBasis": "0%",
+                        "flexGrow": 1,
+                        "flexShrink": 1,
+                        "maxHeight": "50%",
                       }
                     }
                   >
@@ -529,18 +579,31 @@ exports[`CardStack should render correctly 1`] = `
                       style={
                         {
                           "color": "#fff",
-                          "fontSize": 48,
-                          "fontWeight": "bold",
+                          "fontFamily": "Baloo-Regular",
+                          "fontSize": 24,
+                          "lineHeight": 32,
+                          "marginTop": 20,
+                          "textAlign": "center",
                         }
                       }
                     />
+                  </ViewManagerAdapter_ExpoLinearGradient>
+                  <View
+                    style={
+                      {
+                        "paddingBottom": 16,
+                        "paddingLeft": 16,
+                        "paddingRight": 16,
+                        "paddingTop": 16,
+                      }
+                    }
+                  >
                     <View
                       style={
                         {
-                          "alignItems": "flex-start",
+                          "alignItems": "center",
                           "flexDirection": "row",
                           "justifyContent": "space-between",
-                          "position": "relative",
                           "width": "100%",
                         }
                       }
@@ -575,24 +638,26 @@ exports[`CardStack should render correctly 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
                             "backgroundColor": "#fff",
-                            "borderRadius": 35,
+                            "borderRadius": 9999,
                             "elevation": 6,
                             "flexDirection": "row",
-                            "height": 55,
+                            "height": 64,
                             "justifyContent": "center",
                             "opacity": 1,
-                            "padding": 5,
-                            "shadowColor": "#000000",
+                            "paddingBottom": 6,
+                            "paddingLeft": 6,
+                            "paddingRight": 6,
+                            "paddingTop": 6,
+                            "shadowColor": "#000",
                             "shadowOffset": {
                               "height": 4,
                               "width": 0,
                             },
                             "shadowOpacity": 0.25,
-                            "shadowRadius": 3.3,
-                            "width": 55,
+                            "shadowRadius": 4,
+                            "width": 64,
                           }
                         }
                       >
@@ -628,29 +693,30 @@ exports[`CardStack should render correctly 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
                             "backgroundColor": "#fff",
-                            "borderRadius": 35,
+                            "borderRadius": 9999,
                             "elevation": 6,
                             "flexDirection": "row",
-                            "height": 55,
+                            "height": 56,
                             "justifyContent": "center",
                             "opacity": 1,
-                            "padding": 5,
-                            "shadowColor": "#000000",
+                            "paddingBottom": 6,
+                            "paddingLeft": 6,
+                            "paddingRight": 6,
+                            "paddingTop": 6,
+                            "shadowColor": "#000",
                             "shadowOffset": {
                               "height": 4,
                               "width": 0,
                             },
                             "shadowOpacity": 0.25,
-                            "shadowRadius": 3.3,
+                            "shadowRadius": 4,
+                            "width": 56,
                           }
                         }
                       >
-                        <Text>
-                          Bekijk recept
-                        </Text>
+                        <Text />
                       </View>
                       <View
                         accessibilityState={
@@ -682,24 +748,26 @@ exports[`CardStack should render correctly 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
                             "backgroundColor": "#fff",
-                            "borderRadius": 35,
+                            "borderRadius": 9999,
                             "elevation": 6,
                             "flexDirection": "row",
-                            "height": 55,
+                            "height": 64,
                             "justifyContent": "center",
                             "opacity": 1,
-                            "padding": 5,
-                            "shadowColor": "#000000",
+                            "paddingBottom": 6,
+                            "paddingLeft": 6,
+                            "paddingRight": 6,
+                            "paddingTop": 6,
+                            "shadowColor": "#000",
                             "shadowOffset": {
                               "height": 4,
                               "width": 0,
                             },
                             "shadowOpacity": 0.25,
-                            "shadowRadius": 3.3,
-                            "width": 55,
+                            "shadowRadius": 4,
+                            "width": 64,
                           }
                         }
                       >
@@ -733,10 +801,10 @@ exports[`CardStack should render correctly 1`] = `
                   "top": 60,
                   "transform": [
                     {
-                      "scale": 0.9400000000000001,
+                      "scale": 0.9,
                     },
                     {
-                      "translateY": -40,
+                      "translateY": -70,
                     },
                   ],
                   "width": 710,
@@ -746,40 +814,37 @@ exports[`CardStack should render correctly 1`] = `
             >
               <View
                 style={
-                  [
-                    {
-                      "alignItems": "flex-end",
-                      "backgroundColor": "#fff",
-                      "borderRadius": 13,
-                      "elevation": 6,
-                      "flexDirection": "column",
-                      "height": "90%",
-                      "justifyContent": "flex-start",
-                      "shadowColor": "#000000",
-                      "shadowOffset": {
-                        "height": 4,
-                        "width": 0,
-                      },
-                      "shadowOpacity": 0.25,
-                      "shadowRadius": 3.3,
-                      "width": "100%",
+                  {
+                    "borderRadius": 24,
+                    "elevation": 6,
+                    "flexDirection": "column",
+                    "height": "90%",
+                    "shadowColor": "#000",
+                    "shadowOffset": {
+                      "height": 4,
+                      "width": 0,
                     },
-                  ]
+                    "shadowOpacity": 0.25,
+                    "shadowRadius": 4,
+                    "width": "100%",
+                  }
                 }
               >
                 <View
                   accessibilityIgnoresInvertColors={true}
                   style={
                     {
-                      "borderRadius": 13,
-                      "flex": 1,
-                      "justifyContent": "flex-end",
-                      "resizeMode": "cover",
+                      "borderRadius": 24,
+                      "flexBasis": "0%",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                      "justifyContent": "space-between",
                       "width": "100%",
                     }
                   }
                 >
                   <Image
+                    resizeMode="cover"
                     source={
                       {
                         "uri": undefined,
@@ -799,19 +864,38 @@ exports[`CardStack should render correctly 1`] = `
                           "width": "100%",
                         },
                         {
-                          "borderRadius": 13,
-                          "flex": 1,
-                          "justifyContent": "flex-end",
-                          "resizeMode": "cover",
+                          "borderRadius": 24,
+                          "flexBasis": "0%",
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "justifyContent": "space-between",
                           "width": "100%",
                         },
                       ]
                     }
                   />
-                  <View
+                  <ViewManagerAdapter_ExpoLinearGradient
+                    proxiedProperties={
+                      {
+                        "colors": [
+                          3087007744,
+                          0,
+                        ],
+                        "endPoint": [
+                          0,
+                          0.5,
+                        ],
+                        "locations": undefined,
+                        "startPoint": undefined,
+                      }
+                    }
                     style={
                       {
-                        "padding": 15,
+                        "borderRadius": 24,
+                        "flexBasis": "0%",
+                        "flexGrow": 1,
+                        "flexShrink": 1,
+                        "maxHeight": "50%",
                       }
                     }
                   >
@@ -819,18 +903,31 @@ exports[`CardStack should render correctly 1`] = `
                       style={
                         {
                           "color": "#fff",
-                          "fontSize": 48,
-                          "fontWeight": "bold",
+                          "fontFamily": "Baloo-Regular",
+                          "fontSize": 24,
+                          "lineHeight": 32,
+                          "marginTop": 20,
+                          "textAlign": "center",
                         }
                       }
                     />
+                  </ViewManagerAdapter_ExpoLinearGradient>
+                  <View
+                    style={
+                      {
+                        "paddingBottom": 16,
+                        "paddingLeft": 16,
+                        "paddingRight": 16,
+                        "paddingTop": 16,
+                      }
+                    }
+                  >
                     <View
                       style={
                         {
-                          "alignItems": "flex-start",
+                          "alignItems": "center",
                           "flexDirection": "row",
                           "justifyContent": "space-between",
-                          "position": "relative",
                           "width": "100%",
                         }
                       }
@@ -865,24 +962,26 @@ exports[`CardStack should render correctly 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
                             "backgroundColor": "#fff",
-                            "borderRadius": 35,
+                            "borderRadius": 9999,
                             "elevation": 6,
                             "flexDirection": "row",
-                            "height": 55,
+                            "height": 64,
                             "justifyContent": "center",
                             "opacity": 1,
-                            "padding": 5,
-                            "shadowColor": "#000000",
+                            "paddingBottom": 6,
+                            "paddingLeft": 6,
+                            "paddingRight": 6,
+                            "paddingTop": 6,
+                            "shadowColor": "#000",
                             "shadowOffset": {
                               "height": 4,
                               "width": 0,
                             },
                             "shadowOpacity": 0.25,
-                            "shadowRadius": 3.3,
-                            "width": 55,
+                            "shadowRadius": 4,
+                            "width": 64,
                           }
                         }
                       >
@@ -918,29 +1017,30 @@ exports[`CardStack should render correctly 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
                             "backgroundColor": "#fff",
-                            "borderRadius": 35,
+                            "borderRadius": 9999,
                             "elevation": 6,
                             "flexDirection": "row",
-                            "height": 55,
+                            "height": 56,
                             "justifyContent": "center",
                             "opacity": 1,
-                            "padding": 5,
-                            "shadowColor": "#000000",
+                            "paddingBottom": 6,
+                            "paddingLeft": 6,
+                            "paddingRight": 6,
+                            "paddingTop": 6,
+                            "shadowColor": "#000",
                             "shadowOffset": {
                               "height": 4,
                               "width": 0,
                             },
                             "shadowOpacity": 0.25,
-                            "shadowRadius": 3.3,
+                            "shadowRadius": 4,
+                            "width": 56,
                           }
                         }
                       >
-                        <Text>
-                          Bekijk recept
-                        </Text>
+                        <Text />
                       </View>
                       <View
                         accessibilityState={
@@ -972,24 +1072,26 @@ exports[`CardStack should render correctly 1`] = `
                         onStartShouldSetResponder={[Function]}
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
                             "backgroundColor": "#fff",
-                            "borderRadius": 35,
+                            "borderRadius": 9999,
                             "elevation": 6,
                             "flexDirection": "row",
-                            "height": 55,
+                            "height": 64,
                             "justifyContent": "center",
                             "opacity": 1,
-                            "padding": 5,
-                            "shadowColor": "#000000",
+                            "paddingBottom": 6,
+                            "paddingLeft": 6,
+                            "paddingRight": 6,
+                            "paddingTop": 6,
+                            "shadowColor": "#000",
                             "shadowOffset": {
                               "height": 4,
                               "width": 0,
                             },
                             "shadowOpacity": 0.25,
-                            "shadowRadius": 3.3,
-                            "width": 55,
+                            "shadowRadius": 4,
+                            "width": 64,
                           }
                         }
                       >
