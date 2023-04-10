@@ -2,6 +2,7 @@ import { Image, Pressable, Text, View } from 'react-native';
 import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
+import CreateSessionModal from './CreateSessionModal';
 
 export default function Sessions() {
     const sessions = [
@@ -12,13 +13,22 @@ export default function Sessions() {
         { uri: 'https://picsum.photos/id/531/60/60' },
         { uri: 'https://picsum.photos/id/786/60/60' },
     ];
+    const [isModalVisible, setIsModalVisible] = React.useState(false);
+
+    const createSession = () => {
+        setIsModalVisible(true);
+    };
+
     return (
         <View style={tw`gap-2.5`}>
             <View style={tw`flex flex-row justify-between`}>
                 <Text style={tw`font-sans text-lg font-bold text-text_primary`}>
                     Sessies
                 </Text>
-                <Pressable style={tw`flex flex-row items-center`}>
+                <Pressable
+                    style={tw`flex flex-row items-center`}
+                    onPress={createSession}
+                >
                     <Text style={tw`font-sans text-sm text-text_primary`}>
                         Sessie toevoegen
                     </Text>
@@ -65,6 +75,10 @@ export default function Sessions() {
                     </View>
                 ))}
             </View>
+            <CreateSessionModal
+                isModalVisible={isModalVisible}
+                setIsModalVisible={setIsModalVisible}
+            />
         </View>
     );
 }
