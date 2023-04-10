@@ -9,7 +9,7 @@ export default function GroupInfo() {
     return (
         <ImageBackground
             source={require('../../assets/images/header_background.svg')}
-            style={tw`w-full h-full bg-bg_color`}
+            style={tw`w-full grow bg-bg_color`}
             imageStyle={tw`w-full h-[231px]`}
             resizeMode={'contain'}
         >

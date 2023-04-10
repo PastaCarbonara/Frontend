@@ -17,7 +17,10 @@ export default function GroupMembers() {
             <Text style={tw`font-sans text-lg font-bold text-text_primary`}>
                 Groepleden
             </Text>
-            <ScrollView horizontal contentContainerStyle={tw`gap-2.5`}>
+            <ScrollView
+                horizontal
+                contentContainerStyle={tw`gap-2.5 pb-2.5 -mb-2.5`}
+            >
                 <View
                     style={tw`flex justify-center items-center p-4 w-16 h-16 bg-indigo_secondary/20 border-dashed border border-indigo_primary rounded-4`}
                 >
@@ -30,6 +33,7 @@ export default function GroupMembers() {
                 {members.map((member) => (
                     <View
                         style={tw`w-16 h-16 bg-indigo_secondary/20 rounded-4`}
+                        key={member.uri}
                     >
                         <Image
                             style={tw`w-16 h-16 rounded-4`}
