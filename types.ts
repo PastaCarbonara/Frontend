@@ -6,7 +6,7 @@ export type RootStackParamList = {
 export type RootDrawerParamList = {
     Home: undefined;
     Profile: undefined;
-    Match: undefined;
+    Groups: undefined;
 };
 export type Recipe = {
     id: number;

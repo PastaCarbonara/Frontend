@@ -11,6 +11,7 @@ import MatchScreen from './screens/MatchScreen';
 import { RootDrawerParamList, RootStackParamList } from './types';
 import { navigationRef } from './RootNavigator';
 import { useFonts } from 'expo-font';
+import GroupScreen from './screens/GroupScreen';
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,13 +32,16 @@ export default function App() {
 
 export function DrawerNavigator() {
     return (
-        <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Navigator initialRouteName="Groups">
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
             <Drawer.Screen
-                name="Match"
-                component={MatchScreen}
-                options={{ headerShown: false }}
+                name="Groups"
+                component={GroupScreen}
+                options={{
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                }}
             />
         </Drawer.Navigator>
     );
