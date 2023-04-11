@@ -24,7 +24,7 @@ export default function Card({ recipe, onLike, onDislike }: cardProps) {
             <ImageBackground
                 style={tw`w-full rounded-3xl flex-1 justify-between`}
                 source={{
-                    uri: recipe?.image,
+                    uri: recipe?.image.file_url,
                 }}
                 resizeMode={'cover'}
                 imageStyle={tw`w-full rounded-3xl flex-1 justify-between`}
