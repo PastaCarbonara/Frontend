@@ -20,7 +20,7 @@ export default function CreateSessionModal({
     setIsModalVisible: (isModalVisible: boolean) => void;
 }) {
     const [sessionDate, setSessionDate] = React.useState<string>(
-        new Date().toString()
+        new Date().toISOString()
     );
     return (
         <Modal animationType="fade" visible={isModalVisible} transparent={true}>
@@ -62,6 +62,7 @@ export default function CreateSessionModal({
                             options={{
                                 mainColor: '#F97316', //orange_primary
                             }}
+                            selected={sessionDate}
                             onDateChange={(date: string) => {
                                 setSessionDate(date);
                             }}
