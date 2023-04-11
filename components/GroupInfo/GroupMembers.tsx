@@ -1,5 +1,13 @@
 import tw from '../../lib/tailwind';
-import { Image, ScrollView, Text, View } from 'react-native';
+import {
+    Image,
+    Pressable,
+    ScrollView,
+    Text,
+    View,
+    Share,
+    Alert,
+} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 
@@ -21,15 +29,39 @@ export default function GroupMembers() {
                 horizontal
                 contentContainerStyle={tw`gap-2.5 pb-2.5 -mb-2.5`}
             >
-                <View
-                    style={tw`flex justify-center items-center p-4 w-16 h-16 bg-indigo_secondary/20 border-dashed border border-indigo_primary rounded-4`}
+                <Pressable
+                    onPress={async () => {
+                        try {
+                            const result = await Share.share({
+                                url: 'https://reactnative.dev/', //for IOS
+                                message: 'https://reactnative.dev/', //for Android
+                            });
+                            if (result.action === Share.sharedAction) {
+                                if (result.activityType) {
+                                    // shared with activity type of result.activityType
+                                } else {
+                                    // shared
+                                }
+                            } else if (
+                                result.action === Share.dismissedAction
+                            ) {
+                                // dismissed
+                            }
+                        } catch (error: any) {
+                            Alert.alert(error.message);
+                        }
+                    }}
                 >
-                    <MaterialCommunityIcons
-                        name="plus"
-                        size={28}
-                        style={tw`text-indigo_primary`}
-                    />
-                </View>
+                    <View
+                        style={tw`flex justify-center items-center p-4 w-16 h-16 bg-indigo_secondary/20 border-dashed border border-indigo_primary rounded-4`}
+                    >
+                        <MaterialCommunityIcons
+                            name="plus"
+                            size={28}
+                            style={tw`text-indigo_primary`}
+                        />
+                    </View>
+                </Pressable>
                 {members.map((member) => (
                     <View
                         style={tw`w-16 h-16 bg-indigo_secondary/20 rounded-4`}
