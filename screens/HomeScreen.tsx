@@ -11,10 +11,8 @@ export default function HomeScreen() {
     const { currentSession, setCurrentSession } = useContext(
         SessionWebsocketContext
     );
-    const sessionId = 'MNwEX2e8mo9OGWqQ';
-    const userId = 'DMmQkBb7gbEv47q2';
-    // const sessionId = '5BdWlO3lzqxyEp8g';
-    // const userId = '5BdWlO3lzqxyEp8g';
+    const sessionId = '5BdWlO3lzqxyEp8g';
+    const userId = '5BdWlO3lzqxyEp8g';
 
     useEffect(() => {
         setCurrentSession(`${sessionId}/${userId}`);
