@@ -6,6 +6,7 @@ import TextInputWithLabel from '../TextInputWithLabel';
 import FloatingActionButton from '../FloatingActionButton';
 
 export default function CreateGroup() {
+    const [groupName, setGroupName] = React.useState<string | null>(null);
     return (
         <ImageBackground
             source={require('../../assets/images/header_background.svg')}
@@ -17,11 +18,19 @@ export default function CreateGroup() {
                 <GroupImagePicker />
                 <TextInputWithLabel
                     label={'Groepsnaam'}
+                    onInputChange={(name: string) => {
+                        setGroupName(name);
+                    }}
                     style={tw`flex-grow h-8`}
                     maxLength={100}
                 />
             </View>
-            <FloatingActionButton icon={'check'} />
+            <FloatingActionButton
+                icon={'check'}
+                onPress={() => {
+                    console.log(groupName);
+                }}
+            />
         </ImageBackground>
     );
 }

@@ -4,23 +4,32 @@ import tw from '../lib/tailwind';
 
 export default function TextInputWithLabel({
     label,
+    onInputChange,
     ...inputProps
 }: TextInputProps & {
     label: string;
+    onInputChange: (name: string) => void;
 }) {
     const [wordCount, setWordCount] = React.useState(0);
     return (
         <View>
-            <Text style={tw`text-gray-500`}>{label}</Text>
+            <Text style={tw`text-text_primary`}>{label}</Text>
             <View style={tw`border-b flex-row items-center gap-2`}>
                 <TextInput
-                    {...inputProps}
                     onChange={(e) => {
                         setWordCount(e.nativeEvent.text.length);
+                        onInputChange(e.nativeEvent?.text);
                     }}
+                    {...inputProps}
                 />
                 <Text
-                    style={tw.style(`${wordCount === 100 && 'text-red-500'}`)}
+                    style={tw.style(
+                        `${
+                            wordCount === 100
+                                ? 'text-red-500'
+                                : 'text-text_primary'
+                        }`
+                    )}
                 >
                     {wordCount}
                 </Text>
