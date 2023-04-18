@@ -32,18 +32,9 @@ export default function App() {
 
 export function DrawerNavigator() {
     return (
-        <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Navigator initialRouteName="Profile">
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
-            <Drawer.Screen
-                name="Groups"
-                component={GroupScreen}
-                initialParams={{ groupId: 'Qzyxv13gV69bejKo' }}
-                options={{
-                    headerTransparent: true,
-                    headerTitleAlign: 'center',
-                }}
-            />
         </Drawer.Navigator>
     );
 }
@@ -65,6 +56,14 @@ export function StackNavigator() {
                 name="Match"
                 component={MatchScreen}
                 options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Group"
+                component={GroupScreen}
+                options={{
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                }}
             />
         </Stack.Navigator>
     );

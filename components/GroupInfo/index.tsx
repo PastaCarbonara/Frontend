@@ -6,7 +6,6 @@ import GroupMembers from './GroupMembers';
 import Sessions from './Sessions';
 
 export default function GroupInfo({ group }: { group: any }) {
-    console.log(group);
     return (
         <ImageBackground
             source={require('../../assets/images/header_background.svg')}
@@ -16,8 +15,8 @@ export default function GroupInfo({ group }: { group: any }) {
         >
             <View style={tw`w-full p-4 mt-16 gap-6`}>
                 <HighlightedSessions />
-                <GroupMembers members={group.users} />
-                <Sessions />
+                {group && <GroupMembers members={group.users} />}
+                {group && <Sessions sessions={group.swipe_sessions} />}
             </View>
         </ImageBackground>
     );

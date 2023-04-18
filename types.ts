@@ -2,11 +2,11 @@ export type RootStackParamList = {
     Root: undefined;
     Recipe: { id: number };
     Match: { recipe: Recipe };
+    Group: { groupId: string };
 };
 export type RootDrawerParamList = {
     Home: undefined;
     Profile: undefined;
-    Groups: { groupId: string };
 };
 export type Recipe = {
     id: number;
