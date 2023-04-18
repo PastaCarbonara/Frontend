@@ -7,9 +7,9 @@ export default function GroupScreen({ route }: { route: any }) {
     const [groupData, setGroupData] = useState<any>();
 
     useEffect(() => {
-        groupService.fetchGroupInfo(groupId).then((recipeInfo) => {
-            setGroupData(recipeInfo);
+        groupService.fetchGroupInfo(groupId).then((groupInfo) => {
+            setGroupData(groupInfo);
         });
     }, [groupId]);
-    return <GroupInfo group={groupData} />;
+    return groupData ? <GroupInfo group={groupData} /> : <>Loading...</>;
 }
