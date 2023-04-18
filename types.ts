@@ -7,6 +7,7 @@ export type RootDrawerParamList = {
     Home: undefined;
     Profile: undefined;
     Groups: undefined;
+    CreateGroup: undefined;
 };
 export type Recipe = {
     id: number;

@@ -12,6 +12,7 @@ import { RootDrawerParamList, RootStackParamList } from './types';
 import { navigationRef } from './RootNavigator';
 import { useFonts } from 'expo-font';
 import GroupScreen from './screens/GroupScreen';
+import CreateGroupScreen from './screens/CreateGroupScreen';
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -32,7 +33,7 @@ export default function App() {
 
 export function DrawerNavigator() {
     return (
-        <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Navigator initialRouteName="CreateGroup">
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
             <Drawer.Screen
@@ -42,6 +43,15 @@ export function DrawerNavigator() {
                     headerTransparent: true,
                     headerTitleAlign: 'center',
                 }}
+            />
+            <Drawer.Screen
+                name={'CreateGroup'}
+                options={{
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                    headerTitle: 'Groep maken',
+                }}
+                component={CreateGroupScreen}
             />
         </Drawer.Navigator>
     );
