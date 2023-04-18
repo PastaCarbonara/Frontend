@@ -12,7 +12,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 
 export default function GroupMembers({ members }: { members: any[] }) {
-    console.log(members);
     return (
         <View style={tw`gap-2.5`}>
             <Text style={tw`font-sans text-lg font-bold text-text_primary`}>
