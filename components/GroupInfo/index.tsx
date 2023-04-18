@@ -14,7 +14,7 @@ export default function GroupInfo({ group }: { group: any }) {
             resizeMode={'cover'}
         >
             <View style={tw`w-full p-4 mt-16 gap-6`}>
-                <HighlightedSessions />
+                <HighlightedSessions sessions={group.swipe_sessions} />
                 <GroupMembers members={group.users} />
                 <Sessions sessions={group.swipe_sessions} />
             </View>

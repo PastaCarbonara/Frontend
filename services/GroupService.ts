@@ -16,7 +16,7 @@ async function fetchGroupInfo(groupId: string) {
             headers: {
                 authorization:
                     'Bearer ' +
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTg1MDU2OH0.tyVCsKLA3jITTOSs4zoPKFmLGspXqbI89vrJP02fxIg',
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTg1ODE2MX0.mI99yuh9LJ3_XStoJpeVBIn_6F1sVn_hQqBSFHF6UXk',
             },
         });
         return responseChecker(response);

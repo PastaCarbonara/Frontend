@@ -1,11 +1,11 @@
 import { API_URL } from '@env';
 
 async function createSwipeSession({
-    sessionDate,
-    groupId,
+    session_date,
+    status,
 }: {
-    sessionDate: string;
-    groupId: string;
+    session_date: string;
+    status: string;
 }) {
     try {
         const response = await fetch(`${API_URL}/swipe_sessions`, {
@@ -13,11 +13,12 @@ async function createSwipeSession({
             headers: {
                 'Content-Type': 'application/json',
                 Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODExNjQxNDR9.I5rugH3lfgCfCjtRkx82HC2J6RqXO97DQZIV-b-7jGk',
+                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTg1NDIzOX0.Uy-fhftnkRQirs3-NIg1G8BznGeHmeqKJ4mt8TuPIsc',
             },
             body: JSON.stringify({
-                sessionDate: sessionDate,
-                group_id: groupId,
+                session_date: session_date,
+                status: status,
+                // group_id: groupId,
             }),
         });
         return response.json();

@@ -1,17 +1,41 @@
 import tw from '../../lib/tailwind';
-import { ImageBackground, Pressable, Text, View } from 'react-native';
+import {
+    ImageBackground,
+    Pressable,
+    ScrollView,
+    Text,
+    useWindowDimensions,
+    View,
+} from 'react-native';
 import React from 'react';
 import CreateSessionModal from './CreateSessionModal';
 
-export default function HighlightedSessions() {
-    const sessions = [];
-    const sessionStatus: number = 1;
+export default function HighlightedSessions({ sessions }: { sessions: any[] }) {
     return sessions.length! > 0 ? (
-        <OpenSession />
-    ) : sessionStatus === 1 ? (
-        <NoOpenSessions />
+        <ScrollView
+            horizontal
+            pagingEnabled
+            contentContainerStyle={tw`w-full gap-4`}
+        >
+            {sessions.map((session) => {
+                if (session.status === 'Staat klaar') {
+                    return <OpenSession session={session} key={session.id} />;
+                }
+                if (session.status === 'Voltooid') {
+                    return <ClosedSession session={session} key={session.id} />;
+                }
+            })}
+            {sessions.map((session) => {
+                if (session.status === 'Staat klaar') {
+                    return <OpenSession session={session} key={session.id} />;
+                }
+                if (session.status === 'Voltooid') {
+                    return <ClosedSession session={session} key={session.id} />;
+                }
+            })}
+        </ScrollView>
     ) : (
-        <ClosedSession />
+        <NoOpenSessions />
     );
 }
 
@@ -19,7 +43,7 @@ function NoOpenSessions() {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     return (
         <View
-            style={tw`flex-col items-center pt-10 pb-6 gap-4 bg-white shadow-md rounded-3xl`}
+            style={tw`flex-col w-full items-center pt-10 pb-6 gap-4 bg-white shadow-md rounded-3xl`}
         >
             <Text style={tw`font-sans text-base font-bold text-text_primary`}>
                 Je hebt nog geen sessies
@@ -44,19 +68,34 @@ function NoOpenSessions() {
     );
 }
 
-function OpenSession() {
+function OpenSession({ session }: { session: any }) {
+    const { width } = useWindowDimensions();
+    const cardWidth = width - 32;
     let sessionStatus = 1;
     return (
         <View
-            style={tw`flex-row items-center py-8 px-4 gap-2 bg-white shadow-md rounded-3xl`}
+            style={tw.style(
+                `flex-row w-[${cardWidth}px] items-center py-8 px-4 gap-2 bg-white shadow-md rounded-3xl`
+            )}
         >
             <View
                 style={tw`w-16 h-16 items-center bg-white border border-white shadow-md rounded-2xl`}
             >
                 <View style={tw`w-full h-4 bg-orange_primary rounded-t-2xl`}>
-                    <Text style={tw`text-center text-xs text-white`}>Apr</Text>
+                    <Text style={tw`text-center text-xs text-white`}>
+                        {new Date(session.session_date).toLocaleString(
+                            'default',
+                            {
+                                month: 'short',
+                            }
+                        )}
+                    </Text>
                 </View>
-                <Text style={tw`text-2xl font-bold text-text_primary`}>23</Text>
+                <Text style={tw`text-2xl font-bold text-text_primary`}>
+                    {new Date(session.session_date).toLocaleString('default', {
+                        day: 'numeric',
+                    })}
+                </Text>
             </View>
             <View style={tw`gap-0 grow`}>
                 <Text
@@ -83,19 +122,34 @@ function OpenSession() {
     );
 }
 
-function ClosedSession() {
+function ClosedSession({ session }: { session: any }) {
+    const { width } = useWindowDimensions();
+    const cardWidth = width - 32;
     return (
         <ImageBackground
             source={require('../../assets/images/pancakes.png')}
-            style={tw`flex-row items-center py-8 px-4 gap-2 bg-white border border-white shadow-md rounded-3xl`}
+            style={tw.style(
+                `flex-row w-[${cardWidth}px] items-center py-8 px-4 gap-2 bg-white border border-white shadow-md rounded-3xl`
+            )}
         >
             <View
                 style={tw`w-16 h-16 items-center bg-white border border-white shadow-md rounded-2xl`}
             >
                 <View style={tw`w-full h-4 bg-orange_primary rounded-t-2xl`}>
-                    <Text style={tw`text-center text-xs text-white`}>Apr</Text>
+                    <Text style={tw`text-center text-xs text-white`}>
+                        {new Date(session.session_date).toLocaleString(
+                            'default',
+                            {
+                                month: 'short',
+                            }
+                        )}
+                    </Text>
                 </View>
-                <Text style={tw`text-2xl font-bold text-text_primary`}>23</Text>
+                <Text style={tw`text-2xl font-bold text-text_primary`}>
+                    {new Date(session.session_date).toLocaleString('default', {
+                        day: 'numeric',
+                    })}
+                </Text>
             </View>
             <View style={tw`gap-0 grow`}>
                 <Text

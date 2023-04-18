@@ -71,10 +71,10 @@ export default function CreateSessionModal({
                             style={tw`items-center justify-center p-4 gap-4 min-w-28 h-9 bg-orange_primary rounded-lg `}
                             onPress={async () => {
                                 //Create session
-                                console.log(sessionDate);
                                 await swipeSessionService.createSwipeSession({
-                                    sessionDate: sessionDate,
-                                    groupId: '5BdWlO3lzqxyEp8g', //TODO: Get group id from route
+                                    session_date: sessionDate.split('T')[0], //this splits the date and time
+                                    status: 'Staat klaar',
+                                    // groupid: route.params?.groupId
                                 });
                             }}
                         >
