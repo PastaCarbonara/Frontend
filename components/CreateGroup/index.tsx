@@ -7,6 +7,7 @@ import FloatingActionButton from '../FloatingActionButton';
 
 export default function CreateGroup() {
     const [groupName, setGroupName] = React.useState<string | null>(null);
+    const [groupImage, setGroupImage] = React.useState<string | null>(null);
     return (
         <ImageBackground
             source={require('../../assets/images/header_background.svg')}
@@ -15,7 +16,11 @@ export default function CreateGroup() {
             resizeMode={'cover'}
         >
             <View style={tw`w-full p-4 mt-16 gap-6`}>
-                <GroupImagePicker />
+                <GroupImagePicker
+                    onImageChange={(image) => {
+                        setGroupImage(image);
+                    }}
+                />
                 <TextInputWithLabel
                     label={'Groepsnaam'}
                     onInputChange={(name: string) => {
@@ -28,7 +33,8 @@ export default function CreateGroup() {
             <FloatingActionButton
                 icon={'check'}
                 onPress={() => {
-                    console.log(groupName);
+                    console.log(groupName, groupImage);
+                    //Create a new group
                 }}
             />
         </ImageBackground>

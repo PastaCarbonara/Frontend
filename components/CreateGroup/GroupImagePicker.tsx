@@ -4,7 +4,11 @@ import * as ImagePicker from 'expo-image-picker';
 import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function GroupImagePicker() {
+export default function GroupImagePicker({
+    onImageChange,
+}: {
+    onImageChange: (image: string) => void;
+}) {
     const [image, setImage] = useState<string | null>(null);
 
     const pickImage = async () => {
@@ -16,10 +20,9 @@ export default function GroupImagePicker() {
             quality: 1,
         });
 
-        console.log(result);
-
         if (!result.canceled) {
             setImage(result.assets[0].uri);
+            onImageChange(result.assets[0].uri);
         }
     };
 
