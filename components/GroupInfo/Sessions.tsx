@@ -55,7 +55,7 @@ export default function Sessions({ sessions }: { sessions: any[] }) {
                                 {session.matches[0].name}
                             </Text>
                             <Text style={tw`font-sans text-xs text-gray-500`}>
-                                {session.matches[0].session_date}
+                                {session.session_date}
                             </Text>
                         </View>
                         <Pressable
