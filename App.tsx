@@ -38,6 +38,7 @@ export function DrawerNavigator() {
             <Drawer.Screen
                 name="Groups"
                 component={GroupScreen}
+                initialParams={{ groupId: 'Qzyxv13gV69bejKo' }}
                 options={{
                     headerTransparent: true,
                     headerTitleAlign: 'center',
