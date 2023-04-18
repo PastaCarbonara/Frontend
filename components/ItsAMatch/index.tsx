@@ -23,7 +23,7 @@ export default function ItsAMatch({
             />
             <View style={tw`absolute self-center top-34`}>
                 <ImageBackground
-                    source={{ uri: matchedRecipe?.image }}
+                    source={{ uri: matchedRecipe?.image.file_url }}
                     style={tw`w-24 h-24 rounded-full bg-orange_primary self-center`}
                     imageStyle={tw`w-24 h-24 rounded-full border-4 border-white`}
                 />
