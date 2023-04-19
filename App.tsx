@@ -49,7 +49,11 @@ export function DrawerNavigator() {
 
 export function StackNavigator() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                animation: 'slide_from_right',
+            }}
+        >
             <Stack.Screen
                 name="Root"
                 component={DrawerNavigator}
@@ -71,11 +75,12 @@ export function StackNavigator() {
                     headerTransparent: true,
                     headerTitleAlign: 'center',
                     headerTitle: 'Groep maken',
+                    animation: 'slide_from_right',
                 }}
                 component={CreateGroupScreen}
             />
             <Stack.Screen
-                name="Groups"
+                name="Group"
                 component={GroupScreen}
                 options={{
                     headerTransparent: true,

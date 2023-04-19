@@ -45,7 +45,7 @@ export default function GroupImagePicker({
                             />
                         ) : (
                             <Image
-                                source={require('/assets/images/munchie.png')}
+                                source={require('../../assets/images/munchie.png')}
                                 style={tw`w-20 h-20 opacity-70`}
                                 resizeMode={'contain'}
                             />
