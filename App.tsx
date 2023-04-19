@@ -11,6 +11,7 @@ import MatchScreen from './screens/MatchScreen';
 import { RootDrawerParamList, RootStackParamList } from './types';
 import { navigationRef } from './RootNavigator';
 import { useFonts } from 'expo-font';
+import MyGroupsScreen from './screens/MyGroupsScreen';
 import GroupScreen from './screens/GroupScreen';
 import CreateGroupScreen from './screens/CreateGroupScreen';
 
@@ -21,6 +22,7 @@ export default function App() {
     useFonts({
         'Baloo-Regular': require('./assets/fonts/Baloo-Regular.ttf'),
         'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
+        'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
     });
     return (
         <SessionWebsocketProvider>
@@ -33,25 +35,13 @@ export default function App() {
 
 export function DrawerNavigator() {
     return (
-        <Drawer.Navigator initialRouteName="CreateGroup">
+        <Drawer.Navigator initialRouteName="Home">
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
             <Drawer.Screen
                 name="Groups"
-                component={GroupScreen}
-                options={{
-                    headerTransparent: true,
-                    headerTitleAlign: 'center',
-                }}
-            />
-            <Drawer.Screen
-                name={'CreateGroup'}
-                options={{
-                    headerTransparent: true,
-                    headerTitleAlign: 'center',
-                    headerTitle: 'Groep maken',
-                }}
-                component={CreateGroupScreen}
+                component={MyGroupsScreen}
+                options={{ headerTransparent: true }}
             />
         </Drawer.Navigator>
     );
@@ -74,6 +64,23 @@ export function StackNavigator() {
                 name="Match"
                 component={MatchScreen}
                 options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name={'CreateGroup'}
+                options={{
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                    headerTitle: 'Groep maken',
+                }}
+                component={CreateGroupScreen}
+            />
+            <Stack.Screen
+                name="Groups"
+                component={GroupScreen}
+                options={{
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                }}
             />
         </Stack.Navigator>
     );
