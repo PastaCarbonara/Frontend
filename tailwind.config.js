@@ -8,6 +8,7 @@ module.exports = {
             fontFamily: {
                 display: ['Baloo-Regular', 'sans-serif'],
                 sans: ['Poppins-Regular', 'sans-serif'],
+                'Poppins-Bold': ['Poppins-Bold', 'sans-serif'],
             },
             colors: {
                 orange_primary: '#F97316',
