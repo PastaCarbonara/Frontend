@@ -11,7 +11,8 @@ import MatchScreen from './screens/MatchScreen';
 import { RootDrawerParamList, RootStackParamList } from './types';
 import { navigationRef } from './RootNavigator';
 import { useFonts } from 'expo-font';
-import GroupScreen from './screens/GroupScreen';
+import CreateGroupScreen from './screens/CreateGroupScreen';
+import MyGroupsScreen from './screens/MyGroupsScreen';
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -20,6 +21,7 @@ export default function App() {
     useFonts({
         'Baloo-Regular': require('./assets/fonts/Baloo-Regular.ttf'),
         'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
+        'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
     });
     return (
         <SessionWebsocketProvider>
@@ -37,11 +39,8 @@ export function DrawerNavigator() {
             <Drawer.Screen name="Profile" component={ProfileScreen} />
             <Drawer.Screen
                 name="Groups"
-                component={GroupScreen}
-                options={{
-                    headerTransparent: true,
-                    headerTitleAlign: 'center',
-                }}
+                component={MyGroupsScreen}
+                options={{ headerTransparent: true }}
             />
         </Drawer.Navigator>
     );
@@ -64,6 +63,11 @@ export function StackNavigator() {
                 name="Match"
                 component={MatchScreen}
                 options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name={'Create New Group'}
+                component={CreateGroupScreen}
+                options={{ headerTransparent: true }}
             />
         </Stack.Navigator>
     );
