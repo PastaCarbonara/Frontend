@@ -1,16 +1,17 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-// import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GroupMembers from './GroupMembers';
+import { RootStackParamList } from '../../types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
 export default function GroupsFound({ groups }: any) {
-    // const navigation =
-    //     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const navigation =
+        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
-        <Fragment>
+        <View style={tw`flex flex-column justify-between grow h-full`}>
             <View style={tw`w-full p-4 mt-16 gap-6`}>
                 <View style={tw`gap-2.5`}>
                     {groups.map((userGroup: any) => (
@@ -61,6 +62,16 @@ export default function GroupsFound({ groups }: any) {
                     ))}
                 </View>
             </View>
-        </Fragment>
+            <View>
+                <Pressable
+                    style={tw`items-center justify-center p-2.5 bg-indigo_secondary rounded-full w-12 h-12 absolute right-4 bottom-4`}
+                    onPress={() => {
+                        navigation.navigate('Create New Group');
+                    }}
+                >
+                    <Text style={tw`text-white`}>+</Text>
+                </Pressable>
+            </View>
+        </View>
     );
 }
