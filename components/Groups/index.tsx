@@ -24,7 +24,8 @@ export default function MyGroups({ myGroups }: any) {
                             <View>
                                 <Image
                                     source={require('../../assets/images/Sadge_Munchie.svg')}
-                                    style={tw`w-full aspect-square mt-[10%], object-contain`}
+                                    style={tw`w-full aspect-square mt-[10%]`}
+                                    resizeMode={'contain'}
                                 />
                                 <Text
                                     style={tw`font-Poppins-Bold text-xl mt-[15%] text-text_primary/60`}
