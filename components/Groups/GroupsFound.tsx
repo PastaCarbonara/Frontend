@@ -17,9 +17,9 @@ export default function GroupsFound({ groups }: any) {
                     {groups.map((userGroup: any) => (
                         <Pressable
                             style={tw`items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl flex flex-column bg-bg_color`}
-                            key={userGroup.id}
+                            key={userGroup?.id}
                             onPress={() => {
-                                console.log(userGroup.id);
+                                console.log(userGroup?.id);
                                 // navigation.navigate('Group', {
                                 //     id: userGroup.id,
                                 // });
@@ -31,7 +31,7 @@ export default function GroupsFound({ groups }: any) {
                                 >
                                     <Image
                                         source={{
-                                            uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${userGroup.id}`,
+                                            uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${userGroup?.id}`,
                                         }}
                                         style={tw`w-18 h-18 rounded-2xl`}
                                     />
@@ -40,11 +40,11 @@ export default function GroupsFound({ groups }: any) {
                                     <Text
                                         style={tw`font-Poppins-Bold text-base text-text_primary`}
                                     >
-                                        {userGroup.name}
+                                        {userGroup?.name}
                                     </Text>
                                     <View>
                                         <GroupMembers
-                                            groupMembers={userGroup.users}
+                                            groupMembers={userGroup?.users}
                                         />
                                     </View>
                                 </View>
@@ -66,7 +66,7 @@ export default function GroupsFound({ groups }: any) {
                 <Pressable
                     style={tw`items-center justify-center p-2.5 bg-indigo_secondary rounded-full w-12 h-12 absolute right-4 bottom-4`}
                     onPress={() => {
-                        navigation.navigate('Create New Group');
+                        navigation?.navigate('Create New Group');
                     }}
                 >
                     <Text style={tw`text-white`}>+</Text>
