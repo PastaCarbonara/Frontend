@@ -1,5 +1,6 @@
 import { API_URL } from '@env';
 
+import HttpErrorHandling from './HttpErrorHandling';
 async function fetchRecipes() {
     try {
         const response = await fetch(`${API_URL}/recipes`, {
@@ -7,7 +8,7 @@ async function fetchRecipes() {
                 'Content-Type': 'application/json',
             },
         });
-        return responseChecker(response);
+        return HttpErrorHandling.responseChecker(response);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
     }
@@ -20,17 +21,9 @@ async function fetchRecipeInfo(id: number) {
                 'Content-Type': 'application/json',
             },
         });
-        return responseChecker(response);
+        return HttpErrorHandling.responseChecker(response);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
-    }
-}
-
-function responseChecker(response: Response): Promise<any> {
-    if (response.ok) {
-        return response.json();
-    } else {
-        throw new Error(`HTTP error! status: ${response.status}`);
     }
 }
 
