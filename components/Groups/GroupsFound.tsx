@@ -21,7 +21,7 @@ export default function GroupsFound({ groups }: any) {
                             onPress={() => {
                                 console.log(group.id);
                                 navigation.navigate('Group', {
-                                    id: group.id,
+                                    groupId: group.id,
                                 });
                             }}
                         >
