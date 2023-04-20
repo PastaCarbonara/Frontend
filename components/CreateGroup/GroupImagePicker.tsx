@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default function GroupImagePicker({
     onImageChange,
 }: {
-    onImageChange: (image: string) => void;
+    onImageChange: (image: File) => void;
 }) {
     const [image, setImage] = useState<string | null>(null);
 
@@ -21,8 +21,15 @@ export default function GroupImagePicker({
         });
 
         if (!result.canceled) {
+            fetch(result.assets[0].uri)
+                .then((res) => res.blob())
+                .then((blob) => {
+                    const file = new File([blob], 'File name', {
+                        type: 'image/png',
+                    });
+                    onImageChange(file);
+                });
             setImage(result.assets[0].uri);
-            onImageChange(result.assets[0].uri);
         }
     };
 

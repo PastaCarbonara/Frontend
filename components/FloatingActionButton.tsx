@@ -6,16 +6,22 @@ import tw from '../lib/tailwind';
 export default function FloatingActionButton({
     icon,
     onPress,
+    disabled = false,
     color = 'orange_primary',
     textColor = 'white',
 }: {
     icon: any;
     onPress: () => void;
+    disabled?: boolean;
     color?: 'orange_primary' | 'indigo_primary';
     textColor?: 'white' | 'text_primary';
 }) {
     return (
-        <Pressable onPress={onPress} style={tw`absolute bottom-4 right-4`}>
+        <Pressable
+            onPress={onPress}
+            style={tw`absolute bottom-4 right-4`}
+            disabled={disabled}
+        >
             <View
                 style={tw.style(
                     `w-14 h-14 bg-${color} items-center justify-center rounded-full`

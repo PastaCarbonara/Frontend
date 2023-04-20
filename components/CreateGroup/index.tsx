@@ -4,10 +4,11 @@ import tw from '../../lib/tailwind';
 import GroupImagePicker from './GroupImagePicker';
 import TextInputWithLabel from '../TextInputWithLabel';
 import FloatingActionButton from '../FloatingActionButton';
+import groupService from '../../services/GroupService';
 
 export default function CreateGroup() {
     const [groupName, setGroupName] = React.useState<string | null>(null);
-    const [groupImage, setGroupImage] = React.useState<string | null>(null);
+    const [groupImage, setGroupImage] = React.useState<File | null>(null);
     return (
         <ImageBackground
             source={require('../../assets/images/header_background.svg')}
@@ -32,9 +33,16 @@ export default function CreateGroup() {
             </View>
             <FloatingActionButton
                 icon={'check'}
+                disabled={groupName === null || groupImage === null}
                 onPress={() => {
-                    console.log(groupName, groupImage);
-                    //Create a new group
+                    groupService
+                        .createGroup({
+                            image: groupImage!,
+                            name: groupName!,
+                        })
+                        .then((response) => {
+                            console.log(response);
+                        });
                 }}
             />
         </ImageBackground>
