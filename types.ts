@@ -2,8 +2,8 @@ export type RootStackParamList = {
     Root: undefined;
     Recipe: { id: number };
     Match: { recipe: Recipe };
+    Group: { groupId: string };
     CreateGroup: undefined;
-    Group: { id: number };
 };
 export type RootDrawerParamList = {
     Home: undefined;

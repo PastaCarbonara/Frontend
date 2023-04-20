@@ -37,9 +37,26 @@ async function createGroup({ name, image }: { name: string; image: File }) {
     }
 }
 
+async function fetchGroupInfo(groupId: string) {
+    console.log('fetching group info');
+    try {
+        const response = await fetch(`${API_URL}/groups/${groupId}`, {
+            headers: {
+                authorization:
+                    'Bearer ' +
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTg5MjM5NX0.mk3ama55j5vXMiGVYlEtlKXmOFXRG3CN-BUD6TdUZlw',
+            },
+        });
+        return HttpErrorHandling.responseChecker(response);
+    } catch (error) {
+        console.error(`Error fetching data: ${error}`);
+    }
+}
+
 const groupService = {
     fetchGroups,
     createGroup,
+    fetchGroupInfo,
 };
 
 export default groupService;
