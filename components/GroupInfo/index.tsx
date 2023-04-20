@@ -6,6 +6,13 @@ import GroupMembers from './GroupMembers';
 import Sessions from './Sessions';
 
 export default function GroupInfo({ group }: { group: any }) {
+    const { swipe_sessions, users } = group;
+    const upcoming_sessions = swipe_sessions.filter(
+        (session: any) =>
+            new Date(session.session_date) >=
+            new Date(new Date().toDateString())
+    );
+
     return group ? (
         <ImageBackground
             source={require('../../assets/images/header_background.svg')}
@@ -14,9 +21,9 @@ export default function GroupInfo({ group }: { group: any }) {
             resizeMode={'cover'}
         >
             <View style={tw`w-full p-4 mt-16 gap-6`}>
-                <HighlightedSessions sessions={group.swipe_sessions} />
-                <GroupMembers members={group.users} />
-                <Sessions sessions={group.swipe_sessions} />
+                <HighlightedSessions sessions={upcoming_sessions} />
+                <GroupMembers members={users} />
+                <Sessions sessions={swipe_sessions} />
             </View>
         </ImageBackground>
     ) : (
