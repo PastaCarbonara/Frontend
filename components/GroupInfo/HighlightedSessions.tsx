@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 import React from 'react';
 import CreateSessionModal from './CreateSessionModal';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types';
 
 export default function HighlightedSessions({ sessions }: { sessions: any[] }) {
     return sessions.length! > 0 ? (
@@ -17,14 +20,6 @@ export default function HighlightedSessions({ sessions }: { sessions: any[] }) {
             pagingEnabled
             contentContainerStyle={tw`w-full gap-4`}
         >
-            {sessions.map((session) => {
-                if (session.status === 'Staat klaar') {
-                    return <OpenSession session={session} key={session.id} />;
-                }
-                if (session.status === 'Voltooid') {
-                    return <ClosedSession session={session} key={session.id} />;
-                }
-            })}
             {sessions.map((session) => {
                 if (session.status === 'Staat klaar') {
                     return <OpenSession session={session} key={session.id} />;
@@ -123,14 +118,17 @@ function OpenSession({ session }: { session: any }) {
 }
 
 function ClosedSession({ session }: { session: any }) {
+    const navigation =
+        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const { width } = useWindowDimensions();
     const cardWidth = width - 32;
     return (
         <ImageBackground
-            source={require('../../assets/images/pancakes.png')}
+            source={{ uri: session.matches[0].image.file_url }}
             style={tw.style(
                 `flex-row w-[${cardWidth}px] items-center py-8 px-4 gap-2 bg-white border border-white shadow-md rounded-3xl`
             )}
+            imageStyle={tw.style(`rounded-3xl`)}
         >
             <View
                 style={tw`w-16 h-16 items-center bg-white border border-white shadow-md rounded-2xl`}
@@ -155,7 +153,7 @@ function ClosedSession({ session }: { session: any }) {
                 <Text
                     style={tw`font-sans text-base font-bold text-text_primary`}
                 >
-                    Huidige sessie
+                    {session.matches[0].name}
                 </Text>
                 <Text style={tw`font-sans text-sm text-text_primary`}>
                     Sessie beindigd
@@ -163,6 +161,11 @@ function ClosedSession({ session }: { session: any }) {
             </View>
             <Pressable
                 style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
+                onPress={() => {
+                    navigation.navigate('Recipe', {
+                        id: session.matches[0].id,
+                    });
+                }}
             >
                 <Text
                     style={tw`font-sans font-bold text-base leading-normal text-white`}

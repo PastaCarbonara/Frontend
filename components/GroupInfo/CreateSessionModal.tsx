@@ -78,6 +78,7 @@ export default function CreateSessionModal({
                                     // @ts-ignore
                                     groupId: route.params?.groupId,
                                 });
+                                setIsModalVisible(false);
                             }}
                         >
                             <Text

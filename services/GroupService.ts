@@ -7,7 +7,7 @@ async function fetchGroups() {
         const response = await fetch(`${API_URL}/groups`, {
             headers: {
                 Authorization:
-                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTk4MjQzOH0.IHbi5lZI-FBCCxN-8eoL5tz7Oct8gRNF5kEknDqvgx0',
+                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTk5NTM5Nn0.pZ945HAjvk1HH-YzRPzT0o0SL4NNbhwLxjzKJOZtU8g',
             },
         });
         return HttpErrorHandling.responseChecker(response);
@@ -23,7 +23,7 @@ async function createGroup({ name, image }: { name: string; image: File }) {
             method: 'POST',
             headers: {
                 Authorization:
-                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTk4MjQzOH0.IHbi5lZI-FBCCxN-8eoL5tz7Oct8gRNF5kEknDqvgx0',
+                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTk5NTM5Nn0.pZ945HAjvk1HH-YzRPzT0o0SL4NNbhwLxjzKJOZtU8g',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -44,7 +44,7 @@ async function fetchGroupInfo(groupId: string) {
             headers: {
                 authorization:
                     'Bearer ' +
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTk4MjQzOH0.IHbi5lZI-FBCCxN-8eoL5tz7Oct8gRNF5kEknDqvgx0',
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTk5NTM5Nn0.pZ945HAjvk1HH-YzRPzT0o0SL4NNbhwLxjzKJOZtU8g',
             },
         });
         return HttpErrorHandling.responseChecker(response);
