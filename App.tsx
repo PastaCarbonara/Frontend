@@ -34,7 +34,7 @@ export default function App() {
 
 export function DrawerNavigator() {
     return (
-        <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Navigator initialRouteName="Profile">
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
             <Drawer.Screen
@@ -65,9 +65,22 @@ export function StackNavigator() {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name={'Create New Group'}
+                name={'CreateGroup'}
+                options={{
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                    headerTitle: 'Groep maken',
+                    animation: 'slide_from_right',
+                }}
                 component={CreateGroupScreen}
-                options={{ headerTransparent: true }}
+            />
+            <Stack.Screen
+                name="Group"
+                component={GroupScreen}
+                options={{
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                }}
             />
         </Stack.Navigator>
     );

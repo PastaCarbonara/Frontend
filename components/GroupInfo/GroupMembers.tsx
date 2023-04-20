@@ -11,15 +11,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 
-export default function GroupMembers() {
-    const members = [
-        { uri: 'https://picsum.photos/id/10/60/60' },
-        { uri: 'https://picsum.photos/id/222/60/60' },
-        { uri: 'https://picsum.photos/id/353/60/60' },
-        { uri: 'https://picsum.photos/id/485/60/60' },
-        { uri: 'https://picsum.photos/id/531/60/60' },
-        { uri: 'https://picsum.photos/id/786/60/60' },
-    ];
+export default function GroupMembers({ members }: { members: any[] }) {
     return (
         <View style={tw`gap-2.5`}>
             <Text style={tw`font-sans text-lg font-bold text-text_primary`}>
@@ -65,11 +57,13 @@ export default function GroupMembers() {
                 {members.map((member) => (
                     <View
                         style={tw`w-16 h-16 bg-indigo_secondary/20 rounded-4`}
-                        key={member.uri}
+                        key={member.id}
                     >
                         <Image
                             style={tw`w-16 h-16 rounded-4`}
-                            source={member}
+                            source={{
+                                uri: `https://api.dicebear.com/6.x/open-peeps/svg?seed=${member.id}`,
+                            }}
                         />
                     </View>
                 ))}
