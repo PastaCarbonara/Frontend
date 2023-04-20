@@ -38,49 +38,58 @@ export default function Sessions({ sessions }: { sessions: any[] }) {
             </View>
             <View style={tw`gap-2.5`}>
                 {orderedSessions.map((session) => (
-                    <View
-                        style={tw`flex-row items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl`}
-                        key={session.id}
-                    >
-                        <View
-                            style={tw`w-12 h-12 items-center bg-white border border-white shadow-md rounded-2xl`}
-                        >
-                            <Image
-                                source={{
-                                    uri:
-                                        session.matches.length > 0
-                                            ? session.matches[0].image.file_url
-                                            : 'https://placehold.co/400',
-                                }}
-                                style={tw`w-12 h-12 rounded-2xl`}
-                            />
-                        </View>
-                        <View style={tw`gap-0 grow`}>
-                            <Text
-                                style={tw`font-sans text-base font-bold text-text_primary`}
-                            >
-                                {session.matches[0]?.name}
-                            </Text>
-                            <Text style={tw`font-sans text-xs text-gray-500`}>
-                                {session.session_date}
-                            </Text>
-                        </View>
-                        <Pressable
-                            style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
-                        >
-                            <Text
-                                style={tw`font-sans font-bold text-base leading-normal text-white`}
-                            >
-                                Start
-                            </Text>
-                        </Pressable>
-                    </View>
+                    <ListSession session={session} key={session.id} />
                 ))}
             </View>
             <CreateSessionModal
                 isModalVisible={isModalVisible}
                 setIsModalVisible={setIsModalVisible}
             />
+        </View>
+    );
+}
+
+function ListSession({ session }: { session: any }) {
+    return (
+        <View
+            style={tw`flex-row items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl`}
+        >
+            <View
+                style={tw`w-12 h-12 items-center bg-white border border-white shadow-md rounded-2xl`}
+            >
+                <Image
+                    source={{
+                        uri:
+                            session.matches[0]?.image.file_url ??
+                            'https://placehold.co/400',
+                    }}
+                    style={tw`w-12 h-12 rounded-2xl`}
+                />
+            </View>
+            <View style={tw`gap-0 grow`}>
+                <Text
+                    style={tw`font-sans text-base font-bold text-text_primary`}
+                >
+                    {session.matches[0]?.name}
+                </Text>
+                <Text style={tw`font-sans text-xs text-gray-500`}>
+                    {session.session_date}
+                </Text>
+            </View>
+            <Pressable
+                style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
+            >
+                <Text
+                    style={tw`font-sans font-bold text-base leading-normal text-white`}
+                >
+                    {session.status === 'Staat klaar' ||
+                    session.status === 'Gepauzeerd'
+                        ? 'Start'
+                        : session.status === 'Is bezig'
+                        ? 'Stop'
+                        : 'Bekijk'}
+                </Text>
+            </Pressable>
         </View>
     );
 }
