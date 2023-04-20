@@ -10,7 +10,6 @@ export default function Sessions({ sessions }: { sessions: any[] }) {
     const createSession = () => {
         setIsModalVisible(true);
     };
-    console.log(sessions[0]);
 
     return (
         <View style={tw`gap-2.5`}>
