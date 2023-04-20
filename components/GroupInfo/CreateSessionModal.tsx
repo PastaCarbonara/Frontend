@@ -66,15 +66,14 @@ export default function CreateSessionModal({
                             }}
                             selected={sessionDate}
                             onDateChange={(date: string) => {
-                                setSessionDate(date);
+                                setSessionDate(date.replaceAll('/', '-')); //this replaces the / with - because the backend expects a date in the format yyyy-mm-dd
                             }}
                         />
                         <Pressable
                             style={tw`items-center justify-center p-4 gap-4 min-w-28 h-9 bg-orange_primary rounded-lg `}
                             onPress={async () => {
-                                //Create session
                                 await swipeSessionService.createSwipeSession({
-                                    session_date: sessionDate.split('T')[0], //this splits the date and time
+                                    session_date: sessionDate.split('T')[0], //this removes the time from the date
                                     // @ts-ignore
                                     groupId: route.params?.groupId,
                                 });
