@@ -15,7 +15,7 @@ async function createSwipeSession({
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization:
-                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTg5MjM5NX0.mk3ama55j5vXMiGVYlEtlKXmOFXRG3CN-BUD6TdUZlw',
+                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTk5NTM5Nn0.pZ945HAjvk1HH-YzRPzT0o0SL4NNbhwLxjzKJOZtU8g',
                 },
                 body: JSON.stringify({
                     session_date: session_date,

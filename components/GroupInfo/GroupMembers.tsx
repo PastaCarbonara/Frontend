@@ -62,7 +62,7 @@ export default function GroupMembers({ members }: { members: any[] }) {
                         <Image
                             style={tw`w-16 h-16 rounded-4`}
                             source={{
-                                uri: `https://api.dicebear.com/6.x/open-peeps/svg?seed=${member.id}`,
+                                uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
                             }}
                         />
                     </View>

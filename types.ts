@@ -3,13 +3,14 @@ export type RootStackParamList = {
     Recipe: { id: number };
     Match: { recipe: Recipe };
     Group: { groupId: string };
-    'Create New Group': undefined;
+    CreateGroup: undefined;
 };
 export type RootDrawerParamList = {
     Home: undefined;
     Profile: undefined;
+    Groups: undefined;
 };
-export type Groups = {};
+export type Group = {};
 export type Recipe = {
     id: number;
     name: string;
