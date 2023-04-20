@@ -27,10 +27,16 @@ export default function HighlightedSessions({ sessions }: { sessions: any[] }) {
             contentContainerStyle={tw`w-full gap-4`}
         >
             {orderedSessions.map((session) => {
-                if (session.status === 'Staat klaar') {
+                if (
+                    session.status === 'Staat klaar' ||
+                    session.status === 'Gepauzeerd' ||
+                    session.status === 'Is bezig'
+                ) {
                     return <OpenSession session={session} key={session.id} />;
-                }
-                if (session.status === 'Voltooid') {
+                } else if (
+                    session.status === 'Voltooid' ||
+                    session.status === 'Gestopt'
+                ) {
                     return <ClosedSession session={session} key={session.id} />;
                 }
             })}
@@ -72,7 +78,6 @@ function NoOpenSessions() {
 function OpenSession({ session }: { session: any }) {
     const { width } = useWindowDimensions();
     const cardWidth = width - 32;
-    let sessionStatus = 1;
     return (
         <View
             style={tw.style(
@@ -102,12 +107,10 @@ function OpenSession({ session }: { session: any }) {
                 <Text
                     style={tw`font-sans text-base font-bold text-text_primary`}
                 >
-                    Huidige sessie
+                    {session.status}
                 </Text>
                 <Text style={tw`font-sans text-sm text-text_primary`}>
-                    {sessionStatus === 1
-                        ? 'Sessie gestart'
-                        : 'Sessie niet gestart'}
+                    {session.status === 'Is bezig' && 'Huidige sessie'}
                 </Text>
             </View>
             <Pressable
@@ -116,7 +119,10 @@ function OpenSession({ session }: { session: any }) {
                 <Text
                     style={tw`font-sans font-bold text-base leading-normal text-white`}
                 >
-                    {sessionStatus === 1 ? 'Stop' : 'Start'}
+                    {session.status === 'Staat klaar' ||
+                    session.status === 'Gepauzeerd'
+                        ? 'Start'
+                        : 'Stop'}
                 </Text>
             </Pressable>
         </View>
@@ -130,7 +136,7 @@ function ClosedSession({ session }: { session: any }) {
     const cardWidth = width - 32;
     return (
         <ImageBackground
-            source={{ uri: session.matches[0].image.file_url }}
+            source={{ uri: session.matches[0]?.image.file_url }}
             style={tw.style(
                 `flex-row w-[${cardWidth}px] items-center py-8 px-4 gap-2 bg-black border border-white shadow-md rounded-3xl`
             )}
@@ -157,10 +163,10 @@ function ClosedSession({ session }: { session: any }) {
             </View>
             <View style={tw`gap-0 grow`}>
                 <Text style={tw`font-sans text-base font-bold text-white`}>
-                    {session.matches[0].name}
+                    {session.matches[0]?.name}
                 </Text>
                 <Text style={tw`font-sans text-sm text-white`}>
-                    Sessie beindigd
+                    {session.status}
                 </Text>
             </View>
             <Pressable
