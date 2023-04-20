@@ -6,8 +6,13 @@ import CreateSessionModal from './CreateSessionModal';
 
 export default function Sessions({ sessions }: { sessions: any[] }) {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const orderedSessions = sessions.sort(
+        (a, b) =>
+            new Date(b.session_date).getTime() -
+            new Date(a.session_date).getTime()
+    );
 
-    const createSession = () => {
+    const openCreateSessionModal = () => {
         setIsModalVisible(true);
     };
 
@@ -19,7 +24,7 @@ export default function Sessions({ sessions }: { sessions: any[] }) {
                 </Text>
                 <Pressable
                     style={tw`flex flex-row items-center`}
-                    onPress={createSession}
+                    onPress={openCreateSessionModal}
                 >
                     <Text style={tw`font-sans text-sm text-text_primary`}>
                         Sessie toevoegen
@@ -32,7 +37,7 @@ export default function Sessions({ sessions }: { sessions: any[] }) {
                 </Pressable>
             </View>
             <View style={tw`gap-2.5`}>
-                {sessions.map((session) => (
+                {orderedSessions.map((session) => (
                     <View
                         style={tw`flex-row items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl`}
                         key={session.id}

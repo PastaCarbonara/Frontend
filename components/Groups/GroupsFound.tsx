@@ -19,7 +19,6 @@ export default function GroupsFound({ groups }: any) {
                             style={tw`items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl flex flex-column bg-bg_color`}
                             key={group.id}
                             onPress={() => {
-                                console.log(group.id);
                                 navigation.navigate('Group', {
                                     groupId: group.id,
                                 });
