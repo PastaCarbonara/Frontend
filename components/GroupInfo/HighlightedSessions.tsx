@@ -126,9 +126,9 @@ function ClosedSession({ session }: { session: any }) {
         <ImageBackground
             source={{ uri: session.matches[0].image.file_url }}
             style={tw.style(
-                `flex-row w-[${cardWidth}px] items-center py-8 px-4 gap-2 bg-white border border-white shadow-md rounded-3xl`
+                `flex-row w-[${cardWidth}px] items-center py-8 px-4 gap-2 bg-black border border-white shadow-md rounded-3xl`
             )}
-            imageStyle={tw.style(`rounded-3xl`)}
+            imageStyle={tw.style(`rounded-3xl opacity-50`)}
         >
             <View
                 style={tw`w-16 h-16 items-center bg-white border border-white shadow-md rounded-2xl`}
@@ -150,12 +150,10 @@ function ClosedSession({ session }: { session: any }) {
                 </Text>
             </View>
             <View style={tw`gap-0 grow`}>
-                <Text
-                    style={tw`font-sans text-base font-bold text-text_primary`}
-                >
+                <Text style={tw`font-sans text-base font-bold text-white`}>
                     {session.matches[0].name}
                 </Text>
-                <Text style={tw`font-sans text-sm text-text_primary`}>
+                <Text style={tw`font-sans text-sm text-white`}>
                     Sessie beindigd
                 </Text>
             </View>
