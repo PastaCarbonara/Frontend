@@ -14,13 +14,19 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
 
 export default function HighlightedSessions({ sessions }: { sessions: any[] }) {
+    const orderedSessions = sessions.sort(
+        (a, b) =>
+            new Date(a.session_date).getTime() -
+            new Date(b.session_date).getTime()
+    );
+
     return sessions.length! > 0 ? (
         <ScrollView
             horizontal
             pagingEnabled
             contentContainerStyle={tw`w-full gap-4`}
         >
-            {sessions.map((session) => {
+            {orderedSessions.map((session) => {
                 if (session.status === 'Staat klaar') {
                     return <OpenSession session={session} key={session.id} />;
                 }
