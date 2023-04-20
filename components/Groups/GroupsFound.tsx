@@ -30,7 +30,9 @@ export default function GroupsFound({ groups }: any) {
                                 >
                                     <Image
                                         source={{
-                                            uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${group.id}`,
+                                            uri:
+                                                `https://munchiestore.blob.core.windows.net/munchie-images/${group.filename}` ||
+                                                `https://placehold.co/400`,
                                         }}
                                         style={tw`w-18 h-18 rounded-2xl`}
                                     />
