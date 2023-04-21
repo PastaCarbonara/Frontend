@@ -38,8 +38,8 @@ export type Swipe = {
     user_id: string;
 };
 export type Match = {
-    id: string;
-    recipe_id: number;
+    id: number;
+    name: string;
     image: Image;
 };
 export type Image = {

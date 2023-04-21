@@ -4,11 +4,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import CreateSessionModal from './CreateSessionModal';
 import swipeSessionService from '../../services/SwipeSessionService';
-import { RootStackParamList, SwipeSessionStatus } from '../../types';
+import {
+    RootStackParamList,
+    SwipeSession,
+    SwipeSessionStatus,
+} from '../../types';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-export default function Sessions({ sessions }: { sessions: any[] }) {
+export default function Sessions({ sessions }: { sessions: SwipeSession[] }) {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const orderedSessions = sessions.sort(
         (a, b) =>
@@ -53,7 +57,7 @@ export default function Sessions({ sessions }: { sessions: any[] }) {
     );
 }
 
-function ListSession({ session }: { session: any }) {
+function ListSession({ session }: { session: SwipeSession }) {
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
