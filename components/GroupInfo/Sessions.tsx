@@ -78,6 +78,23 @@ function ListSession({ session }: { session: any }) {
             </View>
             <Pressable
                 style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
+                onPress={() => {
+                    if (
+                        session.status === 'Staat klaar' ||
+                        session.status === 'Gepauzeerd'
+                    ) {
+                        console.log('Start');
+                    }
+                    if (session.status === 'Is bezig') {
+                        console.log('Stop');
+                    }
+                    if (
+                        session.status === 'Voltooid' ||
+                        session.status === 'Gestopt'
+                    ) {
+                        console.log('Bekijk');
+                    }
+                }}
             >
                 <Text
                     style={tw`font-sans font-bold text-base leading-normal text-white`}
