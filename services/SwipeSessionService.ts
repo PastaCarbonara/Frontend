@@ -1,4 +1,5 @@
 import { API_URL } from '@env';
+import { SwipeSessionStatus } from '../types';
 
 async function createSwipeSession({
     session_date,
@@ -35,7 +36,7 @@ async function updateSwipeSessionStatus({
 }: {
     groupId: string;
     swipeSessionId: string;
-    status: string;
+    status: SwipeSessionStatus;
 }) {
     try {
         const response = await fetch(

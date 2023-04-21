@@ -10,7 +10,42 @@ export type RootDrawerParamList = {
     Profile: undefined;
     Groups: undefined;
 };
-export type Group = {};
+export type Group = {
+    id: string;
+    name: string;
+    image: Image;
+    users: User[];
+    swipe_sessions: SwipeSession[];
+};
+export type User = {
+    id: string;
+    display_name: string;
+    is_admin: boolean;
+};
+export type SwipeSession = {
+    id: string;
+    session_date: string;
+    status: SwipeSessionStatus;
+    user_id: string;
+    group_id: string;
+    swipes: Swipe[];
+    matches: Match[];
+};
+export type Swipe = {
+    id: string;
+    liked: boolean;
+    recipe_id: number;
+    user_id: string;
+};
+export type Match = {
+    id: string;
+    recipe_id: number;
+    image: Image;
+};
+export type Image = {
+    file_url: string;
+    filename: string;
+};
 export type Recipe = {
     id: number;
     name: string;
@@ -38,6 +73,14 @@ export type WebSocketEvent = {
     action: WebSocketAction;
     payload: any;
 };
+
+export enum SwipeSessionStatus {
+    'CANCELLED' = 'Gestopt',
+    'COMPLETED' = 'Voltooid',
+    'IN_PROGRESS' = 'Is bezig',
+    'PAUSED' = 'Gepauzeerd',
+    'READY' = 'Staat klaar',
+}
 
 export enum WebSocketAction {
     'CONNECTION_CODE' = 'CONNECTION_CODE',
