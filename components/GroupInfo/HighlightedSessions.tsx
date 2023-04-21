@@ -11,7 +11,8 @@ import React from 'react';
 import CreateSessionModal from './CreateSessionModal';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types';
+import { RootStackParamList, SwipeSessionStatus } from '../../types';
+import swipeSessionService from '../../services/SwipeSessionService';
 
 export default function HighlightedSessions({ sessions }: { sessions: any[] }) {
     const orderedSessions = sessions.sort(
@@ -115,6 +116,27 @@ function OpenSession({ session }: { session: any }) {
             </View>
             <Pressable
                 style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
+                onPress={async () => {
+                    if (
+                        session.status === 'Staat klaar' ||
+                        session.status === 'Gepauzeerd'
+                    ) {
+                        console.log('Sessie wordt gestart');
+                        await swipeSessionService.updateSwipeSessionStatus({
+                            groupId: session.group_id,
+                            swipeSessionId: session.id,
+                            status: SwipeSessionStatus.IN_PROGRESS,
+                        });
+                    }
+                    if (session.status === 'Is bezig') {
+                        console.log('Stop');
+                        await swipeSessionService.updateSwipeSessionStatus({
+                            groupId: session.group_id,
+                            swipeSessionId: session.id,
+                            status: SwipeSessionStatus.CANCELLED,
+                        });
+                    }
+                }}
             >
                 <Text
                     style={tw`font-sans font-bold text-base leading-normal text-white`}
