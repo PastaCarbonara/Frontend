@@ -1,20 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function ProfileScreen() {
-    const navigation =
-        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const auth = useContext(AuthContext);
     return (
         <View>
             <Text>Profile screen</Text>
             <Pressable
-                onPress={() => {
-                    navigation.navigate('Group', {
-                        groupId: 'Qzyxv13gV69bejKo',
-                    });
+                onPress={async () => {
+                    console.log(auth.getCookie('access_token'));
                 }}
             >
                 <Text>Press me</Text>
