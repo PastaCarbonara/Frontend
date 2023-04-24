@@ -38,7 +38,7 @@ export const SessionWebsocketProvider = ({
         socket.onopen = () => {
             socket.send(
                 JSON.stringify({
-                    action: WebSocketAction.REQUEST_SESSION_MESSAGE,
+                    action: WebSocketAction.SESSION_MESSAGE,
                     payload: {
                         message: 'User connected succesfully',
                     },
@@ -72,8 +72,8 @@ export const SessionWebsocketProvider = ({
         payload: any;
     }) => {
         switch (messageEvent.action) {
-            case 'RESPONSE_RECIPE_MATCH':
-                console.log('RESPONSE_RECIPE_MATCH', messageEvent.payload);
+            case 'RECIPE_MATCH':
+                console.log('RECIPE_MATCH', messageEvent.payload);
                 RootNavigator.navigate('Match', {
                     recipe: messageEvent.payload?.recipe,
                 });

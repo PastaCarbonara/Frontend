@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Groups } from '../types';
+import { Text } from 'react-native';
+import { Group } from '../types';
 import MyGroups from '../components/Groups';
 import groupService from '../services/GroupService';
 
 export default function MyGroupsScreen() {
-    const [data, setData] = useState<Groups[]>([]);
+    const [data, setData] = useState<Group[] | null>(null);
     useEffect(() => {
         groupService.fetchGroups().then((groups) => {
             setData(groups);
         });
     }, []);
-    console.log(data);
-    return <MyGroups myGroups={data} />;
+    return data ? <MyGroups myGroups={data} /> : <Text>Loading...</Text>;
 }

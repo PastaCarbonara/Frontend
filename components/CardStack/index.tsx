@@ -32,7 +32,7 @@ export default function CardStack({ recipes = [] }: { recipes: Recipe[] }) {
         if (isReady) {
             if (recipes[cardIndex]) {
                 send({
-                    action: WebSocketAction.REQUEST_RECIPE_LIKE,
+                    action: WebSocketAction.RECIPE_SWIPE,
                     payload: {
                         like: isLike,
                         recipe_id: recipes[cardIndex].id,

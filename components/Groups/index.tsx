@@ -10,7 +10,7 @@ export default function MyGroups({ myGroups }: any) {
             <ImageBackground
                 style={tw`w-full self-center grow`}
                 imageStyle={tw`w-full h-[231px] object-cover`}
-                source={require('../../assets/images/Mask_group.svg')}
+                source={require('../../assets/images/header_background.svg')}
             >
                 <View style={tw`h-full`}>
                     {myGroups?.length < 1 ? (

@@ -1,6 +1,6 @@
 import React from 'react';
-import CreateNewGroup from '../components/Groups/CreateNewGroup';
+import CreateGroup from '../components/CreateGroup';
 
 export default function CreateGroupScreen() {
-    return <CreateNewGroup />;
+    return <CreateGroup />;
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GroupMembers from './GroupMembers';
 import { RootStackParamList } from '../../types';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 
 export default function GroupsFound({ groups }: any) {
     const navigation =
@@ -14,15 +14,15 @@ export default function GroupsFound({ groups }: any) {
         <View style={tw`flex flex-column justify-between grow h-full`}>
             <View style={tw`w-full p-4 mt-16 gap-6`}>
                 <View style={tw`gap-2.5`}>
-                    {groups.map((userGroup: any) => (
+                    {groups.map((group: any) => (
                         <Pressable
                             style={tw`items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl flex flex-column bg-bg_color`}
-                            key={userGroup?.id}
+                            key={group?.id}
                             onPress={() => {
-                                console.log(userGroup?.id);
-                                // navigation.navigate('Group', {
-                                //     id: userGroup.id,
-                                // });
+                                console.log(group?.id);
+                                navigation.navigate('Group', {
+                                    groupId: group.id,
+                                });
                             }}
                         >
                             <View style={tw`w-full flex flex-row gap-2`}>
@@ -31,7 +31,7 @@ export default function GroupsFound({ groups }: any) {
                                 >
                                     <Image
                                         source={{
-                                            uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${userGroup?.id}`,
+                                            uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${group?.id}`,
                                         }}
                                         style={tw`w-18 h-18 rounded-2xl`}
                                     />
@@ -40,11 +40,11 @@ export default function GroupsFound({ groups }: any) {
                                     <Text
                                         style={tw`font-Poppins-Bold text-base text-text_primary`}
                                     >
-                                        {userGroup?.name}
+                                        {group?.name}
                                     </Text>
                                     <View>
                                         <GroupMembers
-                                            groupMembers={userGroup?.users}
+                                            groupMembers={group?.users}
                                         />
                                     </View>
                                 </View>
@@ -61,16 +61,6 @@ export default function GroupsFound({ groups }: any) {
                         </Pressable>
                     ))}
                 </View>
-            </View>
-            <View>
-                <Pressable
-                    style={tw`items-center justify-center p-2.5 bg-indigo_secondary rounded-full w-12 h-12 absolute right-4 bottom-4`}
-                    onPress={() => {
-                        navigation?.navigate('Create New Group');
-                    }}
-                >
-                    <Text style={tw`text-white`}>+</Text>
-                </Pressable>
             </View>
         </View>
     );
