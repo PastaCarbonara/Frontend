@@ -8,10 +8,10 @@ export default function GroupMembers({ groupMembers }: any) {
     return (
         <Fragment>
             <View style={tw`w-full gap-1`}>
-                {groupMembers.length <= maxLength ? (
+                {groupMembers?.length <= maxLength ? (
                     <View style={tw`flex flex-row`}>
-                        {groupMembers.map((groupMember: any) => (
-                            <View key={groupMembers.indexOf(groupMember)}>
+                        {groupMembers?.map((groupMember: any) => (
+                            <View key={groupMembers?.indexOf(groupMember)}>
                                 {memberImage(groupMember)}
                             </View>
                         ))}
@@ -19,14 +19,14 @@ export default function GroupMembers({ groupMembers }: any) {
                 ) : (
                     <View style={tw`flex flex-row`}>
                         {groupMembers
-                            .slice(0, maxLength - modifier)
-                            .map((groupMember: any) => (
-                                <View key={groupMembers.indexOf(groupMember)}>
+                            ?.slice(0, maxLength - modifier)
+                            ?.map((groupMember: any) => (
+                                <View key={groupMembers?.indexOf(groupMember)}>
                                     {memberImage(groupMember)}
                                 </View>
                             ))}
                         <Text style={tw`w-9 h-9 mt-2.5`}>{`+${
-                            groupMembers.length - maxLength + modifier
+                            groupMembers?.length - maxLength + modifier
                         }`}</Text>
                     </View>
                 )}
@@ -40,7 +40,7 @@ function memberImage(groupMember: any) {
         <Fragment>
             <Image
                 source={{
-                    uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${groupMember.id}`,
+                    uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${groupMember?.id}`,
                 }}
                 style={tw`w-9 h-9 rounded 2x1 align-middle`}
             />

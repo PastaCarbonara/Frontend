@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
@@ -9,7 +9,7 @@ export default function NoGroupsFound() {
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
-        <Fragment>
+        <View style={tw`w-full items-center`}>
             <View
                 style={tw`items-center w-full justify-items-center mt-35 h-30`}
             >
@@ -20,7 +20,7 @@ export default function NoGroupsFound() {
                     <TouchableOpacity
                         style={tw`w-85/100, mt-3, bg-orange_primary rounded-3x1`}
                         onPress={() => {
-                            navigation.navigate('Create New Group');
+                            navigation?.navigate('Create New Group');
                         }}
                     >
                         <Text style={tw`font-Poppins-Bold text-white p-2`}>
@@ -29,6 +29,18 @@ export default function NoGroupsFound() {
                     </TouchableOpacity>
                 </Text>
             </View>
-        </Fragment>
+            <View>
+                <Image
+                    source={require('../../assets/images/Sadge_Munchie.svg')}
+                    style={tw`w-full aspect-square mt-[10%]`}
+                    resizeMode={'contain'}
+                />
+                <Text
+                    style={tw`font-Poppins-Bold text-xl mt-[15%] text-text_primary/60`}
+                >
+                    Je hebt nog geen groepen ...
+                </Text>
+            </View>
+        </View>
     );
 }

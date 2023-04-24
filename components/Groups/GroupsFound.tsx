@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -11,15 +11,15 @@ export default function GroupsFound({ groups }: any) {
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
-        <Fragment>
+        <View style={tw`flex flex-column justify-between grow h-full`}>
             <View style={tw`w-full p-4 mt-16 gap-6`}>
                 <View style={tw`gap-2.5`}>
                     {groups.map((group: any) => (
                         <Pressable
                             style={tw`items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl flex flex-column bg-bg_color`}
-                            key={group.id}
+                            key={group?.id}
                             onPress={() => {
-                                console.log(group.id);
+                                console.log(group?.id);
                                 navigation.navigate('Group', {
                                     groupId: group.id,
                                 });
@@ -31,7 +31,7 @@ export default function GroupsFound({ groups }: any) {
                                 >
                                     <Image
                                         source={{
-                                            uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${group.id}`,
+                                            uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${group?.id}`,
                                         }}
                                         style={tw`w-18 h-18 rounded-2xl`}
                                     />
@@ -40,11 +40,11 @@ export default function GroupsFound({ groups }: any) {
                                     <Text
                                         style={tw`font-Poppins-Bold text-base text-text_primary`}
                                     >
-                                        {group.name}
+                                        {group?.name}
                                     </Text>
                                     <View>
                                         <GroupMembers
-                                            groupMembers={group.users}
+                                            groupMembers={group?.users}
                                         />
                                     </View>
                                 </View>
@@ -62,6 +62,6 @@ export default function GroupsFound({ groups }: any) {
                     ))}
                 </View>
             </View>
-        </Fragment>
+        </View>
     );
 }
