@@ -16,7 +16,7 @@ async function createSwipeSession({
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization:
-                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjExMTc5N30.NpuXtyU_MxnHD-WqQrkfv2uX7Zil8uzY1MQ_FBoBM_M',
+                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
                 },
                 body: JSON.stringify({
                     session_date: session_date,
@@ -46,7 +46,7 @@ async function updateSwipeSessionStatus({
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization:
-                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjExMTc5N30.NpuXtyU_MxnHD-WqQrkfv2uX7Zil8uzY1MQ_FBoBM_M',
+                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
                 },
                 body: JSON.stringify({
                     id: swipeSessionId,
