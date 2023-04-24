@@ -12,7 +12,7 @@ async function uploadImages({ images }: { images: File[] }) {
             method: 'POST',
             headers: {
                 Authorization:
-                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MTk5NTM5Nn0.pZ945HAjvk1HH-YzRPzT0o0SL4NNbhwLxjzKJOZtU8g',
+                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
             },
             body: formData,
         });
