@@ -8,7 +8,9 @@ export type RootStackParamList = {
 export type RootDrawerParamList = {
     Home: undefined;
     Profile: undefined;
+    Groups: { myGroups: any };
 };
+
 export type Groups = {};
 export type Recipe = {
     id: number;

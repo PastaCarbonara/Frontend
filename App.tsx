@@ -13,6 +13,7 @@ import { navigationRef } from './RootNavigator';
 import { useFonts } from 'expo-font';
 import CreateGroupScreen from './screens/CreateGroupScreen';
 import MyGroupsScreen from './screens/MyGroupsScreen';
+import GroupScreen from "./screens/GroupScreen";
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -65,7 +66,7 @@ export function StackNavigator() {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name={'CreateGroup'}
+                name={'Create New Group'}
                 options={{
                     headerTransparent: true,
                     headerTitleAlign: 'center',

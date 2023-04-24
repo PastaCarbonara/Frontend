@@ -1,14 +1,15 @@
 import React, { Fragment } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-// import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types';
 import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GroupMembers from './GroupMembers';
 
 export default function GroupsFound({ groups }: any) {
-    // const navigation =
-    //     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const navigation =
+        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
         <Fragment>
             <View style={tw`w-full p-4 mt-16 gap-6`}>
@@ -19,9 +20,9 @@ export default function GroupsFound({ groups }: any) {
                             key={userGroup.id}
                             onPress={() => {
                                 console.log(userGroup.id);
-                                // navigation.navigate('Group', {
-                                //     id: userGroup.id,
-                                // });
+                                navigation.navigate('Group', {
+                                    groupId: userGroup.id,
+                                });
                             }}
                         >
                             <View style={tw`w-full flex flex-row gap-2`}>
