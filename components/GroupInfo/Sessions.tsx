@@ -3,8 +3,16 @@ import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import CreateSessionModal from './CreateSessionModal';
+import swipeSessionService from '../../services/SwipeSessionService';
+import {
+    RootStackParamList,
+    SwipeSession,
+    SwipeSessionStatus,
+} from '../../types';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-export default function Sessions({ sessions }: { sessions: any[] }) {
+export default function Sessions({ sessions }: { sessions: SwipeSession[] }) {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const orderedSessions = sessions.sort(
         (a, b) =>
@@ -49,7 +57,9 @@ export default function Sessions({ sessions }: { sessions: any[] }) {
     );
 }
 
-function ListSession({ session }: { session: any }) {
+function ListSession({ session }: { session: SwipeSession }) {
+    const navigation =
+        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
         <View
             style={tw`flex-row items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl`}
@@ -78,6 +88,40 @@ function ListSession({ session }: { session: any }) {
             </View>
             <Pressable
                 style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
+                onPress={async () => {
+                    if (
+                        session.status === 'Staat klaar' ||
+                        session.status === 'Gepauzeerd'
+                    ) {
+                        console.log('Sessie wordt gestart');
+                        await swipeSessionService.updateSwipeSessionStatus({
+                            groupId: session.group_id,
+                            swipeSessionId: session.id,
+                            status: SwipeSessionStatus.IN_PROGRESS,
+                        });
+                    }
+                    if (session.status === 'Is bezig') {
+                        console.log('Stop');
+                        await swipeSessionService.updateSwipeSessionStatus({
+                            groupId: session.group_id,
+                            swipeSessionId: session.id,
+                            status: SwipeSessionStatus.CANCELLED,
+                        });
+                    }
+                    if (session.status === 'Gestopt') {
+                        console.log(
+                            'Deze functionaliteit werkt nog niet in de backend'
+                        );
+                        // navigation.navigate('Recipe', {
+                        //     id: session.matches[0]?.id,
+                        // });
+                    }
+                    if (session.status === 'Voltooid') {
+                        navigation.navigate('Recipe', {
+                            id: session.matches[0]?.id,
+                        });
+                    }
+                }}
             >
                 <Text
                     style={tw`font-sans font-bold text-base leading-normal text-white`}

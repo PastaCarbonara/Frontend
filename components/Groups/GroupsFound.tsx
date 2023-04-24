@@ -32,7 +32,7 @@ export default function GroupsFound({ groups }: any) {
                                     <Image
                                         source={{
                                             uri:
-                                                `https://munchiestore.blob.core.windows.net/munchie-images/${group.filename}` ||
+                                                group.image.file_url ||
                                                 `https://placehold.co/400`,
                                         }}
                                         style={tw`w-18 h-18 rounded-2xl`}
