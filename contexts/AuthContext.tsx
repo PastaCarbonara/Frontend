@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { authService } from '../services/AuthService';
+import { v4 as uuidv4 } from 'uuid';
+import sha256 from 'crypto-js/sha256';
 
 export type AuthContextType = {
     authData?: {};
@@ -16,10 +18,17 @@ export const AuthContext = React.createContext<AuthContextType>(
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [, setAuthData] = useState({});
     const [, setLoading] = useState(false);
+    const [key, setKey] = useState('');
+    const [uuid, setUuid] = useState('');
 
     useEffect(() => {
         const access_token = getCookie('access_token');
         const refresh_token = getCookie('refresh_token');
+
+        generateUuid().then((data) => setUuid(data));
+        authService.publicKey().then((data) => setKey(data));
+        console.log(key);
+
         if (access_token && refresh_token) {
             console.log('verifying token...');
             verifyToken(access_token).then((verified) => {
@@ -41,7 +50,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             try {
                 setLoading(true);
                 console.log('logging in...');
-                authService.login().then((data) => {
+                authService.login(uuid).then((data) => {
                     console.log(data);
                     setAuthData(data);
                     document.cookie = `access_token=${data.access_token};`;
@@ -54,7 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 setLoading(false);
             }
         }
-    }, []);
+    }, [uuid, key]);
 
     const verifyToken = async (token: string) => {
         return await authService.verifyToken(token);
@@ -101,5 +110,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         []
     );
 
+    const generateUuid = async () => {
+        return btoa(sha256(uuidv4));
+    };
     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
