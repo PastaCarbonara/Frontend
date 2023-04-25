@@ -10,6 +10,7 @@ export default function ProfileScreen() {
             <Pressable
                 onPress={async () => {
                     console.log(auth.getCookie('access_token'));
+                    console.log(auth.getCookie('refresh_token'));
                 }}
             >
                 <Text>Press me</Text>

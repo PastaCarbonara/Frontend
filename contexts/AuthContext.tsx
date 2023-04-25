@@ -19,15 +19,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const access_token = getCookie('access_token');
-        if (access_token) {
+        const refresh_token = getCookie('refresh_token');
+        if (access_token && refresh_token) {
             console.log('verifying token...');
             verifyToken(access_token).then((verified) => {
                 if (verified) {
                     setAuthData({ access_token });
                     console.log('token verified!');
                 } else {
-                    console.log('token not verified! Request a new token.');
-                    // TODO: request new token
+                    console.log(
+                        'token not verified! Requesting a new token...'
+                    );
+                    refreshToken(access_token, refresh_token).then((data) => {
+                        setAuthData(data);
+                        document.cookie = `access_token=${data.access_token};`;
+                        document.cookie = `refresh_token=${data.refresh_token};`;
+                    });
                 }
             });
         } else {
@@ -38,6 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     console.log(data);
                     setAuthData(data);
                     document.cookie = `access_token=${data.access_token};`;
+                    document.cookie = `refresh_token=${data.refresh_token};`;
                     console.log('logged in!');
                 });
             } catch (error) {
@@ -50,6 +58,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const verifyToken = async (token: string) => {
         return await authService.verifyToken(token);
+    };
+
+    const refreshToken = async (
+        access_token: string,
+        refresh_token: string
+    ) => {
+        if (refresh_token) {
+            try {
+                setLoading(true);
+                const data = await authService.refreshToken(
+                    access_token,
+                    refresh_token
+                );
+                setAuthData(data);
+                document.cookie = `access_token=${data.access_token};`;
+                return data;
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        }
     };
 
     const getCookie = (name: string) => {

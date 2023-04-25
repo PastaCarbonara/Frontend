@@ -33,7 +33,24 @@ const verifyToken = async (token: string) => {
         return false;
     }
 };
+
+const refreshToken = async (access_token: string, refresh_token: string) => {
+    try {
+        const response = await fetch(`${API_URL}/auth/refresh`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ access_token, refresh_token }),
+        });
+        return response.json();
+    } catch (error) {
+        console.error(`Error fetching data: ${error}`);
+    }
+};
+
 export const authService = {
     login,
     verifyToken,
+    refreshToken,
 };
