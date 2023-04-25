@@ -1,30 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { authService } from '../services/AuthService';
+import { cookieHelper } from '../helpers/CookieHelper';
 
 export type AuthContextType = {
     authData?: {};
     loading: boolean;
-    getCookie: (name: string) => string | undefined;
     refreshToken: () => void;
     verifyToken: () => void;
 };
 
-export const AuthContext = React.createContext<AuthContextType>(
-    {} as AuthContextType
-);
+const AuthContext = React.createContext<AuthContextType>({} as AuthContextType);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [, setAuthData] = useState({});
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const [authData, setAuthData] = useState<{
+        user_uuid: string | undefined;
+        access_token: string | undefined;
+        refresh_token: string | undefined;
+    }>({
+        user_uuid: ' ',
+        access_token: undefined,
+        refresh_token: undefined,
+    });
     const [, setLoading] = useState(false);
 
+    const login = useCallback(async () => {
+        try {
+            setLoading(true);
+            console.log('logging in...');
+            const data = await authService.login(authData.user_uuid!);
+            setAuthData(data);
+            document.cookie = `access_token=${data.access_token};`;
+            document.cookie = `refresh_token=${data.refresh_token};`;
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }, [authData.user_uuid]);
+
     useEffect(() => {
-        const access_token = getCookie('access_token');
-        const refresh_token = getCookie('refresh_token');
-        if (access_token && refresh_token) {
+        const user_uuid = cookieHelper.getCookie('user_uuid');
+        const access_token = cookieHelper.getCookie('access_token');
+        const refresh_token = cookieHelper.getCookie('refresh_token');
+
+        if (!user_uuid) {
+            //generate uuid
+            console.log('generating uuid...');
+            (async () => {
+                console.log('logging in...');
+                await login();
+            })();
+        }
+
+        if (!(access_token && refresh_token)) {
+            (async () => await login())();
+        } else {
             console.log('verifying token...');
             verifyToken(access_token).then((verified) => {
                 if (verified) {
-                    setAuthData({ access_token });
+                    setAuthData({ user_uuid, access_token, refresh_token });
                     console.log('token verified!');
                 } else {
                     console.log(
@@ -34,27 +68,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         setAuthData(data);
                         document.cookie = `access_token=${data.access_token};`;
                         document.cookie = `refresh_token=${data.refresh_token};`;
+                        console.log('token refreshed!');
                     });
                 }
             });
-        } else {
-            try {
-                setLoading(true);
-                console.log('logging in...');
-                authService.login().then((data) => {
-                    console.log(data);
-                    setAuthData(data);
-                    document.cookie = `access_token=${data.access_token};`;
-                    document.cookie = `refresh_token=${data.refresh_token};`;
-                    console.log('logged in!');
-                });
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
         }
-    }, []);
+    }, [login]);
 
     const verifyToken = async (token: string) => {
         return await authService.verifyToken(token);
@@ -82,19 +101,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
-    const getCookie = (name: string) => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) {
-            return parts.pop()?.split(';').shift();
-        }
-    };
-
     const auth: AuthContextType = React.useMemo(
         () => ({
             authData: {},
             loading: false,
-            getCookie,
             refreshToken: () => {},
             verifyToken: () => {},
         }),
@@ -103,3 +113,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
+
+function useAuth(): AuthContextType {
+    const context = useContext(AuthContext);
+
+    if (!context) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+
+    return context;
+}
+
+export { AuthContext, AuthProvider, useAuth };

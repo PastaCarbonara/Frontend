@@ -1,13 +1,15 @@
 import HttpErrorHandling from './HttpErrorHandling';
 import { API_URL } from '@env';
 import imageService from './ImageService';
+import { cookieHelper } from '../helpers/CookieHelper';
+
+const access_token = cookieHelper.getCookie('access_token');
 
 async function fetchGroups() {
     try {
-        const response = await fetch(`${API_URL}/groups`, {
+        const response = await fetch(`${API_URL}/me/groups`, {
             headers: {
-                Authorization:
-                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
+                Authorization: `bearer ${access_token}`,
             },
         });
         return HttpErrorHandling.responseChecker(response);
@@ -22,8 +24,7 @@ async function createGroup({ name, image }: { name: string; image: File }) {
         const response = await fetch(`${API_URL}/groups`, {
             method: 'POST',
             headers: {
-                Authorization:
-                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
+                Authorization: `bearer ${access_token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -41,9 +42,7 @@ async function fetchGroupInfo(groupId: string) {
     try {
         const response = await fetch(`${API_URL}/groups/${groupId}`, {
             headers: {
-                authorization:
-                    'Bearer ' +
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
+                Authorization: `bearer ${access_token}`,
             },
         });
         return HttpErrorHandling.responseChecker(response);

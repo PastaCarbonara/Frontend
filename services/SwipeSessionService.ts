@@ -1,5 +1,8 @@
 import { API_URL } from '@env';
 import { SwipeSessionStatus } from '../types';
+import { cookieHelper } from '../helpers/CookieHelper';
+
+const access_token = cookieHelper.getCookie('access_token');
 
 async function createSwipeSession({
     session_date,
@@ -15,8 +18,7 @@ async function createSwipeSession({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization:
-                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
+                    Authorization: `bearer ${access_token}`,
                 },
                 body: JSON.stringify({
                     session_date: session_date,
@@ -45,8 +47,7 @@ async function updateSwipeSessionStatus({
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization:
-                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
+                    Authorization: `bearer ${access_token}`,
                 },
                 body: JSON.stringify({
                     id: swipeSessionId,
