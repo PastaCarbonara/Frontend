@@ -26,7 +26,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const login = useCallback(async () => {
         try {
             setLoading(true);
-            console.log('logging in...');
             const data = await authService.login(authData.user_uuid!);
             setAuthData(data);
             document.cookie = `access_token=${data.access_token};`;
@@ -45,9 +44,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (!user_uuid) {
             //generate uuid
-            console.log('generating uuid...');
             (async () => {
-                console.log('logging in...');
                 await login();
             })();
         }

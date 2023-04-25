@@ -1,5 +1,8 @@
 import HttpErrorHandling from './HttpErrorHandling';
 import { API_URL } from '@env';
+import { cookieHelper } from '../helpers/CookieHelper';
+
+const access_token = cookieHelper.getCookie('access_token');
 
 async function uploadImages({ images }: { images: File[] }) {
     try {
@@ -11,8 +14,7 @@ async function uploadImages({ images }: { images: File[] }) {
         const response = await fetch(`${API_URL}/images`, {
             method: 'POST',
             headers: {
-                Authorization:
-                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
+                Authorization: `bearer ${access_token}`,
             },
             body: formData,
         });
