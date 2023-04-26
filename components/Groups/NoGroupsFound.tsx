@@ -20,7 +20,7 @@ export default function NoGroupsFound() {
                     <TouchableOpacity
                         style={tw`w-85/100, mt-3, bg-orange_primary rounded-3x1`}
                         onPress={() => {
-                            navigation?.navigate('Create New Group');
+                            navigation?.navigate('CreateGroup');
                         }}
                     >
                         <Text style={tw`font-Poppins-Bold text-white p-2`}>
