@@ -1,6 +1,7 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { authService } from '../services/AuthService';
 import { cookieHelper } from '../helpers/CookieHelper';
+import { v4 as uuidv4 } from 'uuid';
 
 export type AuthContextType = {
     authData?: {};
@@ -17,51 +18,59 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         access_token: string | undefined;
         refresh_token: string | undefined;
     }>({
-        user_uuid: ' ',
-        access_token: undefined,
-        refresh_token: undefined,
+        user_uuid: cookieHelper.getCookie('user_uuid'),
+        access_token: cookieHelper.getCookie('access_token'),
+        refresh_token: cookieHelper.getCookie('refresh_token'),
     });
     const [, setLoading] = useState(false);
 
     const login = useCallback(async () => {
         try {
             setLoading(true);
-            const data = await authService.login(authData.user_uuid!);
-            setAuthData(data);
-            document.cookie = `access_token=${data.access_token};`;
-            document.cookie = `refresh_token=${data.refresh_token};`;
+            const { access_token, refresh_token } = await authService.login(
+                authData.user_uuid!
+            );
+            setAuthData({ ...authData, access_token, refresh_token });
+            cookieHelper.setCookie('access_token', access_token, 1);
+            cookieHelper.setCookie('refresh_token', refresh_token, 1);
         } catch (error) {
             console.log(error);
         } finally {
             setLoading(false);
         }
-    }, [authData.user_uuid]);
+    }, [authData]);
 
     useEffect(() => {
         const user_uuid = cookieHelper.getCookie('user_uuid');
-        const access_token = cookieHelper.getCookie('access_token');
-        const refresh_token = cookieHelper.getCookie('refresh_token');
 
         if (!user_uuid) {
             //generate uuid
-            (async () => {
-                await login();
-            })();
+            cookieHelper.setCookie('user_uuid', uuidv4(), 365000);
+            console.log('user_uuid generated!');
+            console.log(cookieHelper.getCookie('user_uuid'));
         }
 
-        if (!(access_token && refresh_token)) {
-            (async () => await login())();
+        if (!authData.access_token || !authData.refresh_token) {
+            console.log('no token found! Requesting a new token...');
+            // void is used to ignore the return value of login() since we don't need it
+            // eslint-disable-next-line no-void
+            void login();
         } else {
             console.log('verifying token...');
-            verifyToken(access_token).then((verified) => {
-                if (verified) {
-                    setAuthData({ user_uuid, access_token, refresh_token });
-                    console.log('token verified!');
-                } else {
+            console.log(authData);
+            verifyToken(authData.access_token).then((verified) => {
+                if (
+                    !verified &&
+                    authData.refresh_token &&
+                    authData.access_token
+                ) {
                     console.log(
                         'token not verified! Requesting a new token...'
                     );
-                    refreshToken(access_token, refresh_token).then((data) => {
+                    refreshToken(
+                        authData.access_token,
+                        authData.refresh_token
+                    ).then((data) => {
                         setAuthData(data);
                         document.cookie = `access_token=${data.access_token};`;
                         document.cookie = `refresh_token=${data.refresh_token};`;
@@ -70,7 +79,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 }
             });
         }
-    }, [login]);
+    }, [authData, login]);
 
     const verifyToken = async (token: string) => {
         return await authService.verifyToken(token);
@@ -111,14 +120,4 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 
-function useAuth(): AuthContextType {
-    const context = useContext(AuthContext);
-
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-
-    return context;
-}
-
-export { AuthContext, AuthProvider, useAuth };
+export { AuthContext, AuthProvider };

@@ -3,9 +3,8 @@ import { API_URL } from '@env';
 import imageService from './ImageService';
 import { cookieHelper } from '../helpers/CookieHelper';
 
-const access_token = cookieHelper.getCookie('access_token');
-
 async function fetchGroups() {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(`${API_URL}/me/groups`, {
             headers: {
@@ -19,6 +18,7 @@ async function fetchGroups() {
 }
 
 async function createGroup({ name, image }: { name: string; image: File }) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const files = await imageService.uploadImages({ images: [image] });
         const response = await fetch(`${API_URL}/groups`, {
@@ -39,6 +39,7 @@ async function createGroup({ name, image }: { name: string; image: File }) {
 }
 
 async function fetchGroupInfo(groupId: string) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(`${API_URL}/groups/${groupId}`, {
             headers: {
