@@ -46,27 +46,19 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (!user_uuid) {
             //generate uuid
             cookieHelper.setCookie('user_uuid', uuidv4(), 365000);
-            console.log('user_uuid generated!');
-            console.log(cookieHelper.getCookie('user_uuid'));
         }
 
         if (!authData.access_token || !authData.refresh_token) {
-            console.log('no token found! Requesting a new token...');
             // void is used to ignore the return value of login() since we don't need it
             // eslint-disable-next-line no-void
             void login();
         } else {
-            console.log('verifying token...');
-            console.log(authData);
             verifyToken(authData.access_token).then((verified) => {
                 if (
                     !verified &&
                     authData.refresh_token &&
                     authData.access_token
                 ) {
-                    console.log(
-                        'token not verified! Requesting a new token...'
-                    );
                     refreshToken(
                         authData.access_token,
                         authData.refresh_token
@@ -74,7 +66,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         setAuthData(data);
                         document.cookie = `access_token=${data.access_token};`;
                         document.cookie = `refresh_token=${data.refresh_token};`;
-                        console.log('token refreshed!');
                     });
                 }
             });
