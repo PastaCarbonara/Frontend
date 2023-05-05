@@ -24,7 +24,9 @@ export default function FloatingActionButton({
         >
             <View
                 style={tw.style(
-                    `w-14 h-14 bg-${color} items-center justify-center rounded-full`
+                    `w-14 h-14 ${
+                        disabled ? 'bg-gray-300' : 'bg-' + color
+                    } items-center justify-center rounded-full`
                 )}
             >
                 <Text style={tw.style(`text-${textColor}`)}>
