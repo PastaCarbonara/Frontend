@@ -22,7 +22,7 @@ export default function HomeScreen() {
         });
         groupService.fetchGroups().then((groups: Group[]) => {
             // Find the group with status "active"
-            const activeSession = groups[0].swipe_sessions.find(
+            const activeSession = groups[0]?.swipe_sessions.find(
                 (session: SwipeSession) => session.status === 'Is bezig'
             );
             if (activeSession) {

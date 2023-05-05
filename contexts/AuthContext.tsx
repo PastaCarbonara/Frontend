@@ -48,13 +48,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             //generate uuid
             cookieHelper.setCookie('user_uuid', uuidv4(), 365000);
             user_uuid = cookieHelper.getCookie('user_uuid');
-            console.log('-> user_uuid', user_uuid);
         }
-        console.log('-> user_uuid', user_uuid);
 
         if (!authData.access_token || !authData.refresh_token) {
             // void is used to ignore the return value of login() since we don't need it
-            console.log(authData);
             if (user_uuid) {
                 // eslint-disable-next-line no-void
                 void login(user_uuid);
