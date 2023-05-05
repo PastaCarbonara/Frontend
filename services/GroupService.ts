@@ -1,13 +1,14 @@
 import HttpErrorHandling from './HttpErrorHandling';
 import { API_URL } from '@env';
 import imageService from './ImageService';
+import { cookieHelper } from '../helpers/CookieHelper';
 
 async function fetchGroups() {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
-        const response = await fetch(`${API_URL}/groups`, {
+        const response = await fetch(`${API_URL}/me/groups`, {
             headers: {
-                Authorization:
-                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
+                Authorization: `bearer ${access_token}`,
             },
         });
         return HttpErrorHandling.responseChecker(response);
@@ -17,13 +18,13 @@ async function fetchGroups() {
 }
 
 async function createGroup({ name, image }: { name: string; image: File }) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const files = await imageService.uploadImages({ images: [image] });
         const response = await fetch(`${API_URL}/groups`, {
             method: 'POST',
             headers: {
-                Authorization:
-                    'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
+                Authorization: `bearer ${access_token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -38,12 +39,11 @@ async function createGroup({ name, image }: { name: string; image: File }) {
 }
 
 async function fetchGroupInfo(groupId: string) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(`${API_URL}/groups/${groupId}`, {
             headers: {
-                authorization:
-                    'Bearer ' +
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNUJkV2xPM2x6cXh5RXA4ZyIsImV4cCI6MTY4MjM3NzQ4MX0.6APlMn2F8e5iNR_DYUitJ4ajl8QR1LS0p5fAbWGcUW0',
+                Authorization: `bearer ${access_token}`,
             },
         });
         return HttpErrorHandling.responseChecker(response);

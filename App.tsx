@@ -14,6 +14,7 @@ import { useFonts } from 'expo-font';
 import MyGroupsScreen from './screens/MyGroupsScreen';
 import GroupScreen from './screens/GroupScreen';
 import CreateGroupScreen from './screens/CreateGroupScreen';
+import { AuthProvider } from './contexts/AuthContext';
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -25,17 +26,19 @@ export default function App() {
         'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
     });
     return (
-        <SessionWebsocketProvider>
-            <NavigationContainer ref={navigationRef}>
-                <StackNavigator />
-            </NavigationContainer>
-        </SessionWebsocketProvider>
+        <AuthProvider>
+            <SessionWebsocketProvider>
+                <NavigationContainer ref={navigationRef}>
+                    <StackNavigator />
+                </NavigationContainer>
+            </SessionWebsocketProvider>
+        </AuthProvider>
     );
 }
 
 export function DrawerNavigator() {
     return (
-        <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Navigator initialRouteName="Profile">
             <Drawer.Screen name="Home" component={HomeScreen} />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
             <Drawer.Screen

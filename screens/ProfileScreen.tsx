@@ -1,20 +1,15 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types';
+import { cookieHelper } from '../helpers/CookieHelper';
 
 export default function ProfileScreen() {
-    const navigation =
-        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
         <View>
             <Text>Profile screen</Text>
             <Pressable
-                onPress={() => {
-                    navigation.navigate('Group', {
-                        groupId: 'Qzyxv13gV69bejKo',
-                    });
+                onPress={async () => {
+                    console.log(cookieHelper.getCookie('access_token'));
+                    console.log(cookieHelper.getCookie('refresh_token'));
                 }}
             >
                 <Text>Press me</Text>
