@@ -6,9 +6,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default function Dropdown({
     options,
     height,
+    onChange,
 }: {
     options: string[];
     height?: number;
+    onChange: (option: string) => void;
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(options[0]);
@@ -37,6 +39,7 @@ export default function Dropdown({
                             key={option}
                             onPress={() => {
                                 setSelectedOption(option);
+                                onChange(option);
                                 setIsOpen(false);
                             }}
                             style={tw`flex-row items-center justify-between w-full h-10 px-4`}

@@ -1,11 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import { SessionWebsocketProvider } from './contexts/SessionContext';
+import {
+    SessionWebsocketContext,
+    SessionWebsocketProvider,
+} from './contexts/SessionContext';
 import RecipeScreen from './screens/RecipeScreen';
 import MatchScreen from './screens/MatchScreen';
 import { Group, RootDrawerParamList, RootStackParamList } from './types';
@@ -108,12 +111,22 @@ export function StackNavigator() {
 }
 
 function SwipeScreenHeader({ props }: { props: any }) {
+    const [groups, setGroups] = React.useState<Group[]>([]);
     const [groupNames, setGroupNames] = React.useState<string[]>([]);
-    groupService.fetchGroups().then((groups) => {
-        setGroupNames(groups.map((group: Group) => group.name));
-    });
-    return groupNames.length > 0 ? (
-        <Dropdown options={groupNames} {...props} />
+    const { setCurrentGroup } = React.useContext(SessionWebsocketContext);
+    const onChange = (value: string) => {
+        const currentGroup = groups.find((group) => group.name === value);
+        if (!currentGroup) return;
+        setCurrentGroup(currentGroup.id);
+    };
+    useEffect(() => {
+        groupService.fetchGroups().then((res) => {
+            setGroups(res);
+            setGroupNames(res.map((group: Group) => group.name));
+        });
+    }, []);
+    return groups.length > 0 ? (
+        <Dropdown options={groupNames} onChange={onChange} {...props} />
     ) : (
         <Text>Home</Text>
     );
