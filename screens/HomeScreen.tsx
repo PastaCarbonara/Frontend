@@ -3,7 +3,7 @@ import CardStack from '../components/CardStack';
 import { Group, Recipe, SwipeSession } from '../types';
 import recipeService from '../services/RecipeService';
 import { SessionWebsocketContext } from '../contexts/SessionContext';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import tw from '../lib/tailwind';
 import userService from '../services/UserService';
 import groupService from '../services/GroupService';
