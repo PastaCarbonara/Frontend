@@ -1,5 +1,7 @@
+import { NavigatorScreenParams } from '@react-navigation/native';
+
 export type RootStackParamList = {
-    Root: undefined;
+    Root: NavigatorScreenParams<RootDrawerParamList>;
     Recipe: { id: number };
     Match: { recipe: Recipe };
     Group: { groupId: string };
