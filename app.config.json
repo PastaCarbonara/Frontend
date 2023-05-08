@@ -2,6 +2,7 @@
   "expo": {
     "name": "Munchie",
     "slug": "Munchie",
+    "scheme": "munchie",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "cover",

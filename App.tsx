@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import {
@@ -21,11 +21,30 @@ import { AuthProvider } from './contexts/AuthContext';
 import Dropdown from './components/Dropdown';
 import groupService from './services/GroupService';
 import { Text } from 'react-native';
+import * as Linking from 'expo-linking';
 
+const prefix = Linking.createURL('/');
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+    const linking: LinkingOptions<RootStackParamList> = {
+        prefixes: [prefix],
+        config: {
+            screens: {
+                Root: {
+                    screens: {
+                        Home: '',
+                        Profile: 'profile',
+                        Groups: 'groups',
+                    },
+                },
+                Recipe: 'recipe/:id',
+                CreateGroup: 'groups/new',
+                Group: 'group/:groupId',
+            },
+        },
+    };
     useFonts({
         'Baloo-Regular': require('./assets/fonts/Baloo-Regular.ttf'),
         'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
@@ -34,7 +53,7 @@ export default function App() {
     return (
         <AuthProvider>
             <SessionWebsocketProvider>
-                <NavigationContainer ref={navigationRef}>
+                <NavigationContainer linking={linking} ref={navigationRef}>
                     <StackNavigator />
                 </NavigationContainer>
             </SessionWebsocketProvider>
