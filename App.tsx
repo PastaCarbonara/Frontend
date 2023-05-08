@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import { SessionWebsocketProvider } from './contexts/SessionContext';
+import {
+    SessionWebsocketContext,
+    SessionWebsocketProvider,
+} from './contexts/SessionContext';
 import RecipeScreen from './screens/RecipeScreen';
 import MatchScreen from './screens/MatchScreen';
-import { RootDrawerParamList, RootStackParamList } from './types';
+import { Group, RootDrawerParamList, RootStackParamList } from './types';
 import { navigationRef } from './RootNavigator';
 import { useFonts } from 'expo-font';
 import MyGroupsScreen from './screens/MyGroupsScreen';
 import GroupScreen from './screens/GroupScreen';
 import CreateGroupScreen from './screens/CreateGroupScreen';
 import { AuthProvider } from './contexts/AuthContext';
+import Dropdown from './components/Dropdown';
+import groupService from './services/GroupService';
+import { Text } from 'react-native';
 import * as Linking from 'expo-linking';
 
 const prefix = Linking.createURL('/');
@@ -56,9 +62,19 @@ export default function App() {
 }
 
 export function DrawerNavigator() {
+    const headerTitle = useCallback((props: any) => {
+        return <SwipeScreenHeader props={props} />;
+    }, []);
     return (
         <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name="Home" component={HomeScreen} />
+            <Drawer.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{
+                    headerTitle: headerTitle,
+                    headerTitleAlign: 'center',
+                }}
+            />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
             <Drawer.Screen
                 name="Groups"
@@ -110,5 +126,27 @@ export function StackNavigator() {
                 }}
             />
         </Stack.Navigator>
+    );
+}
+
+function SwipeScreenHeader({ props }: { props: any }) {
+    const [groups, setGroups] = React.useState<Group[]>([]);
+    const [groupNames, setGroupNames] = React.useState<string[]>([]);
+    const { setCurrentGroup } = React.useContext(SessionWebsocketContext);
+    const onChange = (value: string) => {
+        const currentGroup = groups.find((group) => group.name === value);
+        if (!currentGroup) return;
+        setCurrentGroup(currentGroup.id);
+    };
+    useEffect(() => {
+        groupService.fetchGroups().then((res) => {
+            setGroups(res);
+            setGroupNames(res.map((group: Group) => group.name));
+        });
+    }, []);
+    return groups.length > 0 ? (
+        <Dropdown options={groupNames} onChange={onChange} {...props} />
+    ) : (
+        <Text>Home</Text>
     );
 }

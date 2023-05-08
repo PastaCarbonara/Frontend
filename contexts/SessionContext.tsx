@@ -1,14 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as RootNavigator from '../RootNavigator';
-import { WebSocketAction, WebSocketEvent } from '../types';
+import { SwipeSession, User, WebSocketAction, WebSocketEvent } from '../types';
 import { SOCKET_URL } from '@env';
+import userService from '../services/UserService';
+import groupService from '../services/GroupService';
+import { cookieHelper } from '../helpers/CookieHelper';
 
 export type SessionContextType = {
     isReady: boolean;
     lastMessage: {};
     send: (webSocketEvent: WebSocketEvent) => void;
     currentSession: string | undefined;
-    setCurrentSession: (session: string | undefined) => void;
+    currentGroup: string | undefined;
+    setCurrentGroup: (group: string | undefined) => void;
+    userId: string | undefined;
+    sessionId: string | undefined;
 };
 
 export const SessionWebsocketContext = React.createContext<SessionContextType>(
@@ -25,6 +31,11 @@ export const SessionWebsocketProvider = ({
     const [currentSession, setCurrentSession] = useState<string | undefined>(
         undefined
     );
+    const [userId, setUserId] = useState<string | undefined>(undefined);
+    const [currentGroup, setCurrentGroup] = useState<string | undefined>(
+        cookieHelper.getCookie('currentGroup')
+    );
+    const [sessionId, setSessionId] = useState<string | undefined>(undefined);
 
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
@@ -63,6 +74,31 @@ export const SessionWebsocketProvider = ({
         };
     }, [currentSession]);
 
+    useEffect(() => {
+        if (!currentGroup) {
+            groupService.fetchGroups().then((groups) => {
+                setCurrentGroup(groups[0].id);
+            });
+            return;
+        }
+        cookieHelper.setCookie('currentGroup', currentGroup, 365000);
+        userService.fetchMe().then((user: User) => {
+            setUserId(user.id);
+            groupService.fetchGroupInfo(currentGroup).then((group) => {
+                const activeSession = group.swipe_sessions.find(
+                    (session: SwipeSession) => session.status === 'Is bezig'
+                );
+                if (activeSession) {
+                    setSessionId(activeSession.id);
+                    setCurrentSession(`${activeSession.id}/${user.id}`);
+                } else {
+                    console.log('No active session found');
+                    setSessionId(undefined);
+                }
+            });
+        });
+    }, [currentGroup]);
+
     const send = (webSocketEvent: WebSocketEvent) => {
         ws.current?.send(JSON.stringify(webSocketEvent));
     };
@@ -87,9 +123,13 @@ export const SessionWebsocketProvider = ({
             lastMessage,
             currentSession,
             setCurrentSession,
+            currentGroup,
+            setCurrentGroup,
             send,
+            userId,
+            sessionId,
         }),
-        [isReady, lastMessage, currentSession]
+        [isReady, lastMessage, currentSession, currentGroup, userId, sessionId]
     );
 
     return (
