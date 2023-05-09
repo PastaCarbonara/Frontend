@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageBackground, View } from 'react-native';
 import tw from '../../lib/tailwind';
-import GroupImagePicker from './GroupImagePicker';
+import ImagePickerComponent from '../ImagePickerComponent';
 import TextInputWithLabel from '../TextInputWithLabel';
 import FloatingActionButton from '../FloatingActionButton';
 import groupService from '../../services/GroupService';
@@ -17,7 +17,7 @@ export default function CreateGroup() {
             resizeMode={'cover'}
         >
             <View style={tw`w-full p-4 mt-16 gap-6`}>
-                <GroupImagePicker
+                <ImagePickerComponent
                     onImageChange={(image) => {
                         setGroupImage(image);
                     }}

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Image, Pressable, TouchableHighlight, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import tw from '../../lib/tailwind';
+import tw from '../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function GroupImagePicker({
+export default function ImagePickerComponent({
     onImageChange,
 }: {
     onImageChange: (image: File) => void;
@@ -52,7 +52,7 @@ export default function GroupImagePicker({
                             />
                         ) : (
                             <Image
-                                source={require('../../assets/images/munchie.png')}
+                                source={require('../assets/images/munchie.png')}
                                 style={tw`w-20 h-20 opacity-70`}
                                 resizeMode={'contain'}
                             />
