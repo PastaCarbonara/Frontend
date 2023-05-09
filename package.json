@@ -10,7 +10,7 @@
     "web": "expo start --web",
     "test": "jest",
     "prepare": "husky install",
-    "build": "expo build:web"
+    "build": "npx expo build:web"
   },
   "dependencies": {
     "@expo/webpack-config": "^18.0.1",
