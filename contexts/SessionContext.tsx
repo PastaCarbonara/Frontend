@@ -37,7 +37,7 @@ export const SessionWebsocketProvider = ({
         cookieHelper.getCookie('currentGroup')
     );
     const [sessionId, setSessionId] = useState<string | undefined>(undefined);
-    const { isVerified } = React.useContext(AuthContext);
+    const { verifyToken } = React.useContext(AuthContext);
 
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
@@ -78,8 +78,8 @@ export const SessionWebsocketProvider = ({
 
     useEffect(() => {
         if (!currentGroup) {
-            isVerified().then((res) => {
-                if (!res) return;
+            verifyToken().then((isVerified) => {
+                if (!isVerified) return;
                 groupService.fetchGroups().then((groups) => {
                     if (groups && groups.length > 0) {
                         setCurrentGroup(groups[0].id);
@@ -105,7 +105,7 @@ export const SessionWebsocketProvider = ({
                 }
             });
         });
-    }, [currentGroup, isVerified]);
+    }, [currentGroup, verifyToken]);
 
     const send = (webSocketEvent: WebSocketEvent) => {
         ws.current?.send(JSON.stringify(webSocketEvent));

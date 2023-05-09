@@ -7,8 +7,7 @@ export type AuthContextType = {
     authData?: {};
     loading: boolean;
     refreshToken: () => void;
-    verifyToken: (token: string) => Promise<boolean>;
-    isVerified: () => Promise<boolean>;
+    verifyToken: () => Promise<boolean>;
 };
 
 const AuthContext = React.createContext<AuthContextType>({} as AuthContextType);
@@ -42,6 +41,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         [authData]
     );
 
+    const verifyToken = useCallback(async () => {
+        if (!authData.access_token) return false;
+        return await authService.verifyToken(authData.access_token);
+    }, [authData.access_token]);
+
     useEffect(() => {
         let user_uuid = cookieHelper.getCookie('user_uuid');
 
@@ -60,7 +64,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 console.log('no user_uuid');
             }
         } else {
-            verifyToken(authData.access_token).then((verified) => {
+            verifyToken().then((verified) => {
                 if (
                     !verified &&
                     authData.refresh_token &&
@@ -77,15 +81,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 }
             });
         }
-    }, [authData, login]);
-
-    const verifyToken = async (token: string) => {
-        return await authService.verifyToken(token);
-    };
-    const isVerified = useCallback(async () => {
-        if (!authData.access_token) return false;
-        return await authService.verifyToken(authData.access_token);
-    }, [authData.access_token]);
+    }, [authData, login, verifyToken]);
 
     const refreshToken = async (
         access_token: string,
@@ -115,9 +111,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             loading: false,
             refreshToken: () => {},
             verifyToken,
-            isVerified,
         }),
-        [isVerified]
+        [verifyToken]
     );
 
     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
