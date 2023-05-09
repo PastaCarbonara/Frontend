@@ -1,5 +1,4 @@
-import React from 'react';
-import { ImageBackground, View } from 'react-native';
+import { ImageBackground, ScrollView, View } from 'react-native';
 import NoGroupsFound from './NoGroupsFound';
 import GroupsFound from './GroupsFound';
 import tw from '../../lib/tailwind';
@@ -17,22 +16,24 @@ export default function MyGroups({ myGroups }: any) {
                 style={tw`w-full self-center grow`}
                 imageStyle={tw`w-full h-[231px] object-cover`}
                 source={require('../../assets/images/header_background.svg')}
-            >
+            />
+            <ScrollView style={tw`h-full mt-15`}>
                 <View style={tw`h-full`}>
                     {myGroups?.length < 1 ? (
                         <NoGroupsFound />
                     ) : (
                         <GroupsFound groups={myGroups} />
                     )}
-                    <FloatingActionButton
-                        icon={'plus'}
-                        color={'indigo_primary'}
-                        onPress={() => {
-                            navigation.navigate('CreateGroup');
-                        }}
-                    />
                 </View>
-            </ImageBackground>
+            </ScrollView>
+
+            <FloatingActionButton
+                icon={'plus'}
+                color={'indigo_primary'}
+                onPress={() => {
+                    navigation.navigate('CreateGroup');
+                }}
+            />
         </View>
     );
 }

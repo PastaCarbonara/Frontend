@@ -12,7 +12,7 @@ export default function GroupsFound({ groups }: any) {
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
         <View style={tw`flex flex-column justify-between grow h-full`}>
-            <View style={tw`w-full p-4 mt-16 gap-6`}>
+            <View style={tw`w-full p-4 gap-6 max-h-full`}>
                 <View style={tw`gap-2.5`}>
                     {groups.map((group: any) => (
                         <Pressable
