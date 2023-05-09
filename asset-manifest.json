@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.js": "/static/js/main.3a31914a.js",
+    "static/js/180.bcc55f80.js": "/static/js/180.bcc55f80.js",
+    "static/media/MaterialCommunityIcons.ttf": "/static/media/MaterialCommunityIcons.5d42b4e60858731e7b65.ttf",
+    "static/media/Baloo-Regular.ttf": "/static/media/Baloo-Regular.f8851f698aca6cd64034.ttf",
+    "static/media/Ionicons.ttf": "/static/media/Ionicons.3517aeaa34b2f8cd8eef.ttf",
+    "static/media/Poppins-Regular.ttf": "/static/media/Poppins-Regular.35d26b781dc5fda684cc.ttf",
+    "static/media/Poppins-Bold.ttf": "/static/media/Poppins-Bold.cdb29a5d7ccf57ff05a3.ttf",
+    "static/media/munchie_pancakes.png": "/static/media/munchie_pancakes.4e887376cd99b515f992.png",
+    "static/media/AntDesign.ttf": "/static/media/AntDesign.163adab9dbd7cb1ed12a.ttf",
+    "static/media/Sadge_Munchie.svg": "/static/media/Sadge_Munchie.4d63d7a7aaec6c0560f0.svg",
+    "static/media/munchie.png": "/static/media/munchie.1f920bb8394621303511.png",
+    "index.html": "/index.html",
+    "static/media/arrow.png": "/static/media/arrow.509031f455af27055b7a.png",
+    "serve.json": "/serve.json",
+    "manifest.json": "/manifest.json",
+    "main.3a31914a.js.map": "/static/js/main.3a31914a.js.map",
+    "180.bcc55f80.js.map": "/static/js/180.bcc55f80.js.map"
+  },
+  "entrypoints": [
+    "static/js/180.bcc55f80.js",
+    "static/js/main.3a31914a.js"
+  ]
+}
