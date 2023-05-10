@@ -77,34 +77,44 @@ export const SessionWebsocketProvider = ({
     }, [currentSession]);
 
     useEffect(() => {
-        if (!currentGroup) {
-            verifyToken().then((isVerified) => {
+        const fetchInitialData = async () => {
+            if (!currentGroup) {
+                const isVerified = await verifyToken();
                 if (!isVerified) return;
-                groupService.fetchGroups().then((groups) => {
+
+                try {
+                    const groups = await groupService.fetchGroups();
                     if (groups && groups.length > 0) {
                         setCurrentGroup(groups[0].id);
                     }
-                });
-                return;
-            });
-            return;
-        }
-        cookieHelper.setCookie('currentGroup', currentGroup, 365000);
-        userService.fetchMe().then((user: User) => {
-            setUserId(user.id);
-            groupService.fetchGroupInfo(currentGroup).then((group) => {
-                const activeSession = group.swipe_sessions.find(
-                    (session: SwipeSession) => session.status === 'Is bezig'
-                );
-                if (activeSession) {
-                    setSessionId(activeSession.id);
-                    setCurrentSession(`${activeSession.id}/${user.id}`);
-                } else {
-                    console.log('No active session found');
-                    setSessionId(undefined);
+                } catch (error) {
+                    console.log('Error fetching groups:', error);
                 }
-            });
-        });
+            } else {
+                cookieHelper.setCookie('currentGroup', currentGroup, 365000);
+                try {
+                    const user: User = await userService.fetchMe();
+                    setUserId(user.id);
+                    const group = await groupService.fetchGroupInfo(
+                        currentGroup
+                    );
+                    const activeSession = group.swipe_sessions.find(
+                        (session: SwipeSession) => session.status === 'Is bezig'
+                    );
+                    if (activeSession) {
+                        setSessionId(activeSession.id);
+                        setCurrentSession(`${activeSession.id}/${user.id}`);
+                    } else {
+                        console.log('No active session found');
+                        setSessionId(undefined);
+                    }
+                } catch (error) {
+                    console.log('Error fetching user or group:', error);
+                }
+            }
+        };
+
+        fetchInitialData();
     }, [currentGroup, verifyToken]);
 
     const send = (webSocketEvent: WebSocketEvent) => {
