@@ -22,6 +22,7 @@ import Dropdown from './components/Dropdown';
 import groupService from './services/GroupService';
 import { Text } from 'react-native';
 import * as Linking from 'expo-linking';
+import InviteScreen from './screens/InviteScreen';
 
 const prefix = Linking.createURL('/');
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
@@ -42,6 +43,7 @@ export default function App() {
                 Recipe: 'recipe/:id',
                 CreateGroup: 'groups/new',
                 Group: 'group/:groupId',
+                Invite: 'group/:id/join',
             },
         },
     };
@@ -108,6 +110,11 @@ export function StackNavigator() {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
+                name="Invite"
+                component={InviteScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
                 name={'CreateGroup'}
                 options={{
                     headerTransparent: true,
@@ -133,7 +140,7 @@ function SwipeScreenHeader({ props }: { props: any }) {
     const [groups, setGroups] = React.useState<Group[]>([]);
     const [groupNames, setGroupNames] = React.useState<string[]>([]);
     const { setCurrentGroup } = React.useContext(SessionWebsocketContext);
-    const { isVerified } = React.useContext(AuthContext);
+    const { verifyToken } = React.useContext(AuthContext);
     const onChange = (value: string) => {
         const currentGroup = groups.find((group) => group.name === value);
         if (!currentGroup) return;
@@ -141,16 +148,17 @@ function SwipeScreenHeader({ props }: { props: any }) {
     };
     useEffect(() => {
         async function getGroups() {
-            const isVerified2 = await isVerified();
-            if (!isVerified2) return;
+            const isVerified = await verifyToken();
+            if (!isVerified) return;
             const groups2 = await groupService.fetchGroups();
             if (!groups2) return;
             setGroups(groups2);
             setGroupNames(groups2.map((group: Group) => group.name));
         }
+
         // eslint-disable-next-line no-void
         void getGroups();
-    }, [isVerified]);
+    }, [verifyToken]);
     return groups?.length > 0 ? (
         <Dropdown options={groupNames} onChange={onChange} {...props} />
     ) : (
