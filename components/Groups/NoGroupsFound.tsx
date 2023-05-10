@@ -11,7 +11,7 @@ export default function NoGroupsFound() {
     return (
         <View style={tw`w-full items-center`}>
             <View
-                style={tw`items-center w-full justify-items-center mt-35 h-30`}
+                style={tw`items-center w-full justify-items-center mt-20 h-30`}
             >
                 <Text
                     style={tw`font-sans pt-7 bg-white text-center w-85/100 h-120/100 rounded-6x1`}
