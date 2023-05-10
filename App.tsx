@@ -136,7 +136,7 @@ export function StackNavigator() {
     );
 }
 
-function SwipeScreenHeader({ props }: { props: any }) {
+function SwipeScreenHeader({ ...props }: { props: any }) {
     const [groups, setGroups] = React.useState<Group[]>([]);
     const [groupNames, setGroupNames] = React.useState<string[]>([]);
     const { setCurrentGroup } = React.useContext(SessionWebsocketContext);
@@ -150,13 +150,12 @@ function SwipeScreenHeader({ props }: { props: any }) {
         async function getGroups() {
             const isVerified = await verifyToken();
             if (!isVerified) return;
-            const groups2 = await groupService.fetchGroups();
-            if (!groups2) return;
-            setGroups(groups2);
-            setGroupNames(groups2.map((group: Group) => group.name));
+            const fetchedGroups = await groupService.fetchGroups();
+            if (!fetchedGroups) return;
+            setGroups(fetchedGroups);
+            setGroupNames(fetchedGroups.map((group: Group) => group.name));
         }
 
-        // eslint-disable-next-line no-void
         void getGroups();
     }, [verifyToken]);
     return groups?.length > 0 ? (
