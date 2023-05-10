@@ -7,7 +7,8 @@ export type AuthContextType = {
     authData?: {};
     loading: boolean;
     refreshToken: () => void;
-    verifyToken: () => void;
+    verifyToken: (token: string) => Promise<boolean>;
+    isVerified: () => Promise<boolean>;
 };
 
 const AuthContext = React.createContext<AuthContextType>({} as AuthContextType);
@@ -81,6 +82,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const verifyToken = async (token: string) => {
         return await authService.verifyToken(token);
     };
+    const isVerified = useCallback(async () => {
+        if (!authData.access_token) return false;
+        return await authService.verifyToken(authData.access_token);
+    }, [authData.access_token]);
 
     const refreshToken = async (
         access_token: string,
@@ -109,9 +114,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             authData: {},
             loading: false,
             refreshToken: () => {},
-            verifyToken: () => {},
+            verifyToken,
+            isVerified,
         }),
-        []
+        [isVerified]
     );
 
     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;

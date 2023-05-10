@@ -17,7 +17,7 @@ import { useFonts } from 'expo-font';
 import MyGroupsScreen from './screens/MyGroupsScreen';
 import GroupScreen from './screens/GroupScreen';
 import CreateGroupScreen from './screens/CreateGroupScreen';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthContext, AuthProvider } from './contexts/AuthContext';
 import Dropdown from './components/Dropdown';
 import groupService from './services/GroupService';
 import { Text } from 'react-native';
@@ -133,18 +133,25 @@ function SwipeScreenHeader({ props }: { props: any }) {
     const [groups, setGroups] = React.useState<Group[]>([]);
     const [groupNames, setGroupNames] = React.useState<string[]>([]);
     const { setCurrentGroup } = React.useContext(SessionWebsocketContext);
+    const { isVerified } = React.useContext(AuthContext);
     const onChange = (value: string) => {
         const currentGroup = groups.find((group) => group.name === value);
         if (!currentGroup) return;
         setCurrentGroup(currentGroup.id);
     };
     useEffect(() => {
-        groupService.fetchGroups().then((res) => {
-            setGroups(res);
-            setGroupNames(res.map((group: Group) => group.name));
-        });
-    }, []);
-    return groups.length > 0 ? (
+        async function getGroups() {
+            const isVerified2 = await isVerified();
+            if (!isVerified2) return;
+            const groups2 = await groupService.fetchGroups();
+            if (!groups2) return;
+            setGroups(groups2);
+            setGroupNames(groups2.map((group: Group) => group.name));
+        }
+        // eslint-disable-next-line no-void
+        void getGroups();
+    }, [isVerified]);
+    return groups?.length > 0 ? (
         <Dropdown options={groupNames} onChange={onChange} {...props} />
     ) : (
         <Text>Home</Text>
