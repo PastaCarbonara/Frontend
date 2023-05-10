@@ -36,8 +36,8 @@ export default function GroupMembers({ members }: { members: any[] }) {
                     onPress={async () => {
                         try {
                             const result = await Share.share({
-                                url: `${origin}/${groupId}/join`, //for IOS
-                                message: `${origin}/${groupId}/join`, //for Android
+                                url: `${origin}/group/${groupId}/join`, //for IOS
+                                message: `${origin}/group/${groupId}/join`, //for Android
                             });
                             if (result.action === Share.sharedAction) {
                                 if (result.activityType) {
