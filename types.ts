@@ -5,6 +5,7 @@ export type RootStackParamList = {
     Recipe: { id: number };
     Match: { recipe: Recipe };
     Group: { groupId: string };
+    Invite: { groupId: string };
     CreateGroup: undefined;
 };
 export type RootDrawerParamList = {

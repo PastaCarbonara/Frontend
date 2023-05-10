@@ -52,10 +52,25 @@ async function fetchGroupInfo(groupId: string) {
     }
 }
 
+async function acceptInvite(groupId: string) {
+    const access_token = cookieHelper.getCookie('access_token');
+    try {
+        const response = await fetch(`${API_URL}/groups/${groupId}/join`, {
+            headers: {
+                Authorization: `bearer ${access_token}`,
+            },
+        });
+        return HttpErrorHandling.responseChecker(response);
+    } catch (error) {
+        console.error(`Error fetching data: ${error}`);
+    }
+}
+
 const groupService = {
     fetchGroups,
     createGroup,
     fetchGroupInfo,
+    acceptInvite,
 };
 
 export default groupService;

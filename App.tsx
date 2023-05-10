@@ -22,6 +22,7 @@ import Dropdown from './components/Dropdown';
 import groupService from './services/GroupService';
 import { Text } from 'react-native';
 import * as Linking from 'expo-linking';
+import InviteScreen from './screens/InviteScreen';
 
 const prefix = Linking.createURL('/');
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
@@ -42,6 +43,7 @@ export default function App() {
                 Recipe: 'recipe/:id',
                 CreateGroup: 'groups/new',
                 Group: 'group/:groupId',
+                Invite: 'group/:id/join',
             },
         },
     };
@@ -108,6 +110,11 @@ export function StackNavigator() {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
+                name="Invite"
+                component={InviteScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
                 name={'CreateGroup'}
                 options={{
                     headerTransparent: true,
@@ -148,6 +155,7 @@ function SwipeScreenHeader({ props }: { props: any }) {
             setGroups(groups2);
             setGroupNames(groups2.map((group: Group) => group.name));
         }
+
         // eslint-disable-next-line no-void
         void getGroups();
     }, [verifyToken]);
