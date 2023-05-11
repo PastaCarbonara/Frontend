@@ -7,5 +7,6 @@ module.exports = {
                 endOfLine: 'auto',
             },
         ],
+        'no-void': 'off',
     },
 };
