@@ -5,10 +5,16 @@ import ImagePickerComponent from '../ImagePickerComponent';
 import TextInputWithLabel from '../TextInputWithLabel';
 import FloatingActionButton from '../FloatingActionButton';
 import groupService from '../../services/GroupService';
+import { useNavigation } from '@react-navigation/native';
+import { RootDrawerParamList } from '../../types';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { mutate } from 'swr';
 
 export default function CreateGroup() {
     const [groupName, setGroupName] = React.useState<string | null>(null);
     const [groupImage, setGroupImage] = React.useState<File | null>(null);
+    const navigation =
+        useNavigation<DrawerNavigationProp<RootDrawerParamList>>();
     return (
         <ImageBackground
             source={require('../../assets/images/header_background.svg')}
@@ -40,8 +46,9 @@ export default function CreateGroup() {
                             image: groupImage!,
                             name: groupName!,
                         })
-                        .then((response) => {
-                            console.log(response);
+                        .then(async () => {
+                            await mutate('/me/groups');
+                            navigation.navigate('Groups');
                         });
                 }}
             />

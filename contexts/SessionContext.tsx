@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as RootNavigator from '../RootNavigator';
-import { SwipeSession, User, WebSocketAction, WebSocketEvent } from '../types';
+import { SwipeSession, WebSocketAction, WebSocketEvent } from '../types';
 import { SOCKET_URL } from '@env';
 import userService from '../services/UserService';
 import groupService from '../services/GroupService';
@@ -32,12 +32,14 @@ export const SessionWebsocketProvider = ({
     const [currentSession, setCurrentSession] = useState<string | undefined>(
         undefined
     );
-    const [userId, setUserId] = useState<string | undefined>(undefined);
     const [currentGroup, setCurrentGroup] = useState<string | undefined>(
         cookieHelper.getCookie('currentGroup')
     );
     const [sessionId, setSessionId] = useState<string | undefined>(undefined);
     const { verifyToken } = React.useContext(AuthContext);
+    const { groups } = groupService.useGroups();
+    const { group } = groupService.useGroup(currentGroup);
+    const { me } = userService.useMe();
 
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
@@ -79,31 +81,17 @@ export const SessionWebsocketProvider = ({
     useEffect(() => {
         const fetchInitialData = async () => {
             if (!currentGroup) {
-                const isVerified = await verifyToken();
-                if (!isVerified) return;
-
-                try {
-                    const groups = await groupService.fetchGroups();
-                    if (groups && groups.length > 0) {
-                        setCurrentGroup(groups[0].id);
-                    }
-                } catch (error) {
-                    console.log('Error fetching groups:', error);
-                }
+                setCurrentGroup(groups[0]?.id);
             } else {
                 cookieHelper.setCookie('currentGroup', currentGroup, 365000);
                 try {
-                    const user: User = await userService.fetchMe();
-                    setUserId(user.id);
-                    const group = await groupService.fetchGroupInfo(
-                        currentGroup
-                    );
+                    if (!group) return;
                     const activeSession = group.swipe_sessions.find(
                         (session: SwipeSession) => session.status === 'Is bezig'
                     );
                     if (activeSession) {
                         setSessionId(activeSession.id);
-                        setCurrentSession(`${activeSession.id}/${user.id}`);
+                        setCurrentSession(`${activeSession.id}/${me.id}`);
                     } else {
                         console.log('No active session found');
                         setSessionId(undefined);
@@ -115,7 +103,7 @@ export const SessionWebsocketProvider = ({
         };
 
         void fetchInitialData();
-    }, [currentGroup, verifyToken]);
+    }, [currentGroup, group, groups, me, verifyToken]);
 
     const send = (webSocketEvent: WebSocketEvent) => {
         ws.current?.send(JSON.stringify(webSocketEvent));
@@ -144,10 +132,10 @@ export const SessionWebsocketProvider = ({
             currentGroup,
             setCurrentGroup,
             send,
-            userId,
+            userId: me?.id,
             sessionId,
         }),
-        [isReady, lastMessage, currentSession, currentGroup, userId, sessionId]
+        [isReady, lastMessage, currentSession, currentGroup, me, sessionId]
     );
 
     return (

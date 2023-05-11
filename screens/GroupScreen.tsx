@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import groupService from '../services/GroupService';
-import { useIsFocused } from '@react-navigation/native';
 import tw from '../lib/tailwind';
 import { ActivityIndicator, ImageBackground, View } from 'react-native';
 import HighlightedSessions from '../components/GroupInfo/HighlightedSessions';
@@ -13,20 +12,19 @@ export default function GroupScreen({ route }: { route: any }) {
     const [isLoading, setIsLoading] = useState(true);
     const [upcomingSessions, setUpcomingSessions] = useState<any>();
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const isFocused = useIsFocused();
+    const { group } = groupService.useGroup(groupId);
 
     const refreshPageData = useCallback(() => {
         setIsRefreshing(true);
     }, []);
 
     useEffect(() => {
-        console.log('refreshing data');
         const fetchData = async () => {
+            if (!group) return;
             try {
-                const groupInfo = await groupService.fetchGroupInfo(groupId);
-                setGroupData(groupInfo);
+                setGroupData(group);
                 setUpcomingSessions(
-                    groupInfo.swipe_sessions.filter(
+                    group.swipe_sessions.filter(
                         (session: any) =>
                             new Date(session.session_date) >=
                             new Date(new Date().toDateString())
@@ -41,7 +39,7 @@ export default function GroupScreen({ route }: { route: any }) {
             }
         };
         void fetchData();
-    }, [groupId, isFocused, isRefreshing]);
+    }, [group, groupId, isRefreshing]);
     return (
         <ImageBackground
             source={require('../assets/images/header_background.svg')}
