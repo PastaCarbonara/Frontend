@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Group, RootStackParamList } from '../types';
 import groupService from '../services/GroupService';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '../lib/tailwind';
 import NoGroupsFound from '../components/Groups/NoGroupsFound';
@@ -17,6 +17,10 @@ import FloatingActionButton from '../components/FloatingActionButton';
 export default function MyGroupsScreen() {
     const [myGroups, setMyGroups] = useState<Group[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const navigation =
+        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const isFocused = useIsFocused();
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -30,9 +34,8 @@ export default function MyGroupsScreen() {
             }
         };
         void fetchData();
-    }, []);
-    const navigation =
-        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    }, [isFocused]);
+
     return (
         <View style={tw`bg-bg_color h-full`}>
             <ImageBackground

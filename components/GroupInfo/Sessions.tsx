@@ -12,7 +12,13 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-export default function Sessions({ sessions }: { sessions: SwipeSession[] }) {
+export default function Sessions({
+    sessions,
+    onSessionsChange,
+}: {
+    sessions: SwipeSession[];
+    onSessionsChange: () => void;
+}) {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const orderedSessions = sessions.sort(
         (a, b) =>
@@ -52,6 +58,7 @@ export default function Sessions({ sessions }: { sessions: SwipeSession[] }) {
             <CreateSessionModal
                 isModalVisible={isModalVisible}
                 setIsModalVisible={setIsModalVisible}
+                onSessionCreate={onSessionsChange}
             />
         </View>
     );
