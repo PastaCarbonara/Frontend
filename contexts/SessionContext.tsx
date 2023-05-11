@@ -114,7 +114,7 @@ export const SessionWebsocketProvider = ({
             }
         };
 
-        fetchInitialData();
+        void fetchInitialData();
     }, [currentGroup, verifyToken]);
 
     const send = (webSocketEvent: WebSocketEvent) => {
