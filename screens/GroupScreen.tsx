@@ -46,10 +46,17 @@ export default function GroupScreen({ route }: { route: any }) {
                     <ActivityIndicator size="large" color="gray" />
                 </View>
             ) : groupData ? (
-                <View style={tw`w-full p-4 mt-16 gap-6`}>
-                    <HighlightedSessions sessions={upcomingSessions} />
-                    <GroupMembers members={groupData.users} />
-                    <Sessions sessions={groupData.swipe_sessions} />
+                <View style={tw`w-full mt-16 gap-6`}>
+                    <View style={tw``}>
+                        <HighlightedSessions sessions={upcomingSessions} />
+                    </View>
+
+                    <View style={tw`p-4`}>
+                        <GroupMembers members={groupData.users} />
+                    </View>
+                    <View style={tw`p-4`}>
+                        <Sessions sessions={groupData.swipe_sessions} />
+                    </View>
                 </View>
             ) : (
                 <>Groep bestaat niet!</>
