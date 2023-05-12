@@ -2,19 +2,28 @@ import HttpErrorHandling from './HttpErrorHandling';
 import { API_URL } from '@env';
 import imageService from './ImageService';
 import { cookieHelper } from '../helpers/CookieHelper';
+import useSWR from 'swr';
+import { fetcher } from './Fetcher';
 
-async function fetchGroups() {
-    const access_token = cookieHelper.getCookie('access_token');
-    try {
-        const response = await fetch(`${API_URL}/me/groups`, {
-            headers: {
-                Authorization: `bearer ${access_token}`,
-            },
-        });
-        return HttpErrorHandling.responseChecker(response);
-    } catch (error) {
-        console.error(`Error fetching data: ${error}`);
-    }
+function useGroups() {
+    const { data, error, isLoading } = useSWR('/me/groups', fetcher);
+    return {
+        groups: data,
+        isLoading,
+        isError: error,
+    };
+}
+
+function useGroup(groupId: string | undefined) {
+    const { data, error, isLoading } = useSWR(
+        groupId ? `/groups/${groupId}` : null,
+        fetcher
+    );
+    return {
+        group: data,
+        isLoading,
+        isError: error,
+    };
 }
 
 async function createGroup({ name, image }: { name: string; image: File }) {
@@ -38,20 +47,6 @@ async function createGroup({ name, image }: { name: string; image: File }) {
     }
 }
 
-async function fetchGroupInfo(groupId: string) {
-    const access_token = cookieHelper.getCookie('access_token');
-    try {
-        const response = await fetch(`${API_URL}/groups/${groupId}`, {
-            headers: {
-                Authorization: `bearer ${access_token}`,
-            },
-        });
-        return HttpErrorHandling.responseChecker(response);
-    } catch (error) {
-        console.error(`Error fetching data: ${error}`);
-    }
-}
-
 async function acceptInvite(groupId: string) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
@@ -67,9 +62,9 @@ async function acceptInvite(groupId: string) {
 }
 
 const groupService = {
-    fetchGroups,
+    useGroup,
+    useGroups,
     createGroup,
-    fetchGroupInfo,
     acceptInvite,
 };
 

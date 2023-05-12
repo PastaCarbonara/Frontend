@@ -11,7 +11,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 // @ts-ignore
 import DatePicker from 'react-native-modern-datepicker';
 import swipeSessionService from '../../services/SwipeSessionService';
-import { useRoute } from '@react-navigation/native';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { RootStackParamList } from '../../types';
+import { mutate } from 'swr';
 
 export default function CreateSessionModal({
     isModalVisible,
@@ -20,7 +22,8 @@ export default function CreateSessionModal({
     isModalVisible: boolean;
     setIsModalVisible: (isModalVisible: boolean) => void;
 }) {
-    const route = useRoute();
+    const route = useRoute<RouteProp<RootStackParamList, 'Group'>>();
+    const groupId = route.params?.groupId;
     const [sessionDate, setSessionDate] = React.useState<string>(
         new Date().toISOString()
     );
@@ -75,8 +78,9 @@ export default function CreateSessionModal({
                                 await swipeSessionService.createSwipeSession({
                                     session_date: sessionDate.split('T')[0], //this removes the time from the date
                                     // @ts-ignore
-                                    groupId: route.params?.groupId,
+                                    groupId,
                                 });
+                                await mutate(`/groups/${groupId}`);
                                 setIsModalVisible(false);
                             }}
                         >

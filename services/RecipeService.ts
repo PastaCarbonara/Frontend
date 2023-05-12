@@ -1,35 +1,30 @@
-import { API_URL } from '@env';
+import useSWR from 'swr';
+import { fetcher } from './Fetcher';
 
-import HttpErrorHandling from './HttpErrorHandling';
-async function fetchRecipes() {
-    try {
-        const response = await fetch(`${API_URL}/recipes`, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        return HttpErrorHandling.responseChecker(response);
-    } catch (error) {
-        console.error(`Error fetching data: ${error}`);
-    }
+function useRecipes() {
+    const { data, error, isLoading } = useSWR('/recipes', fetcher);
+    return {
+        recipes: data,
+        isLoading,
+        isError: error,
+    };
 }
 
-async function fetchRecipeInfo(id: number) {
-    try {
-        const response = await fetch(`${API_URL}/recipes/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        return HttpErrorHandling.responseChecker(response);
-    } catch (error) {
-        console.error(`Error fetching data: ${error}`);
-    }
+function useRecipe(id: number) {
+    const { data, error, isLoading } = useSWR(
+        id ? `/recipes/${id}` : null,
+        fetcher
+    );
+    return {
+        recipe: data,
+        isLoading,
+        isError: error,
+    };
 }
 
 const recipeService = {
-    fetchRecipes,
-    fetchRecipeInfo,
+    useRecipes,
+    useRecipe,
 };
 
 export default recipeService;

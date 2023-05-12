@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -17,7 +17,7 @@ import { useFonts } from 'expo-font';
 import MyGroupsScreen from './screens/MyGroupsScreen';
 import GroupScreen from './screens/GroupScreen';
 import CreateGroupScreen from './screens/CreateGroupScreen';
-import { AuthContext, AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 import Dropdown from './components/Dropdown';
 import groupService from './services/GroupService';
 import { Text } from 'react-native';
@@ -137,29 +137,24 @@ export function StackNavigator() {
 }
 
 function SwipeScreenHeader({ ...props }: { props: any }) {
-    const [groups, setGroups] = React.useState<Group[]>([]);
-    const [groupNames, setGroupNames] = React.useState<string[]>([]);
-    const { setCurrentGroup } = React.useContext(SessionWebsocketContext);
-    const { verifyToken } = React.useContext(AuthContext);
-    const onChange = (value: string) => {
-        const currentGroup = groups.find((group) => group.name === value);
-        if (!currentGroup) return;
-        setCurrentGroup(currentGroup.id);
+    const { currentGroup, setCurrentGroup } = React.useContext(
+        SessionWebsocketContext
+    );
+    const { groups } = groupService.useGroups();
+    const onChange = (option: Group) => {
+        setCurrentGroup(option.id);
     };
-    useEffect(() => {
-        async function getGroups() {
-            const isVerified = await verifyToken();
-            if (!isVerified) return;
-            const fetchedGroups = await groupService.fetchGroups();
-            if (!fetchedGroups) return;
-            setGroups(fetchedGroups);
-            setGroupNames(fetchedGroups.map((group: Group) => group.name));
-        }
+    const currentGroupObject = groups?.find(
+        (group: Group) => group.id === currentGroup
+    );
 
-        void getGroups();
-    }, [verifyToken]);
     return groups?.length > 0 ? (
-        <Dropdown options={groupNames} onChange={onChange} {...props} />
+        <Dropdown
+            options={groups}
+            onChange={onChange}
+            initialOption={currentGroupObject}
+            {...props}
+        />
     ) : (
         <Text>Home</Text>
     );

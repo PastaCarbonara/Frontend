@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+import React from 'react';
 import groupService from '../services/GroupService';
 import { Image, Pressable, Text, View } from 'react-native';
 import tw from '../lib/tailwind';
@@ -9,24 +8,16 @@ import { RootStackParamList } from '../types';
 
 export default function InviteScreen({ route }: { route: any }) {
     const { id } = route.params;
-    const { verifyToken } = useContext(AuthContext);
-    const [group, setGroup] = React.useState<any>();
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const { group } = groupService.useGroup(id);
     const acceptInvite = () => {
-        const isVerified = verifyToken();
-        if (!isVerified || !id) return;
         groupService.acceptInvite(id).then(() => {
             navigation.navigate('Group', {
                 groupId: group.id,
             });
         });
     };
-    useEffect(() => {
-        groupService.fetchGroupInfo(id).then((res) => {
-            setGroup(res);
-        });
-    }, [id]);
     return (
         <View style={tw`w-full grow bg-bg_color justify-center items-center`}>
             {group ? (

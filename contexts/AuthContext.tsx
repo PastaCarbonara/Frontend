@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { authService } from '../services/AuthService';
 import { cookieHelper } from '../helpers/CookieHelper';
 import { v4 as uuidv4 } from 'uuid';
+import { ActivityIndicator, View } from 'react-native';
+import tw from '../lib/tailwind';
 
 export type AuthContextType = {
     authData?:
@@ -10,7 +12,7 @@ export type AuthContextType = {
               refresh_token: string | undefined;
           }
         | undefined;
-    loading: boolean;
+    isLoading: boolean;
     refreshToken: (
         access_token: string,
         refresh_token: string
@@ -28,11 +30,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         access_token: cookieHelper.getCookie('access_token'),
         refresh_token: cookieHelper.getCookie('refresh_token'),
     });
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const login = useCallback(async (user_uuid: string): Promise<void> => {
         try {
-            setLoading(true);
             const { access_token, refresh_token } = await authService.login(
                 user_uuid
             );
@@ -41,8 +42,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             cookieHelper.setCookie('refresh_token', refresh_token, 1);
         } catch (error) {
             console.log(error);
-        } finally {
-            setLoading(false);
         }
     }, []);
 
@@ -57,7 +56,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     ): Promise<AuthContextType['authData']> => {
         if (refresh_token) {
             try {
-                setLoading(true);
                 const data = await authService.refreshToken(
                     access_token,
                     refresh_token
@@ -67,8 +65,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 return data;
             } catch (error) {
                 console.log(error);
-            } finally {
-                setLoading(false);
             }
         }
     };
@@ -82,45 +78,67 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             user_uuid = cookieHelper.getCookie('user_uuid');
         }
 
-        if (!authData.access_token || !authData.refresh_token) {
-            // void is used to ignore the return value of login() since we don't need it
-            if (user_uuid) {
-                // eslint-disable-next-line no-void
-                void login(user_uuid);
-            } else {
-                console.log('no user_uuid');
-            }
-        } else {
-            verifyToken().then(async (verified) => {
-                if (!verified) {
+        const initialize = async () => {
+            if (
+                !authData.access_token ||
+                !authData.refresh_token ||
+                authData.access_token === 'undefined' ||
+                authData.refresh_token === 'undefined'
+            ) {
+                if (user_uuid) {
                     try {
-                        const data = await refreshToken(
-                            authData.access_token!,
-                            authData.refresh_token!
-                        );
-                        if (!data) return;
-                        setAuthData(data);
-                        document.cookie = `access_token=${data.access_token};`;
-                        document.cookie = `refresh_token=${data.refresh_token};`;
+                        await login(user_uuid);
                     } catch (error) {
-                        console.error('Failed to refresh token:', error);
+                        console.log(error);
                     }
+                } else {
+                    console.log('no user_uuid');
                 }
-            });
-        }
+            } else {
+                verifyToken().then(async (verified) => {
+                    if (!verified) {
+                        try {
+                            const data = await refreshToken(
+                                authData.access_token!,
+                                authData.refresh_token!
+                            );
+                            if (!data) return;
+                            setAuthData(data);
+                            document.cookie = `access_token=${data.access_token};`;
+                            document.cookie = `refresh_token=${data.refresh_token};`;
+                        } catch (error) {
+                            console.error('Failed to refresh token:', error);
+                        }
+                    }
+                });
+            }
+        };
+        initialize().then(() => {
+            setIsLoading(false);
+        });
     }, [authData, login, verifyToken]);
 
     const auth: AuthContextType = React.useMemo(
         () => ({
             authData,
-            loading,
+            isLoading,
             refreshToken,
             verifyToken,
         }),
-        [authData, loading, verifyToken]
+        [authData, isLoading, verifyToken]
     );
 
-    return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={auth}>
+            {isLoading ? (
+                <View style={tw`flex-1 grow items-center justify-center`}>
+                    <ActivityIndicator size="large" color="gray" />
+                </View>
+            ) : (
+                children
+            )}
+        </AuthContext.Provider>
+    );
 };
 
 export { AuthContext, AuthProvider };

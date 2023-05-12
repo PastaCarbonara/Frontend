@@ -2,8 +2,6 @@ import { API_URL } from '@env';
 import { SwipeSessionStatus } from '../types';
 import { cookieHelper } from '../helpers/CookieHelper';
 
-const access_token = cookieHelper.getCookie('access_token');
-
 async function createSwipeSession({
     session_date,
     groupId,
@@ -11,6 +9,7 @@ async function createSwipeSession({
     session_date: string;
     groupId: string;
 }) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(
             `${API_URL}/groups/${groupId}/swipe_sessions`,
@@ -40,6 +39,7 @@ async function updateSwipeSessionStatus({
     swipeSessionId: string;
     status: SwipeSessionStatus;
 }) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(
             `${API_URL}/groups/${groupId}/swipe_sessions`,
