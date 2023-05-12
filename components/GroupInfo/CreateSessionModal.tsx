@@ -13,24 +13,20 @@ import DatePicker from 'react-native-modern-datepicker';
 import swipeSessionService from '../../services/SwipeSessionService';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../types';
-import { useSWRConfig } from 'swr';
-import { API_URL } from '@env';
+import { mutate } from 'swr';
 
 export default function CreateSessionModal({
     isModalVisible,
     setIsModalVisible,
-    onSessionCreate,
 }: {
     isModalVisible: boolean;
     setIsModalVisible: (isModalVisible: boolean) => void;
-    onSessionCreate: () => void;
 }) {
     const route = useRoute<RouteProp<RootStackParamList, 'Group'>>();
     const groupId = route.params?.groupId;
     const [sessionDate, setSessionDate] = React.useState<string>(
         new Date().toISOString()
     );
-    const { mutate } = useSWRConfig();
     return (
         <Modal animationType="fade" visible={isModalVisible} transparent={true}>
             <View
@@ -84,8 +80,7 @@ export default function CreateSessionModal({
                                     // @ts-ignore
                                     groupId,
                                 });
-                                onSessionCreate();
-                                mutate(`${API_URL}/groups/${groupId}`);
+                                await mutate(`/groups/${groupId}`);
                                 setIsModalVisible(false);
                             }}
                         >

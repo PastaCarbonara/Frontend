@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import groupService from '../services/GroupService';
 import tw from '../lib/tailwind';
 import { ActivityIndicator, ImageBackground, View } from 'react-native';
@@ -11,12 +11,7 @@ export default function GroupScreen({ route }: { route: any }) {
     const [groupData, setGroupData] = useState<any>();
     const [isLoading, setIsLoading] = useState(true);
     const [upcomingSessions, setUpcomingSessions] = useState<any>();
-    const [isRefreshing, setIsRefreshing] = useState(false);
     const { group } = groupService.useGroup(groupId);
-
-    const refreshPageData = useCallback(() => {
-        setIsRefreshing(true);
-    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,12 +29,11 @@ export default function GroupScreen({ route }: { route: any }) {
                 console.error('Failed to fetch groups:', error);
                 // Handle the error (e.g., display an error message)
             } finally {
-                setIsRefreshing(false);
                 setIsLoading(false);
             }
         };
         void fetchData();
-    }, [group, groupId, isRefreshing]);
+    }, [group, groupId]);
     return (
         <ImageBackground
             source={require('../assets/images/header_background.svg')}
@@ -55,10 +49,7 @@ export default function GroupScreen({ route }: { route: any }) {
                 <View style={tw`w-full p-4 mt-16 gap-6`}>
                     <HighlightedSessions sessions={upcomingSessions} />
                     <GroupMembers members={groupData.users} />
-                    <Sessions
-                        sessions={groupData.swipe_sessions}
-                        onSessionsChange={refreshPageData}
-                    />
+                    <Sessions sessions={groupData.swipe_sessions} />
                 </View>
             ) : (
                 <>Groep bestaat niet!</>
