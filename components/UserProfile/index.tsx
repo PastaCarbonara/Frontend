@@ -59,9 +59,7 @@ export default function Profile({ user }: any) {
                         Account
                     </Text>
                     <Pressable
-                        onPress={() =>
-                            console.log('naem = ' + user.display_name)
-                        }
+                        onPress={() => console.log('das email')}
                         style={tw`flex-row`}
                     >
                         <MaterialCommunityIcons
@@ -82,12 +80,13 @@ export default function Profile({ user }: any) {
                     </Pressable>
                 </View>
                 {/*TODO: mapping tags from userlist*/}
-                {/*TODO: detecting screen-edge and starting a new line when the screen-edge is detected*/}
                 <View>
                     <Text style={tw`ml-3 text-xl text-text_primary`}>
                         Filters
                     </Text>
-                    <View style={tw`w-full self-center mb-5 px-2 flex-row`}>
+                    <View
+                        style={tw`w-full self-center mb-5 px-2 flex-row flex-wrap`}
+                    >
                         <Tag
                             tagValue={'Vegan'}
                             tagType={'dietary-preference'}
@@ -98,8 +97,34 @@ export default function Profile({ user }: any) {
                         />
                         <Tag tagValue={'Zonder noten'} tagType={'allergy'} />
                         <Tag tagValue={'Zonder Gluten'} tagType={'allergy'} />
+                        <Tag tagValue={'Lactosevrij'} tagType={'allergy'} />
+                        <Pressable onPress={() => console.log('moar filters')}>
+                            <Tag tagValue={'Meer filters +'} tagType={'more'} />
+                        </Pressable>
                     </View>
                 </View>
+                <View style={tw`w-full self-center mb-5`}>
+                    <Text style={tw`text-xl text-text_primary ml-3`}>
+                        Gevarenzone
+                    </Text>
+                    <Pressable
+                        onPress={() => console.log('DELL ATE MY PC')}
+                        style={tw`w-full flex-row`}
+                    >
+                        <Text
+                            style={tw`text-[#E81C00] text-xl mt-3 ml-3 flex-grow`}
+                        >
+                            Account verwijderen
+                        </Text>
+                        <MaterialCommunityIcons
+                            name="trash-can"
+                            size={24}
+                            color="#E81C00"
+                            style={tw`flex-end self-center m-3`}
+                        />
+                    </Pressable>
+                </View>
+                {console.log(user)}
                 {console.log(userImage)}
             </BackgroundImage>
         </View>

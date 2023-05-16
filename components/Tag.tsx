@@ -1,5 +1,6 @@
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import tw from '../lib/tailwind';
+import { Fragment } from 'react';
 
 export default function Tag({
     tagValue,
@@ -10,20 +11,24 @@ export default function Tag({
 }) {
     const colour = setColour(tagType);
     return (
-        <View style={tw`bg-${colour} rounded-full m-1 w-min`}>
-            <Text style={tw`text-l text-white mx-5 my-1 text-center`}>
+        <Fragment>
+            <Text
+                style={tw`bg-${colour} rounded-full m-1 w-min text-l px-5 py-1 text-center align-middle`}
+            >
                 {tagValue}
             </Text>
-        </View>
+        </Fragment>
     );
 }
 
 function setColour(filterType: string): string {
     switch (filterType) {
         case 'dietary-preference':
-            return 'indigo_primary';
+            return 'indigo_primary text-white';
         case 'allergy':
-            return 'orange_primary';
+            return 'orange_primary text-white';
+        case 'more':
+            return 'indigo_primary/20 text-indigo_primary border-2 border-indigo_primary border-dotted';
     }
     return 'white';
 }
