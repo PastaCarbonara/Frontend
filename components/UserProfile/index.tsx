@@ -1,12 +1,21 @@
 import { Pressable, Text, View } from 'react-native';
-import React from 'react';
 import ImagePickerComponent from '../ImagePickerComponent';
 import BackgroundImage from '../BackgroundImage';
 import tw from '../../lib/tailwind';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Tag from '../Tag';
-export default function Profile({ user }: any) {
+import BottomSheetComponent from '../BottomSheetComponent';
+import { BottomSheet, CheckBox } from 'react-native-btr';
+import React, { useState } from 'react';
+export default function Profile({ user, tags }: any) {
     const [userImage, setProfilePicture] = React.useState<File | null>(null);
+    const [visible, setVisible] = useState(false);
+
+    const toggleBottomNavigationView = () => {
+        //Toggling the visibility state of the bottom sheet
+        setVisible(!visible);
+        console.log('mlem');
+    };
 
     return (
         <View style={tw`bg-bg_color min-h-full max-h-screen`}>
@@ -98,7 +107,7 @@ export default function Profile({ user }: any) {
                         <Tag tagValue={'Zonder noten'} tagType={'allergy'} />
                         <Tag tagValue={'Zonder Gluten'} tagType={'allergy'} />
                         <Tag tagValue={'Lactosevrij'} tagType={'allergy'} />
-                        <Pressable onPress={() => console.log('moar filters')}>
+                        <Pressable onPress={() => toggleBottomNavigationView()}>
                             <Tag tagValue={'Meer filters +'} tagType={'more'} />
                         </Pressable>
                     </View>
@@ -125,8 +134,18 @@ export default function Profile({ user }: any) {
                     </Pressable>
                 </View>
                 {console.log(user)}
+                {console.log(tags)}
                 {console.log(userImage)}
             </BackgroundImage>
+            <BottomSheet
+                visible={visible}
+                onBackButtonPress={toggleBottomNavigationView}
+                onBackdropPress={toggleBottomNavigationView}
+            >
+                <BottomSheetComponent>
+                    <CheckBox onPress={() => console.log('preeeeeeeeees')} />
+                </BottomSheetComponent>
+            </BottomSheet>
         </View>
     );
 }
