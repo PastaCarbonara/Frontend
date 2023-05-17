@@ -5,8 +5,9 @@ import tw from '../../lib/tailwind';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Tag from '../Tag';
 import BottomSheetComponent from '../BottomSheetComponent';
-import { BottomSheet, CheckBox } from 'react-native-btr';
+import { BottomSheet } from 'react-native-btr';
 import React, { useState } from 'react';
+import CheckBoxComponent from '../CheckBoxComponent';
 export default function Profile({ user, tags }: any) {
     const [userImage, setProfilePicture] = React.useState<File | null>(null);
     const [visible, setVisible] = useState(false);
@@ -116,6 +117,7 @@ export default function Profile({ user, tags }: any) {
                     <Text style={tw`text-xl text-text_primary ml-3`}>
                         Gevarenzone
                     </Text>
+                    {/*TODO: Throw popup when clicked*/}
                     <Pressable
                         onPress={() => console.log('DELL ATE MY PC')}
                         style={tw`w-full flex-row`}
@@ -126,7 +128,7 @@ export default function Profile({ user, tags }: any) {
                             Account verwijderen
                         </Text>
                         <MaterialCommunityIcons
-                            name="trash-can"
+                            name="delete"
                             size={24}
                             color="#E81C00"
                             style={tw`flex-end self-center m-3`}
@@ -143,9 +145,34 @@ export default function Profile({ user, tags }: any) {
                 onBackdropPress={toggleBottomNavigationView}
             >
                 <BottomSheetComponent>
-                    <CheckBox onPress={() => console.log('preeeeeeeeees')} />
+                    <Text style={tw`text-xl text-text_primary mb-6`}>
+                        Filters toevoegen
+                    </Text>
+                    {/*TODO: use actual tags*/}
+                    <View style={tw`flex-column`}>
+                        {/*TODO: make the init state reflect the tag-status for the user*/}
+                        {/*TODO: map the components to actual tags in the database*/}
+                        {createCheckboxComponent('Vegan', true)}
+                        {createCheckboxComponent('Vegetarian', false)}
+                        {createCheckboxComponent('NNN', false)}
+                    </View>
                 </BottomSheetComponent>
             </BottomSheet>
         </View>
     );
 }
+
+const createCheckboxComponent = (tagName: string, boxState: boolean) => {
+    // TODO: change the tag-status for the user when the state changes
+    const checkboxFunction = () => {
+        console.log(`le ${tagName} func be sicc yo`);
+        console.log("neato! the well has been don't");
+    };
+    return (
+        <CheckBoxComponent
+            label={tagName}
+            checkState={boxState}
+            functionality={checkboxFunction}
+        />
+    );
+};

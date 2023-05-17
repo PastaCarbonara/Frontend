@@ -77,7 +77,7 @@ export const SessionWebsocketProvider = ({
     useEffect(() => {
         if (!currentGroup) {
             groupService.fetchGroups().then((groups) => {
-                setCurrentGroup(groups[0].id);
+                setCurrentGroup(groups[0]?.id);
             });
             return;
         }

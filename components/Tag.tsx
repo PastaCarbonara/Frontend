@@ -1,6 +1,5 @@
 import { Text } from 'react-native';
 import tw from '../lib/tailwind';
-import { Fragment } from 'react';
 
 export default function Tag({
     tagValue,
@@ -11,13 +10,11 @@ export default function Tag({
 }) {
     const colour = setColour(tagType);
     return (
-        <Fragment>
-            <Text
-                style={tw`bg-${colour} rounded-full m-1 w-min text-l px-5 py-1 text-center align-middle`}
-            >
-                {tagValue}
-            </Text>
-        </Fragment>
+        <Text
+            style={tw`bg-${colour} rounded-full m-1 w-min text-l px-5 py-1 text-center align-middle`}
+        >
+            {tagValue}
+        </Text>
     );
 }
 
