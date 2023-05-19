@@ -5,10 +5,11 @@ import { ActivityIndicator, ImageBackground, View } from 'react-native';
 import HighlightedSessions from '../components/GroupInfo/HighlightedSessions';
 import GroupMembers from '../components/GroupInfo/GroupMembers';
 import Sessions from '../components/GroupInfo/Sessions';
+import { Group } from '../types';
 
 export default function GroupScreen({ route }: { route: any }) {
     const { groupId } = route.params;
-    const [groupData, setGroupData] = useState<any>();
+    const [groupData, setGroupData] = useState<Group>();
     const [isLoading, setIsLoading] = useState(true);
     const [upcomingSessions, setUpcomingSessions] = useState<any>();
     const { group } = groupService.useGroup(groupId);
@@ -46,10 +47,15 @@ export default function GroupScreen({ route }: { route: any }) {
                     <ActivityIndicator size="large" color="gray" />
                 </View>
             ) : groupData ? (
-                <View style={tw`w-full p-4 mt-16 gap-6`}>
-                    <HighlightedSessions sessions={upcomingSessions} />
-                    <GroupMembers members={groupData.users} />
-                    <Sessions sessions={groupData.swipe_sessions} />
+                <View style={tw`w-full mt-16 gap-6`}>
+                    <View style={tw``}>
+                        <HighlightedSessions sessions={upcomingSessions} />
+                    </View>
+
+                    <View style={tw`p-4 gap-6`}>
+                        <GroupMembers members={groupData.users} />
+                        <Sessions sessions={groupData.swipe_sessions} />
+                    </View>
                 </View>
             ) : (
                 <>Groep bestaat niet!</>
