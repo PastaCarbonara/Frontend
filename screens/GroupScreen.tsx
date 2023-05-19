@@ -5,10 +5,11 @@ import { ActivityIndicator, ImageBackground, View } from 'react-native';
 import HighlightedSessions from '../components/GroupInfo/HighlightedSessions';
 import GroupMembers from '../components/GroupInfo/GroupMembers';
 import Sessions from '../components/GroupInfo/Sessions';
+import { Group } from '../types';
 
 export default function GroupScreen({ route }: { route: any }) {
     const { groupId } = route.params;
-    const [groupData, setGroupData] = useState<any>();
+    const [groupData, setGroupData] = useState<Group>();
     const [isLoading, setIsLoading] = useState(true);
     const [upcomingSessions, setUpcomingSessions] = useState<any>();
     const { group } = groupService.useGroup(groupId);
@@ -51,10 +52,8 @@ export default function GroupScreen({ route }: { route: any }) {
                         <HighlightedSessions sessions={upcomingSessions} />
                     </View>
 
-                    <View style={tw`p-4`}>
+                    <View style={tw`p-4 gap-6`}>
                         <GroupMembers members={groupData.users} />
-                    </View>
-                    <View style={tw`p-4`}>
                         <Sessions sessions={groupData.swipe_sessions} />
                     </View>
                 </View>

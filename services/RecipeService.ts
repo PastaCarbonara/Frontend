@@ -4,7 +4,8 @@ import { fetcher } from './Fetcher';
 function useRecipes() {
     const { data, error, isLoading } = useSWR('/recipes', fetcher);
     return {
-        recipes: data,
+        recipes: data?.recipes,
+        total_count: data?.total_count,
         isLoading,
         isError: error,
     };
