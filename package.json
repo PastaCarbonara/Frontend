@@ -9,7 +9,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build": "npx expo export:web"
   },
   "dependencies": {
     "@expo/webpack-config": "^18.0.1",
@@ -35,6 +36,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-web": "~0.18.10",
     "react-particles": "^2.9.3",
+    "swr": "^2.1.5",
     "tsparticles": "^2.9.3",
     "twrnc": "^3.6.0",
     "uuid": "^9.0.0"

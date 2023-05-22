@@ -1,11 +1,12 @@
 import HttpErrorHandling from './HttpErrorHandling';
 import { API_URL } from '@env';
 import { cookieHelper } from '../helpers/CookieHelper';
+import { fetcher } from './Fetcher';
+import useSWR from 'swr';
 import imageService from './ImageService';
 
-const access_token = cookieHelper.getCookie('access_token');
-
 async function fetchMe() {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(`${API_URL}/me`, {
             headers: {
@@ -18,7 +19,18 @@ async function fetchMe() {
     }
 }
 
+function useMe() {
+    const { data, error } = useSWR('/me', fetcher);
+
+    return {
+        me: data,
+        isLoading: !error && !data,
+        isError: error,
+    };
+}
+
 async function updateUser(username: string, image?: File | null) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         let files;
         if (image) {
@@ -42,6 +54,7 @@ async function updateUser(username: string, image?: File | null) {
 }
 
 async function fetchFilters() {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(`${API_URL}/me/filters`, {
             headers: {
@@ -55,6 +68,7 @@ async function fetchFilters() {
 }
 
 async function addFilter(tags: any) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(`${API_URL}/me/filters`, {
             method: 'POST',
@@ -73,6 +87,7 @@ async function addFilter(tags: any) {
 }
 
 async function deleteFilter(tagId: number) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         console.log(tagId);
         const response = await fetch(`${API_URL}/me/filters?id=${tagId}`, {
@@ -89,6 +104,7 @@ async function deleteFilter(tagId: number) {
 
 const userService = {
     fetchMe,
+    useMe,
     fetchFilters,
     addFilter,
     deleteFilter,

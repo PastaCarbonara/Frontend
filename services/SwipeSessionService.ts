@@ -1,8 +1,7 @@
 import { API_URL } from '@env';
 import { SwipeSessionStatus } from '../types';
 import { cookieHelper } from '../helpers/CookieHelper';
-
-const access_token = cookieHelper.getCookie('access_token');
+import { mutate } from 'swr';
 
 async function createSwipeSession({
     session_date,
@@ -11,6 +10,7 @@ async function createSwipeSession({
     session_date: string;
     groupId: string;
 }) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(
             `${API_URL}/groups/${groupId}/swipe_sessions`,
@@ -25,6 +25,7 @@ async function createSwipeSession({
                 }),
             }
         );
+        await mutate(`/groups/${groupId}`);
         return response.json();
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
@@ -40,6 +41,7 @@ async function updateSwipeSessionStatus({
     swipeSessionId: string;
     status: SwipeSessionStatus;
 }) {
+    const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(
             `${API_URL}/groups/${groupId}/swipe_sessions`,
@@ -55,6 +57,7 @@ async function updateSwipeSessionStatus({
                 }),
             }
         );
+        await mutate(`/groups/${groupId}`);
         return response.json();
     } catch (error) {
         console.error(`Error fetching data: ${error}`);

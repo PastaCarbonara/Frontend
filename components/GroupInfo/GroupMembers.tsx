@@ -9,9 +9,20 @@ import {
     Alert,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useState } from 'react';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { RootStackParamList } from '../../types';
+import * as Linking from 'expo-linking';
 
 export default function GroupMembers({ members }: { members: any[] }) {
+    const route = useRoute<RouteProp<RootStackParamList, 'Group'>>();
+    const groupId = route.params?.groupId;
+    const [origin, setOrigin] = useState<string | undefined>(undefined);
+    Linking.getInitialURL().then((url) => {
+        if (!url) return;
+        const urlObject = new URL(url);
+        setOrigin(urlObject.origin);
+    });
     return (
         <View style={tw`gap-2.5`}>
             <Text style={tw`font-sans text-lg font-bold text-text_primary`}>
@@ -25,8 +36,8 @@ export default function GroupMembers({ members }: { members: any[] }) {
                     onPress={async () => {
                         try {
                             const result = await Share.share({
-                                url: 'https://reactnative.dev/', //for IOS
-                                message: 'https://reactnative.dev/', //for Android
+                                url: `${origin}/group/${groupId}/join`, //for IOS
+                                message: `${origin}/group/${groupId}/join`, //for Android
                             });
                             if (result.action === Share.sharedAction) {
                                 if (result.activityType) {

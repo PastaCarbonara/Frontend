@@ -2,18 +2,21 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Group } from '../../types';
 
 export default function Dropdown({
     options,
     height,
     onChange,
+    initialOption,
 }: {
-    options: string[];
+    options: Group[];
     height?: number;
-    onChange: (option: string) => void;
+    onChange: (option: Group) => void;
+    initialOption?: any;
 }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(options[0]);
+    const [selectedOption, setSelectedOption] = useState(initialOption);
     return (
         <View style={tw`relative items-center`}>
             <TouchableOpacity
@@ -23,7 +26,7 @@ export default function Dropdown({
                     'flex-row items-center justify-between w-40 px-4'
                 )}
             >
-                <Text style={tw`text-gray-500`}>{selectedOption}</Text>
+                <Text style={tw`text-gray-500`}>{selectedOption.name}</Text>
                 <MaterialCommunityIcons
                     name={isOpen ? 'chevron-up' : 'chevron-down'}
                     size={24}
@@ -36,7 +39,7 @@ export default function Dropdown({
                 >
                     {options.map((option) => (
                         <TouchableOpacity
-                            key={option}
+                            key={option.id}
                             onPress={() => {
                                 setSelectedOption(option);
                                 onChange(option);
@@ -44,7 +47,7 @@ export default function Dropdown({
                             }}
                             style={tw`flex-row items-center justify-between w-full h-10 px-4`}
                         >
-                            <Text style={tw`text-gray-500`}>{option}</Text>
+                            <Text style={tw`text-gray-500`}>{option.name}</Text>
                             {option === selectedOption && (
                                 <MaterialCommunityIcons
                                     name="check"

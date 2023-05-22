@@ -11,7 +11,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 // @ts-ignore
 import DatePicker from 'react-native-modern-datepicker';
 import swipeSessionService from '../../services/SwipeSessionService';
-import { useRoute } from '@react-navigation/native';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { RootStackParamList } from '../../types';
 
 export default function CreateSessionModal({
     isModalVisible,
@@ -20,7 +21,8 @@ export default function CreateSessionModal({
     isModalVisible: boolean;
     setIsModalVisible: (isModalVisible: boolean) => void;
 }) {
-    const route = useRoute();
+    const route = useRoute<RouteProp<RootStackParamList, 'Group'>>();
+    const groupId = route.params?.groupId;
     const [sessionDate, setSessionDate] = React.useState<string>(
         new Date().toISOString()
     );
@@ -64,6 +66,7 @@ export default function CreateSessionModal({
                             options={{
                                 mainColor: '#F97316', //orange_primary
                             }}
+                            minimumDate={new Date().toISOString().split('T')[0]}
                             selected={sessionDate}
                             onDateChange={(date: string) => {
                                 setSessionDate(date.replaceAll('/', '-')); //this replaces the / with - because the backend expects a date in the format yyyy-mm-dd
@@ -74,8 +77,7 @@ export default function CreateSessionModal({
                             onPress={async () => {
                                 await swipeSessionService.createSwipeSession({
                                     session_date: sessionDate.split('T')[0], //this removes the time from the date
-                                    // @ts-ignore
-                                    groupId: route.params?.groupId,
+                                    groupId,
                                 });
                                 setIsModalVisible(false);
                             }}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -22,6 +22,7 @@ import Dropdown from './components/Dropdown';
 import groupService from './services/GroupService';
 import { Text } from 'react-native';
 import * as Linking from 'expo-linking';
+import InviteScreen from './screens/InviteScreen';
 
 const prefix = Linking.createURL('/');
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
@@ -42,6 +43,7 @@ export default function App() {
                 Recipe: 'recipe/:id',
                 CreateGroup: 'groups/new',
                 Group: 'group/:groupId',
+                Invite: 'group/:id/join',
             },
         },
     };
@@ -112,6 +114,11 @@ export function StackNavigator() {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
+                name="Invite"
+                component={InviteScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
                 name={'CreateGroup'}
                 options={{
                     headerTransparent: true,
@@ -133,23 +140,25 @@ export function StackNavigator() {
     );
 }
 
-function SwipeScreenHeader({ props }: { props: any }) {
-    const [groups, setGroups] = React.useState<Group[]>([]);
-    const [groupNames, setGroupNames] = React.useState<string[]>([]);
-    const { setCurrentGroup } = React.useContext(SessionWebsocketContext);
-    const onChange = (value: string) => {
-        const currentGroup = groups.find((group) => group.name === value);
-        if (!currentGroup) return;
-        setCurrentGroup(currentGroup.id);
+function SwipeScreenHeader({ ...props }: { props: any }) {
+    const { currentGroup, setCurrentGroup } = React.useContext(
+        SessionWebsocketContext
+    );
+    const { groups } = groupService.useGroups();
+    const onChange = (option: Group) => {
+        setCurrentGroup(option.id);
     };
-    useEffect(() => {
-        groupService.fetchGroups().then((res) => {
-            setGroups(res);
-            setGroupNames(res.map((group: Group) => group.name));
-        });
-    }, []);
-    return groups.length > 0 ? (
-        <Dropdown options={groupNames} onChange={onChange} {...props} />
+    const currentGroupObject = groups?.find(
+        (group: Group) => group.id === currentGroup
+    );
+
+    return groups?.length > 0 ? (
+        <Dropdown
+            options={groups}
+            onChange={onChange}
+            initialOption={currentGroupObject}
+            {...props}
+        />
     ) : (
         <Text>Home</Text>
     );

@@ -33,7 +33,7 @@ export default function HighlightedSessions({
         <ScrollView
             horizontal
             pagingEnabled
-            contentContainerStyle={tw`w-full gap-4`}
+            contentContainerStyle={tw`w-full gap-4 pb-4 pl-4`}
         >
             {orderedSessions.map((session) => {
                 if (
@@ -57,9 +57,11 @@ export default function HighlightedSessions({
 
 function NoOpenSessions() {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const { width } = useWindowDimensions();
+    const cardWidth = width - 32;
     return (
         <View
-            style={tw`flex-col w-full items-center pt-10 pb-6 gap-4 bg-white shadow-md rounded-3xl`}
+            style={tw`flex-col w-[${cardWidth}px] items-center pt-10 pb-6 mx-4 gap-4 bg-white shadow-md rounded-3xl`}
         >
             <Text style={tw`font-sans text-base font-bold text-text_primary`}>
                 Je hebt nog geen sessies
@@ -88,73 +90,80 @@ function OpenSession({ session }: { session: SwipeSession }) {
     const { width } = useWindowDimensions();
     const cardWidth = width - 32;
     return (
-        <View
-            style={tw.style(
-                `flex-row w-[${cardWidth}px] items-center py-8 px-4 gap-2 bg-white shadow-md rounded-3xl`
-            )}
-        >
+        <View style={tw`pl-4`}>
             <View
-                style={tw`w-16 h-16 items-center bg-white border border-white shadow-md rounded-2xl`}
+                style={tw.style(
+                    `flex-row w-[${cardWidth}px] items-center py-8 px-4 mr-4 gap-2 bg-white shadow-md rounded-3xl`
+                )}
             >
-                <View style={tw`w-full h-4 bg-orange_primary rounded-t-2xl`}>
-                    <Text style={tw`text-center text-xs text-white`}>
+                <View
+                    style={tw`w-16 h-16 items-center bg-white border border-white shadow-md rounded-2xl`}
+                >
+                    <View
+                        style={tw`w-full h-4 bg-orange_primary rounded-t-2xl`}
+                    >
+                        <Text style={tw`text-center text-xs text-white`}>
+                            {new Date(session.session_date).toLocaleString(
+                                'default',
+                                {
+                                    month: 'short',
+                                }
+                            )}
+                        </Text>
+                    </View>
+                    <Text style={tw`text-2xl font-bold text-text_primary`}>
                         {new Date(session.session_date).toLocaleString(
                             'default',
                             {
-                                month: 'short',
+                                day: 'numeric',
                             }
                         )}
                     </Text>
                 </View>
-                <Text style={tw`text-2xl font-bold text-text_primary`}>
-                    {new Date(session.session_date).toLocaleString('default', {
-                        day: 'numeric',
-                    })}
-                </Text>
-            </View>
-            <View style={tw`gap-0 grow`}>
-                <Text
-                    style={tw`font-sans text-base font-bold text-text_primary`}
+                <View style={tw`gap-0 grow`}>
+                    <Text
+                        style={tw`font-sans text-base font-bold text-text_primary`}
+                    >
+                        {session.status}
+                    </Text>
+                    <Text style={tw`font-sans text-sm text-text_primary`}>
+                        {session.status === 'Is bezig' && 'Huidige sessie'}
+                    </Text>
+                </View>
+                <Pressable
+                    style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
+                    onPress={async () => {
+                        if (
+                            session.status === 'Staat klaar' ||
+                            session.status === 'Gepauzeerd'
+                        ) {
+                            console.log('Sessie wordt gestart');
+                            await swipeSessionService.updateSwipeSessionStatus({
+                                groupId: session.group_id,
+                                swipeSessionId: session.id,
+                                status: SwipeSessionStatus.IN_PROGRESS,
+                            });
+                        }
+                        if (session.status === 'Is bezig') {
+                            console.log('Stop');
+                            await swipeSessionService.updateSwipeSessionStatus({
+                                groupId: session.group_id,
+                                swipeSessionId: session.id,
+                                status: SwipeSessionStatus.CANCELLED,
+                            });
+                        }
+                    }}
                 >
-                    {session.status}
-                </Text>
-                <Text style={tw`font-sans text-sm text-text_primary`}>
-                    {session.status === 'Is bezig' && 'Huidige sessie'}
-                </Text>
-            </View>
-            <Pressable
-                style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
-                onPress={async () => {
-                    if (
-                        session.status === 'Staat klaar' ||
+                    <Text
+                        style={tw`font-sans font-bold text-base leading-normal text-white`}
+                    >
+                        {session.status === 'Staat klaar' ||
                         session.status === 'Gepauzeerd'
-                    ) {
-                        console.log('Sessie wordt gestart');
-                        await swipeSessionService.updateSwipeSessionStatus({
-                            groupId: session.group_id,
-                            swipeSessionId: session.id,
-                            status: SwipeSessionStatus.IN_PROGRESS,
-                        });
-                    }
-                    if (session.status === 'Is bezig') {
-                        console.log('Stop');
-                        await swipeSessionService.updateSwipeSessionStatus({
-                            groupId: session.group_id,
-                            swipeSessionId: session.id,
-                            status: SwipeSessionStatus.CANCELLED,
-                        });
-                    }
-                }}
-            >
-                <Text
-                    style={tw`font-sans font-bold text-base leading-normal text-white`}
-                >
-                    {session.status === 'Staat klaar' ||
-                    session.status === 'Gepauzeerd'
-                        ? 'Start'
-                        : 'Stop'}
-                </Text>
-            </Pressable>
+                            ? 'Start'
+                            : 'Stop'}
+                    </Text>
+                </Pressable>
+            </View>
         </View>
     );
 }
@@ -165,54 +174,61 @@ function ClosedSession({ session }: { session: SwipeSession }) {
     const { width } = useWindowDimensions();
     const cardWidth = width - 32;
     return (
-        <ImageBackground
-            source={{ uri: session.matches[0]?.image.file_url }}
-            style={tw.style(
-                `flex-row w-[${cardWidth}px] items-center py-8 px-4 gap-2 bg-black border border-white shadow-md rounded-3xl`
-            )}
-            imageStyle={tw.style(`rounded-3xl opacity-50`)}
-        >
-            <View
-                style={tw`w-16 h-16 items-center bg-white border border-white shadow-md rounded-2xl`}
+        <View style={tw`pl-4`}>
+            <ImageBackground
+                source={{ uri: session.matches[0]?.image.file_url }}
+                style={tw.style(
+                    `flex-row w-[${cardWidth}px] items-center py-8 px-4 mr-4 gap-2 bg-black border border-white shadow-md rounded-3xl`
+                )}
+                imageStyle={tw.style(`rounded-3xl opacity-50`)}
             >
-                <View style={tw`w-full h-4 bg-orange_primary rounded-t-2xl`}>
-                    <Text style={tw`text-center text-xs text-white`}>
+                <View
+                    style={tw`w-16 h-16 items-center bg-white border border-white shadow-md rounded-2xl`}
+                >
+                    <View
+                        style={tw`w-full h-4 bg-orange_primary rounded-t-2xl`}
+                    >
+                        <Text style={tw`text-center text-xs text-white`}>
+                            {new Date(session.session_date).toLocaleString(
+                                'default',
+                                {
+                                    month: 'short',
+                                }
+                            )}
+                        </Text>
+                    </View>
+                    <Text style={tw`text-2xl font-bold text-text_primary`}>
                         {new Date(session.session_date).toLocaleString(
                             'default',
                             {
-                                month: 'short',
+                                day: 'numeric',
                             }
                         )}
                     </Text>
                 </View>
-                <Text style={tw`text-2xl font-bold text-text_primary`}>
-                    {new Date(session.session_date).toLocaleString('default', {
-                        day: 'numeric',
-                    })}
-                </Text>
-            </View>
-            <View style={tw`gap-0 grow`}>
-                <Text style={tw`font-sans text-base font-bold text-white`}>
-                    {session.matches[0]?.name}
-                </Text>
-                <Text style={tw`font-sans text-sm text-white`}>
-                    {session.status}
-                </Text>
-            </View>
-            <Pressable
-                style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
-                onPress={() => {
-                    navigation.navigate('Recipe', {
-                        id: session.matches[0].id,
-                    });
-                }}
-            >
-                <Text
-                    style={tw`font-sans font-bold text-base leading-normal text-white`}
+                <View style={tw`gap-0 grow`}>
+                    <Text style={tw`font-sans text-base font-bold text-white`}>
+                        {session.matches[0]?.name}
+                    </Text>
+                    <Text style={tw`font-sans text-sm text-white`}>
+                        {session.status}
+                    </Text>
+                </View>
+                <Pressable
+                    style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
+                    onPress={() => {
+                        navigation.navigate('Recipe', {
+                            id: session.matches[0].id,
+                        });
+                    }}
                 >
-                    Bekijk
-                </Text>
-            </Pressable>
-        </ImageBackground>
+                    <Text
+                        style={tw`font-sans font-bold text-base leading-normal text-white`}
+                    >
+                        Bekijk
+                    </Text>
+                </Pressable>
+            </ImageBackground>
+        </View>
     );
 }

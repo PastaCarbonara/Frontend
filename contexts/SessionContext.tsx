@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as RootNavigator from '../RootNavigator';
-import { SwipeSession, User, WebSocketAction, WebSocketEvent } from '../types';
+import { SwipeSession, WebSocketAction, WebSocketEvent } from '../types';
 import { SOCKET_URL } from '@env';
 import userService from '../services/UserService';
 import groupService from '../services/GroupService';
 import { cookieHelper } from '../helpers/CookieHelper';
+import { AuthContext } from './AuthContext';
 
 export type SessionContextType = {
     isReady: boolean;
@@ -31,11 +32,14 @@ export const SessionWebsocketProvider = ({
     const [currentSession, setCurrentSession] = useState<string | undefined>(
         undefined
     );
-    const [userId, setUserId] = useState<string | undefined>(undefined);
     const [currentGroup, setCurrentGroup] = useState<string | undefined>(
         cookieHelper.getCookie('currentGroup')
     );
     const [sessionId, setSessionId] = useState<string | undefined>(undefined);
+    const { verifyToken } = React.useContext(AuthContext);
+    const { groups } = groupService.useGroups();
+    const { group } = groupService.useGroup(currentGroup);
+    const { me } = userService.useMe();
 
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
@@ -75,29 +79,31 @@ export const SessionWebsocketProvider = ({
     }, [currentSession]);
 
     useEffect(() => {
-        if (!currentGroup) {
-            groupService.fetchGroups().then((groups) => {
+        const fetchInitialData = async () => {
+            if (!currentGroup) {
                 setCurrentGroup(groups[0]?.id);
-            });
-            return;
-        }
-        cookieHelper.setCookie('currentGroup', currentGroup, 365000);
-        userService.fetchMe().then((user: User) => {
-            setUserId(user.id);
-            groupService.fetchGroupInfo(currentGroup).then((group) => {
-                const activeSession = group.swipe_sessions.find(
-                    (session: SwipeSession) => session.status === 'Is bezig'
-                );
-                if (activeSession) {
-                    setSessionId(activeSession.id);
-                    setCurrentSession(`${activeSession.id}/${user.id}`);
-                } else {
-                    console.log('No active session found');
-                    setSessionId(undefined);
+            } else {
+                cookieHelper.setCookie('currentGroup', currentGroup, 365000);
+                try {
+                    if (!group) return;
+                    const activeSession = group.swipe_sessions.find(
+                        (session: SwipeSession) => session.status === 'Is bezig'
+                    );
+                    if (activeSession) {
+                        setSessionId(activeSession.id);
+                        setCurrentSession(`${activeSession.id}/${me.id}`);
+                    } else {
+                        console.log('No active session found');
+                        setSessionId(undefined);
+                    }
+                } catch (error) {
+                    console.log('Error fetching user or group:', error);
                 }
-            });
-        });
-    }, [currentGroup]);
+            }
+        };
+
+        void fetchInitialData();
+    }, [currentGroup, group, groups, me, verifyToken]);
 
     const send = (webSocketEvent: WebSocketEvent) => {
         ws.current?.send(JSON.stringify(webSocketEvent));
@@ -126,10 +132,10 @@ export const SessionWebsocketProvider = ({
             currentGroup,
             setCurrentGroup,
             send,
-            userId,
+            userId: me?.id,
             sessionId,
         }),
-        [isReady, lastMessage, currentSession, currentGroup, userId, sessionId]
+        [isReady, lastMessage, currentSession, currentGroup, me, sessionId]
     );
 
     return (
