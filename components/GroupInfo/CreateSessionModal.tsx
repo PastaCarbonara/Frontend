@@ -66,6 +66,7 @@ export default function CreateSessionModal({
                             options={{
                                 mainColor: '#F97316', //orange_primary
                             }}
+                            minimumDate={new Date().toISOString().split('T')[0]}
                             selected={sessionDate}
                             onDateChange={(date: string) => {
                                 setSessionDate(date.replaceAll('/', '-')); //this replaces the / with - because the backend expects a date in the format yyyy-mm-dd
