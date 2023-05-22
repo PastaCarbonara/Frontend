@@ -6,28 +6,34 @@ import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Tag from '../Tag';
 import BottomSheetComponent from '../BottomSheetComponent';
 import { BottomSheet } from 'react-native-btr';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CheckBoxComponent from '../CheckBoxComponent';
 import userService from '../../services/UserService';
+import UserService from '../../services/UserService';
 export default function Profile({ user, userTags, allTags }: any) {
-    const [userImage, setProfilePicture] = React.useState<File | null>(null);
+    const [userImage, setUserImage] = React.useState<File | null>(null);
     const [visible, setVisible] = useState(false);
     const toggleBottomNavigationView = () => {
         //Toggling the visibility state of the bottom sheet
         setVisible(!visible);
         if (visible) {
             location.reload();
-            console.log(userImage);
         }
     };
+    useEffect(() => {
+        UserService.updateUser(user.display_name, userImage).then((response) =>
+            console.log(response)
+        );
+    }, [user.display_name, userImage]);
 
     return (
         <View style={tw`bg-bg_color min-h-full max-h-screen`}>
             <BackgroundImage>
                 <View style={tw`w-full p-4 mt-16 gap-6`}>
                     <ImagePickerComponent
+                        initialImage={user?.image?.file_url}
                         onImageChange={(image) => {
-                            setProfilePicture(image);
+                            setUserImage(image);
                         }}
                     />
                 </View>
@@ -36,9 +42,10 @@ export default function Profile({ user, userTags, allTags }: any) {
                         Profiel
                     </Text>
                     <Pressable
-                        onPress={() =>
-                            console.log('naem = ' + user.display_name)
-                        }
+                        onPress={() => {
+                            console.log('naem = ' + user.display_name);
+                            console.log(user);
+                        }}
                         style={tw`flex-row`}
                     >
                         <MaterialIcons
@@ -81,9 +88,7 @@ export default function Profile({ user, userTags, allTags }: any) {
                             color="black"
                             style={tw`self-center m-3`}
                         />
-                        <Text
-                            style={tw`ml-3 font-sans self-center text-l w-full`}
-                        >
+                        <Text style={tw`font-sans self-center text-l w-full`}>
                             Voeg een e-mail adres toe voor extra beveiliging
                         </Text>
                         <MaterialCommunityIcons
@@ -94,7 +99,6 @@ export default function Profile({ user, userTags, allTags }: any) {
                         />
                     </Pressable>
                 </View>
-                {/*TODO: mapping tags from userlist*/}
                 <View>
                     <Text style={tw`ml-3 text-xl text-text_primary`}>
                         Filters
@@ -103,7 +107,11 @@ export default function Profile({ user, userTags, allTags }: any) {
                         style={tw`w-full self-center mb-5 px-2 flex-row flex-wrap`}
                     >
                         {userTags?.map((tag: any) => (
-                            <Tag tagValue={tag.name} tagType={tag.tag_type} />
+                            <Tag
+                                tagValue={tag.name}
+                                tagType={tag.tag_type}
+                                key={tag.id}
+                            />
                         ))}
                         <Pressable onPress={() => toggleBottomNavigationView()}>
                             <Tag tagValue={'Meer filters +'} tagType={'more'} />
@@ -149,7 +157,6 @@ export default function Profile({ user, userTags, allTags }: any) {
                 onBackdropPress={toggleBottomNavigationView}
             >
                 <BottomSheetComponent title={'Filters toevoegen'}>
-                    {/*TODO: use actual tags*/}
                     <View style={tw`flex-column`}>
                         {allTags?.map((tag: any) =>
                             createCheckboxComponent(tag, userTags)
@@ -162,7 +169,6 @@ export default function Profile({ user, userTags, allTags }: any) {
 }
 
 const createCheckboxComponent = (tag: any, userTags: any) => {
-    // TODO: change the tag-status for the user when the state changes
     const checkState = userTags.some((userTag: any) => {
         return userTag.id === tag.id;
     });
@@ -178,7 +184,7 @@ const createCheckboxComponent = (tag: any, userTags: any) => {
     };
     return (
         <CheckBoxComponent
-            key={tag.name}
+            key={tag.id}
             label={tag.name}
             checkState={checkState}
             functionality={checkboxFunction}

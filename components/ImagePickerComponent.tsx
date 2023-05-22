@@ -5,10 +5,13 @@ import tw from '../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function ImagePickerComponent({
+    initialImage,
     onImageChange,
 }: {
+    initialImage?: string;
     onImageChange: (image: File) => void;
 }) {
+    console.log(initialImage);
     const [image, setImage] = useState<string | null>(null);
 
     const pickImage = async () => {
@@ -47,6 +50,12 @@ export default function ImagePickerComponent({
                         {image ? (
                             <Image
                                 source={{ uri: image }}
+                                style={tw`w-full h-full rounded-3xl`}
+                                resizeMode={'cover'}
+                            />
+                        ) : initialImage ? (
+                            <Image
+                                source={{ uri: initialImage }}
                                 style={tw`w-full h-full rounded-3xl`}
                                 resizeMode={'cover'}
                             />
