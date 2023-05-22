@@ -8,17 +8,17 @@ export default function Tag({
     tagValue: string;
     tagType: string;
 }) {
-    const colour = setColour(tagType);
+    const layout = setLayout(tagType);
     return (
         <Text
-            style={tw`bg-${colour} rounded-full m-1 w-min text-l px-5 py-1 text-center align-middle`}
+            style={tw`bg-${layout} rounded-full m-1 w-min text-l px-5 py-1 text-center align-middle`}
         >
             {tagValue}
         </Text>
     );
 }
 
-function setColour(filterType: string): string {
+function setLayout(filterType: string): string {
     switch (filterType) {
         case 'dietary-preference':
             return 'indigo_primary text-white';

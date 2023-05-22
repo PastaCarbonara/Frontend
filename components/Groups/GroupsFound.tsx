@@ -11,12 +11,12 @@ export default function GroupsFound({ groups }: any) {
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
-        <View style={tw`flex flex-column justify-between grow h-full`}>
+        <View style={tw`flex justify-between grow h-full`}>
             <View style={tw`w-full p-4 gap-6 max-h-full`}>
                 <View style={tw`gap-2.5`}>
                     {groups.map((group: any) => (
                         <Pressable
-                            style={tw`items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl flex flex-column bg-bg_color`}
+                            style={tw`items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl flex bg-bg_color`}
                             key={group?.id}
                             onPress={() => {
                                 console.log(group?.id);
@@ -25,9 +25,11 @@ export default function GroupsFound({ groups }: any) {
                                 });
                             }}
                         >
-                            <View style={tw`w-full flex flex-row gap-2`}>
+                            <View
+                                style={tw`w-full flex flex-row gap-2 items-center`}
+                            >
                                 <View
-                                    style={tw`w-18 h-18 items-center bg-white border border-white shadow-md rounded-2xl`}
+                                    style={tw`w-18 h-18 items-center bg-white border border-white shadow-md rounded`}
                                 >
                                     <Image
                                         source={{
@@ -35,10 +37,10 @@ export default function GroupsFound({ groups }: any) {
                                                 group.image.file_url ||
                                                 `https://placehold.co/400`,
                                         }}
-                                        style={tw`w-18 h-18 rounded-2xl`}
+                                        style={tw`w-18 h-18 rounded`}
                                     />
                                 </View>
-                                <View style={tw`gap-0 grow justify-end`}>
+                                <View style={tw`gap-0 grow justify-end flex-1`}>
                                     <Text
                                         style={tw`font-Poppins-Bold text-base text-text_primary`}
                                     >
@@ -51,7 +53,7 @@ export default function GroupsFound({ groups }: any) {
                                     </View>
                                 </View>
                                 <View
-                                    style={tw`items-center justify-center p-2.5 gap-4 mt-2.5 bg-orange_primary rounded-3g aspect-square w-12 h-12`}
+                                    style={tw`items-center justify-center p-2.5 gap-4 bg-orange_primary rounded-3g aspect-square w-12 h-12`}
                                 >
                                     <MaterialCommunityIcons
                                         style={tw`text-white`}
