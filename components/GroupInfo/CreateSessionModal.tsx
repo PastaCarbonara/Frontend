@@ -13,7 +13,6 @@ import DatePicker from 'react-native-modern-datepicker';
 import swipeSessionService from '../../services/SwipeSessionService';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../types';
-import { mutate } from 'swr';
 
 export default function CreateSessionModal({
     isModalVisible,
@@ -77,10 +76,8 @@ export default function CreateSessionModal({
                             onPress={async () => {
                                 await swipeSessionService.createSwipeSession({
                                     session_date: sessionDate.split('T')[0], //this removes the time from the date
-                                    // @ts-ignore
                                     groupId,
                                 });
-                                await mutate(`/groups/${groupId}`);
                                 setIsModalVisible(false);
                             }}
                         >
