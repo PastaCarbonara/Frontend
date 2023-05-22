@@ -1,3 +1,4 @@
+import React from 'react';
 import { Text } from 'react-native';
 import tw from '../lib/tailwind';
 
@@ -20,9 +21,9 @@ export default function Tag({
 
 function setLayout(filterType: string): string {
     switch (filterType) {
-        case 'dietary-preference':
+        case 'Keuken':
             return 'indigo_primary text-white';
-        case 'allergy':
+        case 'Allergieën':
             return 'orange_primary text-white';
         case 'more':
             return 'indigo_primary/20 text-indigo_primary border-2 border-indigo_primary border-dotted';

@@ -8,14 +8,17 @@ import BottomSheetComponent from '../BottomSheetComponent';
 import { BottomSheet } from 'react-native-btr';
 import React, { useState } from 'react';
 import CheckBoxComponent from '../CheckBoxComponent';
-export default function Profile({ user, tags }: any) {
+import userService from '../../services/UserService';
+export default function Profile({ user, userTags, allTags }: any) {
     const [userImage, setProfilePicture] = React.useState<File | null>(null);
     const [visible, setVisible] = useState(false);
-
     const toggleBottomNavigationView = () => {
         //Toggling the visibility state of the bottom sheet
         setVisible(!visible);
-        console.log('mlem');
+        if (visible) {
+            location.reload();
+            console.log(userImage);
+        }
     };
 
     return (
@@ -78,7 +81,9 @@ export default function Profile({ user, tags }: any) {
                             color="black"
                             style={tw`self-center m-3`}
                         />
-                        <Text style={tw`font-sans self-center text-l w-full`}>
+                        <Text
+                            style={tw`ml-3 font-sans self-center text-l w-full`}
+                        >
                             Voeg een e-mail adres toe voor extra beveiliging
                         </Text>
                         <MaterialCommunityIcons
@@ -97,17 +102,9 @@ export default function Profile({ user, tags }: any) {
                     <View
                         style={tw`w-full self-center mb-5 px-2 flex-row flex-wrap`}
                     >
-                        <Tag
-                            tagValue={'Vegan'}
-                            tagType={'dietary-preference'}
-                        />
-                        <Tag
-                            tagValue={'Vegetarisch'}
-                            tagType={'dietary-preference'}
-                        />
-                        <Tag tagValue={'Zonder noten'} tagType={'allergy'} />
-                        <Tag tagValue={'Zonder Gluten'} tagType={'allergy'} />
-                        <Tag tagValue={'Lactosevrij'} tagType={'allergy'} />
+                        {userTags?.map((tag: any) => (
+                            <Tag tagValue={tag.name} tagType={tag.tag_type} />
+                        ))}
                         <Pressable onPress={() => toggleBottomNavigationView()}>
                             <Tag tagValue={'Meer filters +'} tagType={'more'} />
                         </Pressable>
@@ -117,9 +114,19 @@ export default function Profile({ user, tags }: any) {
                     <Text style={tw`text-xl text-text_primary ml-3`}>
                         Gevarenzone
                     </Text>
-                    {/*TODO: Throw popup when clicked*/}
                     <Pressable
-                        onPress={() => console.log('DELL ATE MY PC')}
+                        onPress={() => {
+                            if (
+                                confirm(
+                                    'Uw account wordt hiermee permanent verwijderd, dit kan niet ongedaan gemaakt worden.\nWeet u zeker dat u verder wilt gaan?'
+                                )
+                            ) {
+                                alert('Uw account is verwijderd');
+                                location.reload();
+                            } else {
+                                console.log('blep');
+                            }
+                        }}
                         style={tw`w-full flex-row`}
                     >
                         <Text
@@ -135,26 +142,18 @@ export default function Profile({ user, tags }: any) {
                         />
                     </Pressable>
                 </View>
-                {console.log(user)}
-                {console.log(tags)}
-                {console.log(userImage)}
             </BackgroundImage>
             <BottomSheet
                 visible={visible}
                 onBackButtonPress={toggleBottomNavigationView}
                 onBackdropPress={toggleBottomNavigationView}
             >
-                <BottomSheetComponent>
-                    <Text style={tw`text-xl text-text_primary mb-6`}>
-                        Filters toevoegen
-                    </Text>
+                <BottomSheetComponent title={'Filters toevoegen'}>
                     {/*TODO: use actual tags*/}
                     <View style={tw`flex-column`}>
-                        {/*TODO: make the init state reflect the tag-status for the user*/}
-                        {/*TODO: map the components to actual tags in the database*/}
-                        {createCheckboxComponent('Vegan', true)}
-                        {createCheckboxComponent('Vegetarian', false)}
-                        {createCheckboxComponent('NNN', false)}
+                        {allTags?.map((tag: any) =>
+                            createCheckboxComponent(tag, userTags)
+                        )}
                     </View>
                 </BottomSheetComponent>
             </BottomSheet>
@@ -162,16 +161,26 @@ export default function Profile({ user, tags }: any) {
     );
 }
 
-const createCheckboxComponent = (tagName: string, boxState: boolean) => {
+const createCheckboxComponent = (tag: any, userTags: any) => {
     // TODO: change the tag-status for the user when the state changes
+    const checkState = userTags.some((userTag: any) => {
+        return userTag.id === tag.id;
+    });
+    let newTags: number[] = [];
     const checkboxFunction = () => {
-        console.log(`le ${tagName} func be sicc yo`);
-        console.log("neato! the well has been don't");
+        if (!checkState) {
+            newTags.push(tag.id);
+            userService.addFilter(newTags);
+        } else {
+            userTags.splice(userTags.indexOf(tag), 1);
+            userService.deleteFilter(tag.id);
+        }
     };
     return (
         <CheckBoxComponent
-            label={tagName}
-            checkState={boxState}
+            key={tag.name}
+            label={tag.name}
+            checkState={checkState}
             functionality={checkboxFunction}
         />
     );
