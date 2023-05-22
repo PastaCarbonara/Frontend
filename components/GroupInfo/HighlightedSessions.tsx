@@ -57,9 +57,11 @@ export default function HighlightedSessions({
 
 function NoOpenSessions() {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const { width } = useWindowDimensions();
+    const cardWidth = width - 32;
     return (
         <View
-            style={tw`flex-col w-full items-center pt-10 pb-6 gap-4 bg-white shadow-md rounded-3xl`}
+            style={tw`flex-col w-[${cardWidth}px] items-center pt-10 pb-6 mx-4 gap-4 bg-white shadow-md rounded-3xl`}
         >
             <Text style={tw`font-sans text-base font-bold text-text_primary`}>
                 Je hebt nog geen sessies
@@ -91,7 +93,7 @@ function OpenSession({ session }: { session: SwipeSession }) {
         <View style={tw`pl-4`}>
             <View
                 style={tw.style(
-                    `flex-row w-[${cardWidth}px] items-center py-8 px-4 gap-2 bg-white shadow-md rounded-3xl`
+                    `flex-row w-[${cardWidth}px] items-center py-8 px-4 mr-4 gap-2 bg-white shadow-md rounded-3xl`
                 )}
             >
                 <View
@@ -176,7 +178,7 @@ function ClosedSession({ session }: { session: SwipeSession }) {
             <ImageBackground
                 source={{ uri: session.matches[0]?.image.file_url }}
                 style={tw.style(
-                    `flex-row w-[${cardWidth}px] items-center py-8 px-4 gap-2 bg-black border border-white shadow-md rounded-3xl`
+                    `flex-row w-[${cardWidth}px] items-center py-8 px-4 mr-4 gap-2 bg-black border border-white shadow-md rounded-3xl`
                 )}
                 imageStyle={tw.style(`rounded-3xl opacity-50`)}
             >

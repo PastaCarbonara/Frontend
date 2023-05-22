@@ -12,6 +12,7 @@ import React from 'react';
 import Separator from '../Separator';
 import { LinearGradient } from 'expo-linear-gradient';
 import { RecipeIngredient } from '../../types';
+import tw from '../../lib/tailwind';
 
 const styles = StyleSheet.create({
     rcp: {
@@ -36,11 +37,9 @@ const styles = StyleSheet.create({
     description: {
         // paddingTop: 5,
         width: '100%',
-        backgroundColor: 'white',
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
         maxWidth: '100%',
-        marginTop: '-5%',
         paddingTop: '2.5%',
         paddingHorizontal: '2.5%',
     },
@@ -85,23 +84,17 @@ const styles = StyleSheet.create({
         color: '#FAFAFA',
         width: 25,
         aspectRatio: 1,
-        alignContent: 'center',
+        alignSelf: 'flex-start',
         textAlign: 'center',
-        alignSelf: 'center',
+        justifyContent: 'center',
     },
     centerText: {
-        textAlignVertical: 'center',
         textAlign: 'center',
     },
     instructions: {
         flex: 8,
         textAlignVertical: 'center',
         color: '#434343',
-    },
-    img: {
-        width: '100%',
-        maxWidth: '100%',
-        resizeMode: 'cover',
     },
     scrollBox: {
         maxWidth: '100%',
@@ -115,16 +108,17 @@ export default function Recipe({ recipeInfo }: any) {
     const navigation = useNavigation();
     return (
         <View style={[styles.rcp, styles.flexColumn]}>
-            <View style={{ width: '100%' }}>
+            <View style={tw`w-full`}>
                 <ImageBackground
-                    style={styles.img}
+                    style={tw`w-full`}
                     source={{
                         uri: recipeInfo?.image.file_url,
                     }}
-                    imageStyle={styles.img}
+                    imageStyle={tw`w-full`}
                 >
                     <LinearGradient
                         colors={['#00000000', '#00000065', '#000000']}
+                        style={tw`p-4`}
                     >
                         <TouchableOpacity
                             onPress={() => {
@@ -138,185 +132,119 @@ export default function Recipe({ recipeInfo }: any) {
                                 color="white"
                             />
                         </TouchableOpacity>
-                        <Text
-                            style={{
-                                textAlignVertical: 'bottom',
-                                color: '#FAFAFA',
-                            }}
-                        >
-                            <View style={[styles.infoBox, styles.title]}>
-                                <View
-                                    style={[
-                                        styles.flexRow,
-                                        { alignItems: 'center' },
-                                    ]}
-                                >
-                                    <View style={{ flex: 2 }}>
-                                        <h1
-                                            style={{
-                                                color: '#FAFAFA',
-                                                fontFamily: 'Baloo-Regular',
-                                            }}
-                                        >
-                                            {recipeInfo?.name}
-                                        </h1>
-                                    </View>
-                                    <View
-                                        style={[
-                                            styles.flexColumn,
-                                            styles.descriptionInfo,
-                                        ]}
+                        <Text style={tw`text-[#FAFAFA]`}>
+                            <View style={tw`flex-row items-end`}>
+                                <View style={tw`flex-2`}>
+                                    <h1
+                                        style={tw.style(
+                                            'font-display',
+                                            'text-2xl',
+                                            'mb-0',
+                                            { lineHeight: '36px' }
+                                        )}
                                     >
-                                        <Text style={{ textAlign: 'right' }}>
-                                            <MaterialCommunityIcons
-                                                name="clock"
-                                                size={20}
-                                                style={{ flex: 1, padding: 5 }}
-                                            >
-                                                <Text
-                                                    style={{
-                                                        fontFamily:
-                                                            'Poppins-Regular',
-                                                    }}
-                                                >
-                                                    {' ' +
-                                                        recipeInfo?.preparing_time}
-                                                </Text>
-                                            </MaterialCommunityIcons>
-                                        </Text>
-                                        <Text
-                                            style={[
-                                                styles.descriptionInfo,
-                                                { textAlign: 'right' },
-                                                styles.flexRow,
-                                            ]}
+                                        {recipeInfo?.name}
+                                    </h1>
+                                </View>
+                                <View
+                                    style={tw`w-full content-end flex-1 flex-col`}
+                                >
+                                    <Text style={tw`text-right`}>
+                                        <MaterialCommunityIcons
+                                            name="clock"
+                                            size={20}
+                                            style={tw`p-1`}
                                         >
-                                            <MaterialCommunityIcons
-                                                name="chili-hot"
-                                                size={20}
-                                            />
-                                        </Text>
-                                    </View>
+                                            <Text style={tw`font-sans ml-2`}>
+                                                {recipeInfo?.preparation_time}
+                                            </Text>
+                                        </MaterialCommunityIcons>
+                                    </Text>
+                                    {/*<Text*/}
+                                    {/*    style={[*/}
+                                    {/*        styles.descriptionInfo,*/}
+                                    {/*        { textAlign: 'right' },*/}
+                                    {/*        styles.flexRow,*/}
+                                    {/*    ]}*/}
+                                    {/*>*/}
+                                    {/*    <MaterialCommunityIcons*/}
+                                    {/*        name="chili-hot"*/}
+                                    {/*        size={20}*/}
+                                    {/*    />*/}
+                                    {/*</Text>*/}
                                 </View>
                             </View>
                         </Text>
                     </LinearGradient>
                 </ImageBackground>
                 <View style={styles.description}>
-                    <Text
-                        style={[
-                            styles.centerText,
-                            {
-                                fontFamily: 'Poppins-Regular',
-                                marginBottom: '2.5%',
-                            },
-                        ]}
-                    >
+                    <Text style={tw`font-sans text-center`}>
                         <i>{recipeInfo?.description}</i>
                     </Text>
                     <Separator />
                 </View>
             </View>
-            <ScrollView style={styles.scrollBox}>
-                <View style={{ width: '95%', alignSelf: 'center' }}>
-                    <View>
-                        <h2
-                            style={{
-                                color: '#3F3F3F',
-                                fontFamily: 'Baloo-Regular',
-                            }}
-                        >
-                            Ingrediënten:
-                        </h2>
-                        <Text
-                            style={[
-                                styles.flexColumn,
-                                { fontFamily: 'Poppins-Regular' },
-                            ]}
-                        >
-                            {recipeInfo?.ingredients?.map(
-                                (ingredient: RecipeIngredient) => (
-                                    <li
-                                        key={recipeInfo?.ingredients?.indexOf(
-                                            ingredient
-                                        )}
-                                    >
-                                        <View style={styles.infoBox}>
-                                            <Text
-                                                style={[
-                                                    styles.instructions,
-                                                    { flex: 7 },
-                                                ]}
-                                            >
-                                                {ingredient.name}
-                                            </Text>
-                                            <Text
-                                                style={{
-                                                    flex: 3,
-                                                    textAlign: 'right',
-                                                }}
-                                            >
-                                                {ingredient.amount +
-                                                    ' ' +
-                                                    ingredient.unit}
-                                            </Text>
-                                        </View>
-                                    </li>
-                                )
-                            )}
-                        </Text>
-                    </View>
-                    <View style={{ maxWidth: '100%' }}>
-                        <Separator />
-                    </View>
-                    <View>
-                        <h2
-                            style={{
-                                color: '#3F3F3F',
-                                fontFamily: 'Baloo-Regular',
-                            }}
-                        >
-                            Bereidingswijze:
-                        </h2>
-                        <Text
-                            style={[
-                                styles.flexColumn,
-                                { fontFamily: 'Poppins-Regular' },
-                            ]}
-                        >
-                            {recipeInfo?.instructions?.map(
-                                (instruction: string) => (
-                                    <li
-                                        key={recipeInfo?.instructions?.indexOf(
-                                            instruction
-                                        )}
-                                    >
-                                        <View style={styles.infoBox}>
-                                            <View style={styles.stepCounter}>
-                                                <Text style={styles.centerText}>
-                                                    {
-                                                        +(
-                                                            recipeInfo?.instructions.indexOf(
-                                                                instruction
-                                                            ) + 1
-                                                        ).toString()
-                                                    }
-                                                </Text>
-                                            </View>
-                                            <Text
-                                                style={[
-                                                    styles.instructions,
-                                                    { paddingLeft: 10 },
-                                                ]}
-                                            >
-                                                {instruction}
+            <ScrollView style={tw`w-full p-4`}>
+                <View>
+                    <h2 style={tw`font-display text-text_primary`}>
+                        Ingredient:
+                    </h2>
+                    <Text style={tw`flex-col font-sans`}>
+                        {recipeInfo?.ingredients?.map(
+                            (ingredient: RecipeIngredient) => (
+                                <li
+                                    key={recipeInfo?.ingredients?.indexOf(
+                                        ingredient
+                                    )}
+                                >
+                                    <View style={styles.infoBox}>
+                                        <Text style={tw`flex-7`}>
+                                            {ingredient.name}
+                                        </Text>
+                                        <Text style={tw`flex-3 text-right`}>
+                                            {ingredient.amount +
+                                                ' ' +
+                                                ingredient.unit}
+                                        </Text>
+                                    </View>
+                                </li>
+                            )
+                        )}
+                    </Text>
+                </View>
+                <Separator />
+                <View>
+                    <h2 style={tw`font-display text-text_primary`}>
+                        Bereidingswijze:
+                    </h2>
+                    <Text style={tw`flex-col font-sans`}>
+                        {recipeInfo?.instructions?.map(
+                            (instruction: string) => (
+                                <li
+                                    key={recipeInfo?.instructions?.indexOf(
+                                        instruction
+                                    )}
+                                >
+                                    <View style={styles.infoBox}>
+                                        <View style={styles.stepCounter}>
+                                            <Text style={styles.centerText}>
+                                                {(
+                                                    recipeInfo?.instructions.indexOf(
+                                                        instruction
+                                                    ) + 1
+                                                ).toString()}
                                             </Text>
                                         </View>
-                                    </li>
-                                )
-                            )}
-                        </Text>
-                    </View>
+                                        <Text
+                                            style={tw`flex-8 text-text_primary ml-2`}
+                                        >
+                                            {instruction}
+                                        </Text>
+                                    </View>
+                                </li>
+                            )
+                        )}
+                    </Text>
                 </View>
             </ScrollView>
         </View>

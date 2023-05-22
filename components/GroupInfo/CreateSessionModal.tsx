@@ -13,7 +13,6 @@ import DatePicker from 'react-native-modern-datepicker';
 import swipeSessionService from '../../services/SwipeSessionService';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../types';
-import { mutate } from 'swr';
 
 export default function CreateSessionModal({
     isModalVisible,
@@ -67,6 +66,7 @@ export default function CreateSessionModal({
                             options={{
                                 mainColor: '#F97316', //orange_primary
                             }}
+                            minimumDate={new Date().toISOString().split('T')[0]}
                             selected={sessionDate}
                             onDateChange={(date: string) => {
                                 setSessionDate(date.replaceAll('/', '-')); //this replaces the / with - because the backend expects a date in the format yyyy-mm-dd
@@ -77,10 +77,8 @@ export default function CreateSessionModal({
                             onPress={async () => {
                                 await swipeSessionService.createSwipeSession({
                                     session_date: sessionDate.split('T')[0], //this removes the time from the date
-                                    // @ts-ignore
                                     groupId,
                                 });
-                                await mutate(`/groups/${groupId}`);
                                 setIsModalVisible(false);
                             }}
                         >
