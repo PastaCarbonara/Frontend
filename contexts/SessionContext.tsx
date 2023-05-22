@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as RootNavigator from '../RootNavigator';
 import { SwipeSession, WebSocketAction, WebSocketEvent } from '../types';
 import { SOCKET_URL } from '@env';
-import userService from '../services/UserService';
 import groupService from '../services/GroupService';
 import { cookieHelper } from '../helpers/CookieHelper';
 import { AuthContext } from './AuthContext';
+import userService from '../services/UserService';
 
 export type SessionContextType = {
     isReady: boolean;
@@ -36,24 +36,25 @@ export const SessionWebsocketProvider = ({
         cookieHelper.getCookie('currentGroup')
     );
     const [sessionId, setSessionId] = useState<string | undefined>(undefined);
-    const { verifyToken } = React.useContext(AuthContext);
+    const { authData, verifyToken } = React.useContext(AuthContext);
+    const { me } = userService.useMe();
     const { groups } = groupService.useGroups();
     const { group } = groupService.useGroup(currentGroup);
-    const { me } = userService.useMe();
 
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
     useEffect(() => {
-        if (!currentSession) {
+        if (!currentGroup) {
             return;
         }
-        const sessionWebSocketAddress = `${SOCKET_URL}/swipe_sessions/${currentSession}`;
+        const access_token = cookieHelper.getCookie('access_token');
+        const sessionWebSocketAddress = `${SOCKET_URL}/swipe_sessions/${currentGroup}?token=${access_token}`;
         const socket = new WebSocket(sessionWebSocketAddress);
 
         socket.onopen = () => {
             socket.send(
                 JSON.stringify({
-                    action: WebSocketAction.SESSION_MESSAGE,
+                    action: WebSocketAction.POOL_MESSAGE,
                     payload: {
                         message: 'User connected succesfully',
                     },
@@ -68,6 +69,7 @@ export const SessionWebsocketProvider = ({
             handleWebSocketEvent(JSON.parse(event.data));
         };
         socket.onerror = (error) => {
+            console.log(sessionWebSocketAddress);
             console.log(error);
         };
 
@@ -76,35 +78,35 @@ export const SessionWebsocketProvider = ({
         return () => {
             socket.close();
         };
-    }, [currentSession]);
+    }, [currentGroup, currentSession]);
 
     useEffect(() => {
         const fetchInitialData = async () => {
-            if (!currentGroup) {
+            if (!currentGroup && (groups === undefined || groups?.length < 1))
+                return;
+            if (!currentGroup && groups?.length > 0) {
                 setCurrentGroup(groups[0]?.id);
-            } else {
-                cookieHelper.setCookie('currentGroup', currentGroup, 365000);
-                try {
-                    if (!group) return;
-                    const activeSession = group.swipe_sessions.find(
-                        (session: SwipeSession) => session.status === 'Is bezig'
-                    );
-                    if (activeSession) {
-                        setSessionId(activeSession.id);
-                        setCurrentSession(`${activeSession.id}/${me.id}`);
-                    } else {
-                        console.log('No active session found');
-                        setSessionId(undefined);
-                    }
-                } catch (error) {
-                    console.log('Error fetching user or group:', error);
+                cookieHelper.setCookie('currentGroup', groups[0]?.id, 365000);
+                return;
+            }
+            try {
+                if (!group) return;
+                const activeSession = group.swipe_sessions.find(
+                    (session: SwipeSession) => session.status === 'Is bezig'
+                );
+                if (activeSession) {
+                    setSessionId(activeSession.id);
+                    setCurrentSession(`${activeSession.id}`);
+                } else {
+                    console.log('No active session found');
+                    setSessionId(undefined);
                 }
+            } catch (error) {
+                console.log('Error fetching user or group:', error);
             }
         };
-
         void fetchInitialData();
-    }, [currentGroup, group, groups, me, verifyToken]);
-
+    }, [currentGroup, authData, verifyToken, groups, group]);
     const send = (webSocketEvent: WebSocketEvent) => {
         ws.current?.send(JSON.stringify(webSocketEvent));
     };
