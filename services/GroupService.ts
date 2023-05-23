@@ -26,6 +26,18 @@ function useGroup(groupId: string | undefined) {
     };
 }
 
+function useGroupPreview(groupId: string | undefined) {
+    const { data, error, isLoading } = useSWR(
+        groupId ? `/groups/${groupId}/preview` : null,
+        fetcher
+    );
+    return {
+        group: data,
+        isLoading,
+        isError: error,
+    };
+}
+
 async function createGroup({ name, image }: { name: string; image: File }) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
@@ -64,6 +76,7 @@ async function acceptInvite(groupId: string) {
 const groupService = {
     useGroup,
     useGroups,
+    useGroupPreview,
     createGroup,
     acceptInvite,
 };
