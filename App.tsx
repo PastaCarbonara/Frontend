@@ -77,7 +77,11 @@ export function DrawerNavigator() {
                     headerTitleAlign: 'center',
                 }}
             />
-            <Drawer.Screen name="Profile" component={ProfileScreen} />
+            <Drawer.Screen
+                name="Profile"
+                component={ProfileScreen}
+                options={{ headerTransparent: true }}
+            />
             <Drawer.Screen
                 name="Groups"
                 component={MyGroupsScreen}
