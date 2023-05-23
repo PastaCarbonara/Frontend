@@ -19,7 +19,6 @@ export default function GroupsFound({ groups }: any) {
                             style={tw`items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl flex bg-bg_color`}
                             key={group?.id}
                             onPress={() => {
-                                console.log(group?.id);
                                 navigation.navigate('Group', {
                                     groupId: group.id,
                                 });
@@ -53,7 +52,7 @@ export default function GroupsFound({ groups }: any) {
                                     </View>
                                 </View>
                                 <View
-                                    style={tw`items-center justify-center p-2.5 gap-4 bg-orange_primary rounded-3g aspect-square w-12 h-12`}
+                                    style={tw`items-center justify-center p-2.5 gap-4 bg-orange_primary rounded-3 aspect-square w-12 h-12`}
                                 >
                                     <MaterialCommunityIcons
                                         style={tw`text-white`}

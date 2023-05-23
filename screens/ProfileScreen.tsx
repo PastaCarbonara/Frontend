@@ -5,21 +5,20 @@ import { SessionWebsocketContext } from '../contexts/SessionContext';
 import tagService from '../services/TagService';
 
 export default function ProfileScreen() {
-    const [userData, setUserData] = useState<any>();
-    const [userTags, setUserTags] = useState<any>();
-    const [allTags, setAllTags] = useState<any>([]);
+    const [userData, setUserData] = useState<object>({});
+    const [userTags, setUserTags] = useState<Array<object>>([]);
+    const [allTags, setAllTags] = useState<Array<object>>([]);
 
     const { userId } = useContext(SessionWebsocketContext);
 
     useEffect(() => {
-        UserService.fetchMe()
-            .then((userInfo) => {
+        Promise.all([
+            UserService.fetchMe().then((userInfo) => {
                 setUserData(userInfo);
-            })
-            .then(UserService.fetchFilters)
-            .then((tags) => setUserTags(tags))
-            .then(tagService.fetchAllTags)
-            .then((tags) => setAllTags(tags));
+            }),
+            UserService.fetchFilters().then((tags) => setUserTags(tags)),
+            tagService.fetchAllTags().then((tags) => setAllTags(tags)),
+        ]);
     }, [userId]);
 
     return userData ? (

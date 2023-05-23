@@ -5,14 +5,23 @@ import tw from '../../lib/tailwind';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Tag from '../Tag';
 import BottomSheetComponent from '../BottomSheetComponent';
-import { BottomSheet } from 'react-native-btr';
 import React, { useEffect, useState } from 'react';
 import CheckBoxComponent from '../CheckBoxComponent';
 import userService from '../../services/UserService';
 import UserService from '../../services/UserService';
-export default function Profile({ user, userTags, allTags }: any) {
+
+export default function Profile({
+    user,
+    userTags,
+    allTags,
+}: {
+    user: any;
+    userTags: Array<object>;
+    allTags: Array<object>;
+}) {
     const [userImage, setUserImage] = React.useState<File | null>(null);
     const [visible, setVisible] = useState(false);
+
     const toggleBottomNavigationView = () => {
         //Toggling the visibility state of the bottom sheet
         setVisible(!visible);
@@ -44,7 +53,6 @@ export default function Profile({ user, userTags, allTags }: any) {
                     <Pressable
                         onPress={() => {
                             console.log('naem = ' + user.display_name);
-                            console.log(user);
                         }}
                         style={tw`flex-row`}
                     >
@@ -151,35 +159,39 @@ export default function Profile({ user, userTags, allTags }: any) {
                     </Pressable>
                 </View>
             </BackgroundImage>
-            <BottomSheet
+
+            <BottomSheetComponent
+                title={'Filters toevoegen'}
                 visible={visible}
                 onBackButtonPress={toggleBottomNavigationView}
                 onBackdropPress={toggleBottomNavigationView}
             >
-                <BottomSheetComponent title={'Filters toevoegen'}>
-                    <View style={tw`flex-column`}>
-                        {allTags?.map((tag: any) =>
-                            createCheckboxComponent(tag, userTags)
-                        )}
-                    </View>
-                </BottomSheetComponent>
-            </BottomSheet>
+                <View style={tw`flex-column`}>
+                    {allTags?.map((tag: object) =>
+                        createCheckboxComponent(tag, userTags)
+                    )}
+                </View>
+            </BottomSheetComponent>
         </View>
     );
 }
 
-const createCheckboxComponent = (tag: any, userTags: any) => {
-    const checkState = userTags.some((userTag: any) => {
+const createCheckboxComponent = (tag: any, userTags: Array<object>) => {
+    let checkState = userTags.some((userTag: any) => {
         return userTag.id === tag.id;
     });
+
     let newTags: number[] = [];
-    const checkboxFunction = () => {
+    const checkboxOnChangeBehaviour = () => {
         if (!checkState) {
             newTags.push(tag.id);
             userService.addFilter(newTags);
+            checkState = !checkState;
         } else {
             userTags.splice(userTags.indexOf(tag), 1);
+            newTags.splice(newTags.indexOf(tag), 1);
             userService.deleteFilter(tag.id);
+            checkState = !checkState;
         }
     };
     return (
@@ -187,7 +199,7 @@ const createCheckboxComponent = (tag: any, userTags: any) => {
             key={tag.id}
             label={tag.name}
             checkState={checkState}
-            functionality={checkboxFunction}
+            onChange={checkboxOnChangeBehaviour}
         />
     );
 };

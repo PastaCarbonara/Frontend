@@ -1,18 +1,33 @@
 import { ScrollView, Text, View } from 'react-native';
 import tw from '../lib/tailwind';
-import React from 'react';
+import React, { ReactChild } from 'react';
+import { BottomSheet } from 'react-native-btr';
 
 export default function BottomSheetComponent({
     children,
     title,
+    visible,
+    onBackButtonPress,
+    onBackdropPress,
 }: {
-    children: any;
+    children: ReactChild;
     title: string;
+    visible: boolean;
+    onBackButtonPress: () => void;
+    onBackdropPress: () => void;
 }) {
     return (
-        <View style={tw`h-120 w-full bg-bg_color rounded-t-lg pt-5`}>
-            <Text style={tw`text-xl text-text_primary mb-6 px-3`}>{title}</Text>
-            <ScrollView style={tw`px-3`}>{children}</ScrollView>
-        </View>
+        <BottomSheet
+            visible={visible}
+            onBackButtonPress={onBackButtonPress}
+            onBackdropPress={onBackdropPress}
+        >
+            <View style={tw`h-120 w-full bg-bg_color rounded-t-lg pt-5`}>
+                <Text style={tw`text-xl text-text_primary mb-6 px-3`}>
+                    {title}
+                </Text>
+                <ScrollView style={tw`px-3`}>{children}</ScrollView>
+            </View>
+        </BottomSheet>
     );
 }

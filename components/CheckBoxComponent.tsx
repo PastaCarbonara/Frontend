@@ -6,15 +6,14 @@ import Separator from './Separator';
 export default function CheckBoxComponent({
     label,
     checkState,
-    functionality,
+    onChange,
 }: {
     label: string;
     checkState: boolean;
-    functionality: any;
+    onChange: () => any;
 }) {
     function flipCheckState() {
         checkState = !checkState;
-        console.log(checkState);
     }
     return (
         <Fragment>
@@ -26,7 +25,7 @@ export default function CheckBoxComponent({
                         accentColor: '#4338CA',
                     })}
                     onClick={flipCheckState}
-                    onChange={functionality}
+                    onChange={onChange}
                     defaultChecked={checkState}
                 />
             </View>
