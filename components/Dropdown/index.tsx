@@ -26,7 +26,7 @@ export default function Dropdown({
                     'flex-row items-center justify-between w-40 px-4'
                 )}
             >
-                <Text style={tw`text-gray-500`}>{selectedOption.name}</Text>
+                <Text style={tw`text-gray-500`}>{selectedOption?.name}</Text>
                 <MaterialCommunityIcons
                     name={isOpen ? 'chevron-up' : 'chevron-down'}
                     size={24}
