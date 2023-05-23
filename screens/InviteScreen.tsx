@@ -10,7 +10,7 @@ export default function InviteScreen({ route }: { route: any }) {
     const { id } = route.params;
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-    const { group } = groupService.useGroup(id);
+    const { group } = groupService.useGroupPreview(id);
     const acceptInvite = () => {
         groupService.acceptInvite(id).then(() => {
             navigation.navigate('Group', {
