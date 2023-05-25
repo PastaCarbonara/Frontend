@@ -11,7 +11,6 @@ export default function ImagePickerComponent({
     initialImage?: string;
     onImageChange: (image: File) => void;
 }) {
-    console.log(initialImage);
     const [image, setImage] = useState<string | null>(null);
 
     const pickImage = async () => {

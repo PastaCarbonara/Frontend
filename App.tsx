@@ -44,6 +44,7 @@ export default function App() {
                 CreateGroup: 'groups/new',
                 Group: 'group/:groupId',
                 Invite: 'group/:id/join',
+                ChangeUsername: 'profile/changename',
             },
         },
     };
@@ -80,7 +81,10 @@ export function DrawerNavigator() {
             <Drawer.Screen
                 name="Profile"
                 component={ProfileScreen}
-                options={{ headerTransparent: true }}
+                options={{
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                }}
             />
             <Drawer.Screen
                 name="Groups"

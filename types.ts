@@ -13,6 +13,10 @@ export type RootDrawerParamList = {
     Profile: undefined;
     Groups: undefined;
 };
+export type UserImage = {
+    file_url: string;
+    filename: string;
+};
 export type Group = {
     id: string;
     name: string;

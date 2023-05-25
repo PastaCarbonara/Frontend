@@ -25,7 +25,7 @@ export default function TextInputWithLabel({
                 <Text
                     style={tw.style(
                         `${
-                            wordCount === 100
+                            wordCount === inputProps?.maxLength
                                 ? 'text-red-500'
                                 : 'text-text_primary'
                         }`

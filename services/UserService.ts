@@ -4,6 +4,7 @@ import { cookieHelper } from '../helpers/CookieHelper';
 import { fetcher } from './Fetcher';
 import useSWR from 'swr';
 import imageService from './ImageService';
+import { UserImage } from '../types';
 
 async function fetchMe() {
     const access_token = cookieHelper.getCookie('access_token');
@@ -29,25 +30,31 @@ function useMe() {
     };
 }
 
-async function updateUser(username: string, image?: File | null) {
+async function updateUser(
+    username: string,
+    image?: File | undefined,
+    oldImage?: Array<UserImage> | undefined
+) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
-        let files;
+        let files = oldImage;
         if (image) {
             files = await imageService.uploadImages({ images: [image] });
         }
-        const response = await fetch(`${API_URL}/me`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `bearer ${access_token}`,
-            },
-            body: JSON.stringify({
-                display_name: username,
-                filename: files[0]?.filename,
-            }),
-        });
-        return HttpErrorHandling.responseChecker(response);
+        if (files != null) {
+            const response = await fetch(`${API_URL}/me`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `bearer ${access_token}`,
+                },
+                body: JSON.stringify({
+                    display_name: username,
+                    filename: files[0]?.filename,
+                }),
+            });
+            return HttpErrorHandling.responseChecker(response);
+        }
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
     }

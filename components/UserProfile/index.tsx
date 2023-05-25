@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import CheckBoxComponent from '../CheckBoxComponent';
 import userService from '../../services/UserService';
 import UserService from '../../services/UserService';
+import TextInputWithLabel from '../TextInputWithLabel';
 
 export default function Profile({
     user,
@@ -19,8 +20,11 @@ export default function Profile({
     userTags: Array<object>;
     allTags: Array<object>;
 }) {
-    const [userImage, setUserImage] = React.useState<File | null>(null);
+    const [userImage, setUserImage] = React.useState<File | undefined>(
+        undefined
+    );
     const [visible, setVisible] = useState(false);
+    const [userName, setUserName] = useState<string>(user.display_name);
 
     const toggleBottomNavigationView = () => {
         //Toggling the visibility state of the bottom sheet
@@ -34,7 +38,6 @@ export default function Profile({
             console.log(response)
         );
     }, [user.display_name, userImage]);
-
     return (
         <View style={tw`bg-bg_color min-h-full max-h-screen`}>
             <BackgroundImage>
@@ -50,37 +53,37 @@ export default function Profile({
                     <Text style={tw`ml-3 text-xl text-text_primary`}>
                         Profiel
                     </Text>
-                    <Pressable
-                        onPress={() => {
-                            console.log('naem = ' + user.display_name);
-                        }}
-                        style={tw`flex-row`}
-                    >
+                    <View style={tw`flex-row w-full`}>
                         <MaterialIcons
                             name="person"
                             size={24}
                             color="black"
                             style={tw`self-center m-3`}
                         />
-                        <View
-                            style={tw`flex-column flex-15 self-center w-full`}
-                        >
-                            <Text
-                                style={tw`font-sans text-xs text-text_primary`}
-                            >
-                                Naam
-                            </Text>
-                            <Text style={tw`font-sans text-xl`}>
-                                {user.display_name}
-                            </Text>
-                        </View>
+                        <TextInputWithLabel
+                            label={'Naam'}
+                            style={tw`h-8 font-sans text-xl w-fit`}
+                            maxLength={42}
+                            defaultValue={user.display_name}
+                            onInputChange={setUserName}
+                            onFocus={() => setUserName(user?.display_name)}
+                            onBlur={() =>
+                                userName
+                                    ? UserService.updateUser(
+                                          userName,
+                                          userImage,
+                                          [user.image]
+                                      )
+                                    : console.log('Username is undefined')
+                            }
+                        />
                         <MaterialCommunityIcons
                             name="pencil"
                             size={24}
                             color="black"
-                            style={tw`flex-end self-center m-3`}
+                            style={tw`self-center m-3`}
                         />
-                    </Pressable>
+                    </View>
                 </View>
                 <View style={tw`w-full self-center mb-5`}>
                     <Text style={tw`ml-3 text-xl text-text_primary`}>
@@ -103,7 +106,7 @@ export default function Profile({
                             name="arrow-right"
                             size={24}
                             color="black"
-                            style={tw`flex-end self-center m-3`}
+                            style={tw`self-center m-3`}
                         />
                     </Pressable>
                 </View>
