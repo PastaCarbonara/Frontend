@@ -114,7 +114,7 @@ async function addFilter(tags: any) {
 async function deleteFilter(tagId: number) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
-        const response = await fetch(`${API_URL}/me/filters?id=${tagId}`, {
+        const response = await fetch(`${API_URL}/me/filters/${tagId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `bearer ${access_token}`,
