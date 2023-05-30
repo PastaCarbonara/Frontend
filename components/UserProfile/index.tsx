@@ -10,13 +10,14 @@ import CheckBoxComponent from '../CheckBoxComponent';
 import userService from '../../services/UserService';
 import UserService from '../../services/UserService';
 import TextInputWithLabel from '../TextInputWithLabel';
+import { User } from '../../types';
 
 export default function Profile({
     user,
     userTags,
     allTags,
 }: {
-    user: any;
+    user: User;
     userTags: Array<object>;
     allTags: Array<object>;
 }) {
@@ -33,13 +34,14 @@ export default function Profile({
             location.reload();
         }
     };
+
     useEffect(() => {
-        UserService.updateUser(user.display_name, userImage).then((response) =>
+        UserService.updateUser(userName, userImage).then((response) =>
             console.log(response)
         );
-    }, [user.display_name, userImage]);
+    }, [userName, userImage]);
     return (
-        <View style={tw`bg-bg_color min-h-full max-h-screen`}>
+        <View style={tw`bg-bg_color min-h-full max-h-100 w-auto`}>
             <BackgroundImage>
                 <View style={tw`w-full p-4 mt-16 gap-6`}>
                     <ImagePickerComponent
@@ -53,7 +55,7 @@ export default function Profile({
                     <Text style={tw`ml-3 text-xl text-text_primary`}>
                         Profiel
                     </Text>
-                    <View style={tw`flex-row w-full`}>
+                    <View style={tw`flex-row`}>
                         <MaterialIcons
                             name="person"
                             size={24}
@@ -62,9 +64,9 @@ export default function Profile({
                         />
                         <TextInputWithLabel
                             label={'Naam'}
-                            style={tw`h-8 font-sans text-xl w-fit`}
+                            style={tw`h-8 font-sans text-xl flex-1`}
                             maxLength={42}
-                            defaultValue={user.display_name}
+                            defaultValue={userName}
                             onInputChange={setUserName}
                             onFocus={() => setUserName(user?.display_name)}
                             onBlur={() =>
@@ -148,9 +150,7 @@ export default function Profile({
                         }}
                         style={tw`w-full flex-row`}
                     >
-                        <Text
-                            style={tw`text-[#E81C00] text-xl mt-3 ml-3 flex-grow`}
-                        >
+                        <Text style={tw`text-[#E81C00] text-xl mt-3 ml-3 grow`}>
                             Account verwijderen
                         </Text>
                         <MaterialCommunityIcons

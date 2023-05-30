@@ -28,6 +28,7 @@ export type User = {
     id: string;
     display_name: string;
     is_admin: boolean;
+    image: Image;
 };
 export type SwipeSession = {
     id: string;

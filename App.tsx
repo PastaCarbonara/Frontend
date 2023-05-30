@@ -44,7 +44,6 @@ export default function App() {
                 CreateGroup: 'groups/new',
                 Group: 'group/:groupId',
                 Invite: 'group/:id/join',
-                ChangeUsername: 'profile/changename',
             },
         },
     };
