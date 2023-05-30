@@ -154,7 +154,6 @@ function SwipeScreenHeader({ ...props }: { props: any }) {
     const currentGroupObject = groups?.find(
         (group: Group) => group.id === currentGroup
     );
-
     return groups?.length > 0 ? (
         <Dropdown
             options={groups}

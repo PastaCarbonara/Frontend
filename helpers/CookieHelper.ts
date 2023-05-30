@@ -15,7 +15,28 @@ const setCookie = (name: string, value: string, days: number) => {
     document.cookie = `${name}=${value}; expires=${expires}; path=/`;
 };
 
+const deleteCookies = () => {
+    const user_uuid = cookieHelper.getCookie('user_uuid');
+    const refresh_token = cookieHelper.getCookie('refresh_token');
+    const access_token = cookieHelper.getCookie('access_token');
+    const currentGroup = cookieHelper.getCookie('currentGroup');
+
+    if (user_uuid) {
+        cookieHelper.setCookie('user_uuid', user_uuid, -1);
+    }
+    if (refresh_token) {
+        cookieHelper.setCookie('refresh_token', refresh_token, -1);
+    }
+    if (access_token) {
+        cookieHelper.setCookie('access_token', access_token, -1);
+    }
+    if (currentGroup) {
+        cookieHelper.setCookie('currentGroup', currentGroup, -1);
+    }
+};
+
 export const cookieHelper = {
     getCookie,
     setCookie,
+    deleteCookies,
 };

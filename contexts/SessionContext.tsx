@@ -48,7 +48,7 @@ export const SessionWebsocketProvider = ({
             return;
         }
         const access_token = cookieHelper.getCookie('access_token');
-        const sessionWebSocketAddress = `${SOCKET_URL}/swipe_sessions/${currentGroup}?token=${access_token}`;
+        const sessionWebSocketAddress = `${SOCKET_URL}/swipe_sessions/${currentSession}?token=${access_token}`;
         const socket = new WebSocket(sessionWebSocketAddress);
 
         socket.onopen = () => {

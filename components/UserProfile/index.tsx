@@ -11,6 +11,7 @@ import userService from '../../services/UserService';
 import UserService from '../../services/UserService';
 import TextInputWithLabel from '../TextInputWithLabel';
 import { User } from '../../types';
+import * as Linking from 'expo-linking';
 
 export default function Profile({
     user,
@@ -26,7 +27,6 @@ export default function Profile({
     );
     const [visible, setVisible] = useState(false);
     const [userName, setUserName] = useState<string>(user.display_name);
-
     const toggleBottomNavigationView = () => {
         //Toggling the visibility state of the bottom sheet
         setVisible(!visible);
@@ -64,7 +64,7 @@ export default function Profile({
                         />
                         <TextInputWithLabel
                             label={'Naam'}
-                            style={tw`h-8 font-sans text-xl flex-1`}
+                            style={tw`h-8 font-sans text-xl flex-1 w-full`}
                             maxLength={42}
                             defaultValue={userName}
                             onInputChange={setUserName}
@@ -142,10 +142,16 @@ export default function Profile({
                                     'Uw account wordt hiermee permanent verwijderd, dit kan niet ongedaan gemaakt worden.\nWeet u zeker dat u verder wilt gaan?'
                                 )
                             ) {
-                                alert('Uw account is verwijderd');
-                                location.reload();
-                            } else {
-                                console.log('blep');
+                                UserService.deleteMe()
+                                    .then((respon) => {
+                                        console.log(respon);
+                                        alert('Uw account is verwijderd');
+                                    })
+                                    .then(() => {
+                                        location.replace(
+                                            Linking.createURL('/')
+                                        );
+                                    });
                             }
                         }}
                         style={tw`w-full flex-row`}

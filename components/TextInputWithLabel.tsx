@@ -14,13 +14,12 @@ export default function TextInputWithLabel({
     return (
         <View {...inputProps}>
             <Text style={tw`text-text_primary`}>{label}</Text>
-            <View style={tw`border-b flex-row items-center gap-2 grow`}>
+            <View style={tw`border-b flex-row items-center gap-2`}>
                 <TextInput
                     onChange={(e) => {
                         setWordCount(e.nativeEvent.text.length);
                         onInputChange(e.nativeEvent?.text);
                     }}
-                    style={tw`w-100`}
                     {...inputProps}
                 />
                 <Text

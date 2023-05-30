@@ -30,6 +30,24 @@ function useMe() {
     };
 }
 
+async function deleteMe() {
+    const access_token = cookieHelper.getCookie('access_token');
+    try {
+        const response = await fetch(`${API_URL}/me`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `bearer ${access_token}`,
+            },
+        });
+        cookieHelper.deleteCookies();
+        // const responsible = HttpErrorHandling.responseChecker(response); <-- causes code to break, no clue why
+        return response;
+    } catch (error) {
+        console.log('plz plant');
+        console.error(`Error fetching data: ${error}`);
+    }
+}
+
 async function updateUser(
     username: string,
     image?: File | undefined,
@@ -115,6 +133,7 @@ const userService = {
     addFilter,
     deleteFilter,
     updateUser,
+    deleteMe,
 };
 
 export default userService;
