@@ -91,11 +91,11 @@ async function fetchFilters() {
     }
 }
 
-async function useFilters() {
+function useFilters() {
     const { data, error, isLoading } = useSWR(`/me/filters`, fetcher);
     return {
         filters: data,
-        isLoading,
+        isLoadingFilters: isLoading,
         isError: error,
     };
 }

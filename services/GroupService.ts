@@ -6,7 +6,7 @@ import useSWR from 'swr';
 import { fetcher } from './Fetcher';
 
 function useGroups() {
-    const { data, error, isLoading } = useSWR('/me/groups', fetcher);
+    const { data, error, isLoading } = useSWR(`/me/groups`, fetcher);
     return {
         groups: data,
         isLoading,

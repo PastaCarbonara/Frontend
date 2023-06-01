@@ -9,11 +9,9 @@ import React, { useEffect, useState } from 'react';
 import CheckBoxComponent from '../CheckBoxComponent';
 import userService from '../../services/UserService';
 import TextInputWithLabel from '../TextInputWithLabel';
-import { User, Tag, RootDrawerParamList } from '../../types';
+import { User, Tag } from '../../types';
 import * as Linking from 'expo-linking';
 import { mutate } from 'swr';
-import { useNavigation } from '@react-navigation/native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 export default function Profile({
     user,
@@ -29,22 +27,11 @@ export default function Profile({
     );
     const [visible, setVisible] = useState(false);
     const [userName, setUserName] = useState<string>(user.display_name);
-    const navigation =
-        useNavigation<DrawerNavigationProp<RootDrawerParamList>>();
     const toggleBottomNavigationView = () => {
         //Toggling the visibility state of the bottom sheet
         setVisible(!visible);
-        if (visible) {
-            userService.useFilters().then(() => updatePage());
-            location.reload();
-        }
     };
 
-    const updatePage = () =>
-        async function () {
-            await mutate('/me/filters');
-            navigation.navigate('Profile');
-        };
     useEffect(() => {
         userService
             .updateUser(userName, userImage)
@@ -207,12 +194,16 @@ const createCheckboxComponent = (tag: Tag, userTags: Array<Tag>) => {
     const checkboxOnChangeBehaviour = () => {
         if (!checkState) {
             newTags.push(tag.id);
-            userService.addFilter(newTags);
+            userService.addFilter(newTags).then(async () => {
+                await mutate('/me/filters');
+            });
             checkState = !checkState;
         } else {
             userTags.splice(userTags.indexOf(tag), 1);
             newTags.splice(newTags.indexOf(tag.id), 1);
-            userService.deleteFilter(tag.id);
+            userService.deleteFilter(tag.id).then(async () => {
+                await mutate('/me/filters');
+            });
             checkState = !checkState;
         }
     };
