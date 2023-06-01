@@ -30,6 +30,11 @@ export type User = {
     is_admin: boolean;
     image: Image;
 };
+export type Tag = {
+    id: number;
+    name: string;
+    tag_type: string;
+};
 export type SwipeSession = {
     id: string;
     session_date: string;

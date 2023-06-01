@@ -3,15 +3,17 @@ import ImagePickerComponent from '../ImagePickerComponent';
 import BackgroundImage from '../BackgroundImage';
 import tw from '../../lib/tailwind';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import Tag from '../Tag';
+import TagComponent from '../TagComponent';
 import BottomSheetComponent from '../BottomSheetComponent';
 import React, { useEffect, useState } from 'react';
 import CheckBoxComponent from '../CheckBoxComponent';
 import userService from '../../services/UserService';
-import UserService from '../../services/UserService';
 import TextInputWithLabel from '../TextInputWithLabel';
-import { User } from '../../types';
+import { User, Tag, RootDrawerParamList } from '../../types';
 import * as Linking from 'expo-linking';
+import { mutate } from 'swr';
+import { useNavigation } from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 export default function Profile({
     user,
@@ -19,29 +21,37 @@ export default function Profile({
     allTags,
 }: {
     user: User;
-    userTags: Array<object>;
-    allTags: Array<object>;
+    userTags: Array<Tag>;
+    allTags: Array<Tag>;
 }) {
     const [userImage, setUserImage] = React.useState<File | undefined>(
         undefined
     );
     const [visible, setVisible] = useState(false);
     const [userName, setUserName] = useState<string>(user.display_name);
+    const navigation =
+        useNavigation<DrawerNavigationProp<RootDrawerParamList>>();
     const toggleBottomNavigationView = () => {
         //Toggling the visibility state of the bottom sheet
         setVisible(!visible);
         if (visible) {
+            userService.useFilters().then(() => updatePage());
             location.reload();
         }
     };
 
+    const updatePage = () =>
+        async function () {
+            await mutate('/me/filters');
+            navigation.navigate('Profile');
+        };
     useEffect(() => {
-        UserService.updateUser(userName, userImage).then((response) =>
-            console.log(response)
-        );
+        userService
+            .updateUser(userName, userImage)
+            .then((response) => console.log(response));
     }, [userName, userImage]);
     return (
-        <View style={tw`bg-bg_color min-h-full max-h-100 w-auto`}>
+        <View style={tw`bg-bg_color min-h-full max-h-full w-auto`}>
             <BackgroundImage>
                 <View style={tw`w-full p-4 mt-16 gap-6`}>
                     <ImagePickerComponent
@@ -71,7 +81,7 @@ export default function Profile({
                             onFocus={() => setUserName(user?.display_name)}
                             onBlur={() =>
                                 userName
-                                    ? UserService.updateUser(
+                                    ? userService.updateUser(
                                           userName,
                                           userImage,
                                           [user.image]
@@ -119,15 +129,18 @@ export default function Profile({
                     <View
                         style={tw`w-full self-center mb-5 px-2 flex-row flex-wrap`}
                     >
-                        {userTags?.map((tag: any) => (
-                            <Tag
+                        {userTags?.map((tag: Tag) => (
+                            <TagComponent
                                 tagValue={tag.name}
                                 tagType={tag.tag_type}
                                 key={tag.id}
                             />
                         ))}
                         <Pressable onPress={() => toggleBottomNavigationView()}>
-                            <Tag tagValue={'Meer filters +'} tagType={'more'} />
+                            <TagComponent
+                                tagValue={'Meer filters +'}
+                                tagType={'more'}
+                            />
                         </Pressable>
                     </View>
                 </View>
@@ -142,9 +155,9 @@ export default function Profile({
                                     'Uw account wordt hiermee permanent verwijderd, dit kan niet ongedaan gemaakt worden.\nWeet u zeker dat u verder wilt gaan?'
                                 )
                             ) {
-                                UserService.deleteMe()
-                                    .then((respon) => {
-                                        console.log(respon);
+                                userService
+                                    .deleteMe()
+                                    .then(() => {
                                         alert('Uw account is verwijderd');
                                     })
                                     .then(() => {
@@ -176,7 +189,7 @@ export default function Profile({
                 onBackdropPress={toggleBottomNavigationView}
             >
                 <View style={tw`flex-column`}>
-                    {allTags?.map((tag: object) =>
+                    {allTags?.map((tag: Tag) =>
                         createCheckboxComponent(tag, userTags)
                     )}
                 </View>
@@ -185,8 +198,8 @@ export default function Profile({
     );
 }
 
-const createCheckboxComponent = (tag: any, userTags: Array<object>) => {
-    let checkState = userTags.some((userTag: any) => {
+const createCheckboxComponent = (tag: Tag, userTags: Array<Tag>) => {
+    let checkState = userTags.some((userTag: Tag) => {
         return userTag.id === tag.id;
     });
 
@@ -198,7 +211,7 @@ const createCheckboxComponent = (tag: any, userTags: Array<object>) => {
             checkState = !checkState;
         } else {
             userTags.splice(userTags.indexOf(tag), 1);
-            newTags.splice(newTags.indexOf(tag), 1);
+            newTags.splice(newTags.indexOf(tag.id), 1);
             userService.deleteFilter(tag.id);
             checkState = !checkState;
         }

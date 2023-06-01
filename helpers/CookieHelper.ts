@@ -15,7 +15,13 @@ const setCookie = (name: string, value: string, days: number) => {
     document.cookie = `${name}=${value}; expires=${expires}; path=/`;
 };
 
-const deleteCookies = () => {
+const deleteCookie = (cookieName: string) => {
+    const cookieValue = cookieHelper.getCookie(cookieName);
+    if (cookieValue) {
+        setCookie(cookieName, cookieValue, -1);
+    }
+};
+const deleteAllCookies = () => {
     const user_uuid = cookieHelper.getCookie('user_uuid');
     const refresh_token = cookieHelper.getCookie('refresh_token');
     const access_token = cookieHelper.getCookie('access_token');
@@ -38,5 +44,6 @@ const deleteCookies = () => {
 export const cookieHelper = {
     getCookie,
     setCookie,
-    deleteCookies,
+    deleteCookie,
+    deleteAllCookies,
 };

@@ -39,11 +39,10 @@ async function deleteMe() {
                 Authorization: `bearer ${access_token}`,
             },
         });
-        cookieHelper.deleteCookies();
+        cookieHelper.deleteAllCookies();
         // const responsible = HttpErrorHandling.responseChecker(response); <-- causes code to break, no clue why
         return response;
     } catch (error) {
-        console.log('plz plant');
         console.error(`Error fetching data: ${error}`);
     }
 }
@@ -92,6 +91,15 @@ async function fetchFilters() {
     }
 }
 
+async function useFilters() {
+    const { data, error, isLoading } = useSWR(`/me/filters`, fetcher);
+    return {
+        filters: data,
+        isLoading,
+        isError: error,
+    };
+}
+
 async function addFilter(tags: any) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
@@ -129,6 +137,7 @@ async function deleteFilter(tagId: number) {
 const userService = {
     fetchMe,
     useMe,
+    useFilters,
     fetchFilters,
     addFilter,
     deleteFilter,
