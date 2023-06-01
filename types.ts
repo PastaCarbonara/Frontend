@@ -4,14 +4,20 @@ export type RootStackParamList = {
     Root: NavigatorScreenParams<RootDrawerParamList>;
     Recipe: { id: number };
     Match: { recipe: Recipe };
-    Group: { groupId: string };
-    Invite: { groupId: string };
-    CreateGroup: undefined;
+    // Group: { groupId: string };
+    // Invite: { groupId: string };
+    // CreateGroup: undefined;
 };
 export type RootDrawerParamList = {
     Home: undefined;
     Profile: undefined;
+    GroupsNavigator: NavigatorScreenParams<GroupStackParamList>;
+};
+export type GroupStackParamList = {
     Groups: undefined;
+    Group: { groupId: string };
+    Invite: { groupId: string };
+    CreateGroup: undefined;
 };
 export type Group = {
     id: string;
