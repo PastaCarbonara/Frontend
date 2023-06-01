@@ -44,11 +44,11 @@ export const SessionWebsocketProvider = ({
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
     useEffect(() => {
-        if (!currentGroup) {
+        if (!currentSession) {
             return;
         }
         const access_token = cookieHelper.getCookie('access_token');
-        const sessionWebSocketAddress = `${SOCKET_URL}/swipe_sessions/${currentGroup}?token=${access_token}`;
+        const sessionWebSocketAddress = `${SOCKET_URL}/swipe_sessions/${currentSession}?token=${access_token}`;
         const socket = new WebSocket(sessionWebSocketAddress);
 
         socket.onopen = () => {
@@ -69,7 +69,6 @@ export const SessionWebsocketProvider = ({
             handleWebSocketEvent(JSON.parse(event.data));
         };
         socket.onerror = (error) => {
-            console.log(sessionWebSocketAddress);
             console.log(error);
         };
 
