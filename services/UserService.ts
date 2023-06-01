@@ -4,7 +4,6 @@ import { cookieHelper } from '../helpers/CookieHelper';
 import { fetcher } from './Fetcher';
 import useSWR from 'swr';
 import imageService from './ImageService';
-import { UserImage } from '../types';
 
 async function fetchMe() {
     const access_token = cookieHelper.getCookie('access_token');
@@ -47,15 +46,13 @@ async function deleteMe() {
     }
 }
 
-async function updateUser(
-    username: string,
-    image?: File | undefined,
-    oldImage?: Array<UserImage> | undefined
-) {
+async function updateUser(username: string, image: File | string | undefined) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
-        let files = oldImage;
-        if (image) {
+        let files;
+        if (typeof image === 'string') {
+            files = [{ filename: image }];
+        } else if (image) {
             files = await imageService.uploadImages({ images: [image] });
         }
         if (files != null) {
@@ -72,20 +69,6 @@ async function updateUser(
             });
             return HttpErrorHandling.responseChecker(response);
         }
-    } catch (error) {
-        console.error(`Error fetching data: ${error}`);
-    }
-}
-
-async function fetchFilters() {
-    const access_token = cookieHelper.getCookie('access_token');
-    try {
-        const response = await fetch(`${API_URL}/me/filters`, {
-            headers: {
-                Authorization: `bearer ${access_token}`,
-            },
-        });
-        return HttpErrorHandling.responseChecker(response);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
     }
@@ -138,7 +121,6 @@ const userService = {
     fetchMe,
     useMe,
     useFilters,
-    fetchFilters,
     addFilter,
     deleteFilter,
     updateUser,

@@ -34,9 +34,13 @@ export default function Profile({
 
     useEffect(() => {
         userService
-            .updateUser(userName, userImage)
-            .then((response) => console.log(response));
-    }, [userName, userImage]);
+            .updateUser(user.display_name, userImage)
+            .then((response) => console.log(response))
+            .then(async () => {
+                await mutate('/me');
+            })
+            .then(() => console.log(user));
+    }, [user, user.display_name, userImage]);
     return (
         <View style={tw`bg-bg_color min-h-full max-h-full w-auto`}>
             <BackgroundImage>
@@ -56,30 +60,33 @@ export default function Profile({
                         <MaterialIcons
                             name="person"
                             size={24}
-                            color="black"
+                            color="#333333"
                             style={tw`self-center m-3`}
                         />
                         <TextInputWithLabel
                             label={'Naam'}
                             style={tw`h-8 font-sans text-xl flex-1 w-full`}
-                            maxLength={42}
+                            maxLength={32}
                             defaultValue={userName}
                             onInputChange={setUserName}
                             onFocus={() => setUserName(user?.display_name)}
                             onBlur={() =>
                                 userName
-                                    ? userService.updateUser(
-                                          userName,
-                                          userImage,
-                                          [user.image]
-                                      )
-                                    : console.log('Username is undefined')
+                                    ? userService
+                                          .updateUser(
+                                              userName,
+                                              user.image.filename
+                                          )
+                                          .then(async () => {
+                                              await mutate('/me');
+                                          })
+                                    : console.error('Username is undefined')
                             }
                         />
                         <MaterialCommunityIcons
                             name="pencil"
                             size={24}
-                            color="black"
+                            color="#333333"
                             style={tw`self-center m-3`}
                         />
                     </View>
@@ -95,7 +102,7 @@ export default function Profile({
                         <MaterialCommunityIcons
                             name="email"
                             size={24}
-                            color="black"
+                            color="#333333"
                             style={tw`self-center m-3`}
                         />
                         <Text style={tw`font-sans self-center text-l w-full`}>
@@ -104,7 +111,7 @@ export default function Profile({
                         <MaterialCommunityIcons
                             name="arrow-right"
                             size={24}
-                            color="black"
+                            color="#333333"
                             style={tw`self-center m-3`}
                         />
                     </Pressable>
