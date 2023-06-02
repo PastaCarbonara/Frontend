@@ -44,7 +44,7 @@ export const SessionWebsocketProvider = ({
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
     useEffect(() => {
-        if (!currentGroup) {
+        if (!currentSession) {
             return;
         }
         const access_token = cookieHelper.getCookie('access_token');
@@ -69,7 +69,6 @@ export const SessionWebsocketProvider = ({
             handleWebSocketEvent(JSON.parse(event.data));
         };
         socket.onerror = (error) => {
-            console.log(sessionWebSocketAddress);
             console.log(error);
         };
 

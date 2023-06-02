@@ -2,7 +2,11 @@ import React, { useCallback } from 'react';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
+import {
+    getFocusedRouteNameFromRoute,
+    LinkingOptions,
+    NavigationContainer,
+} from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import {
@@ -11,7 +15,12 @@ import {
 } from './contexts/SessionContext';
 import RecipeScreen from './screens/RecipeScreen';
 import MatchScreen from './screens/MatchScreen';
-import { Group, RootDrawerParamList, RootStackParamList } from './types';
+import {
+    Group,
+    GroupStackParamList,
+    RootDrawerParamList,
+    RootStackParamList,
+} from './types';
 import { navigationRef } from './RootNavigator';
 import { useFonts } from 'expo-font';
 import MyGroupsScreen from './screens/MyGroupsScreen';
@@ -27,26 +36,38 @@ import InviteScreen from './screens/InviteScreen';
 const prefix = Linking.createURL('/');
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const GroupsStack = createNativeStackNavigator<GroupStackParamList>();
 
 export default function App() {
+    // @ts-ignore
+    // @ts-ignore
     const linking: LinkingOptions<RootStackParamList> = {
         prefixes: [prefix],
         config: {
+            initialRouteName: 'Root',
             screens: {
                 Root: {
+                    initialRouteName: 'Home',
                     screens: {
                         Home: '',
                         Profile: 'profile',
-                        Groups: 'groups',
+                        GroupsNavigator: {
+                            //@ts-ignore typescript doesn't understand the types for initialRouteName here, but it is correct
+                            initialRouteName: 'Groups',
+                            screens: {
+                                Groups: 'groups',
+                                Group: 'group/:groupId',
+                                Invite: 'group/:id/join',
+                                CreateGroup: 'groups/new',
+                            },
+                        },
                     },
                 },
                 Recipe: 'recipe/:id',
-                CreateGroup: 'groups/new',
-                Group: 'group/:groupId',
-                Invite: 'group/:id/join',
             },
         },
     };
+
     useFonts({
         'Baloo-Regular': require('./assets/fonts/Baloo-Regular.ttf'),
         'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
@@ -68,7 +89,20 @@ export function DrawerNavigator() {
         return <SwipeScreenHeader props={props} />;
     }, []);
     return (
-        <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Navigator
+            initialRouteName="Home"
+            screenOptions={({ route }) => {
+                const focusedRouteName = getFocusedRouteNameFromRoute(route);
+                console.log(route);
+                console.log(focusedRouteName);
+                return {
+                    headerShown:
+                        focusedRouteName === 'Groups' ||
+                        route.name === 'Home' ||
+                        route.name === 'Profile',
+                };
+            }}
+        >
             <Drawer.Screen
                 name="Home"
                 component={HomeScreen}
@@ -86,8 +120,8 @@ export function DrawerNavigator() {
                 }}
             />
             <Drawer.Screen
-                name="Groups"
-                component={MyGroupsScreen}
+                name="GroupsNavigator"
+                component={GroupsStackNavigator}
                 options={{ headerTransparent: true }}
             />
         </Drawer.Navigator>
@@ -116,12 +150,20 @@ export function StackNavigator() {
                 component={MatchScreen}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen
-                name="Invite"
-                component={InviteScreen}
+        </Stack.Navigator>
+    );
+}
+
+export function GroupsStackNavigator() {
+    return (
+        <GroupsStack.Navigator>
+            <GroupsStack.Screen
+                name="Groups"
+                component={MyGroupsScreen}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen
+            <GroupsStack.Screen name="Invite" component={InviteScreen} />
+            <GroupsStack.Screen
                 name={'CreateGroup'}
                 options={{
                     headerTransparent: true,
@@ -131,7 +173,7 @@ export function StackNavigator() {
                 }}
                 component={CreateGroupScreen}
             />
-            <Stack.Screen
+            <GroupsStack.Screen
                 name="Group"
                 component={GroupScreen}
                 options={{
@@ -139,7 +181,7 @@ export function StackNavigator() {
                     headerTitleAlign: 'center',
                 }}
             />
-        </Stack.Navigator>
+        </GroupsStack.Navigator>
     );
 }
 
