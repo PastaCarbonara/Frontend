@@ -5,8 +5,10 @@ import { ActivityIndicator, ImageBackground, View } from 'react-native';
 import HighlightedSessions from '../components/GroupInfo/HighlightedSessions';
 import GroupMembers from '../components/GroupInfo/GroupMembers';
 import Sessions from '../components/GroupInfo/Sessions';
-import { Group } from '../types';
+import { Group, GroupStackParamList } from '../types';
 import ImagePickerComponent from '../components/ImagePickerComponent';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export default function GroupScreen({ route }: { route: any }) {
     const { groupId } = route.params;
@@ -14,10 +16,13 @@ export default function GroupScreen({ route }: { route: any }) {
     const [isLoading, setIsLoading] = useState(true);
     const [upcomingSessions, setUpcomingSessions] = useState<any>();
     const { group } = groupService.useGroup(groupId);
+    const navigation =
+        useNavigation<NativeStackNavigationProp<GroupStackParamList>>();
 
     useEffect(() => {
         const fetchData = async () => {
             if (!group) return;
+            navigation.setOptions({ title: group.name });
             try {
                 setGroupData(group);
                 setUpcomingSessions(
@@ -35,7 +40,7 @@ export default function GroupScreen({ route }: { route: any }) {
             }
         };
         void fetchData();
-    }, [group, groupId]);
+    }, [group, groupId, navigation]);
     return (
         <ImageBackground
             source={require('../assets/images/header_background.svg')}
@@ -59,7 +64,7 @@ export default function GroupScreen({ route }: { route: any }) {
                     </View>
 
                     <HighlightedSessions sessions={upcomingSessions} />
-                    <View style={tw`px-4 gap-6`}>
+                    <View style={tw`px-4 mb-8 gap-6`}>
                         <Sessions sessions={groupData.swipe_sessions} />
                     </View>
                 </View>
