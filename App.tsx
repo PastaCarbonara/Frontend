@@ -6,6 +6,7 @@ import {
     getFocusedRouteNameFromRoute,
     LinkingOptions,
     NavigationContainer,
+    RouteProp,
 } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
@@ -39,8 +40,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const GroupsStack = createNativeStackNavigator<GroupStackParamList>();
 
 export default function App() {
-    // @ts-ignore
-    // @ts-ignore
     const linking: LinkingOptions<RootStackParamList> = {
         prefixes: [prefix],
         config: {
@@ -51,7 +50,7 @@ export default function App() {
                     screens: {
                         Home: '',
                         Profile: 'profile',
-                        GroupsNavigator: {
+                        Groups: {
                             //@ts-ignore typescript doesn't understand the types for initialRouteName here, but it is correct
                             initialRouteName: 'Groups',
                             screens: {
@@ -88,18 +87,23 @@ export function DrawerNavigator() {
     const headerTitle = useCallback((props: any) => {
         return <SwipeScreenHeader props={props} />;
     }, []);
+    const drawerHeaderShown = (
+        route: RouteProp<RootDrawerParamList, keyof RootDrawerParamList>
+    ) => {
+        const focusedRouteName = getFocusedRouteNameFromRoute(route);
+        return (
+            (route.name === 'Groups' && !focusedRouteName) ||
+            focusedRouteName === 'Groups' ||
+            route.name === 'Home' ||
+            route.name === 'Profile'
+        );
+    };
     return (
         <Drawer.Navigator
             initialRouteName="Home"
             screenOptions={({ route }) => {
-                const focusedRouteName = getFocusedRouteNameFromRoute(route);
-                console.log(route);
-                console.log(focusedRouteName);
                 return {
-                    headerShown:
-                        focusedRouteName === 'Groups' ||
-                        route.name === 'Home' ||
-                        route.name === 'Profile',
+                    headerShown: drawerHeaderShown(route),
                 };
             }}
         >
@@ -120,7 +124,7 @@ export function DrawerNavigator() {
                 }}
             />
             <Drawer.Screen
-                name="GroupsNavigator"
+                name="Groups"
                 component={GroupsStackNavigator}
                 options={{ headerTransparent: true }}
             />
