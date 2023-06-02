@@ -13,12 +13,12 @@ export default function NoGroupsFound() {
             <View
                 style={tw`items-center w-full justify-items-center mt-20 h-30`}
             >
-                <Text
-                    style={tw`font-sans pt-7 bg-white text-center w-85/100 h-120/100 rounded-6x1`}
-                >
-                    Je hebt nog geen groepen
+                <View style={tw`bg-white w-85/100 rounded-6x1`}>
+                    <Text style={tw`font-sans pt-7 text-center`}>
+                        Je hebt nog geen groepen
+                    </Text>
                     <TouchableOpacity
-                        style={tw`w-85/100, mt-3, bg-orange_primary rounded-3x1`}
+                        style={tw`w-85/100 m-4 bg-orange_primary rounded-3x1 font-sans text-center self-center`}
                         onPress={() => {
                             navigation?.navigate('CreateGroup');
                         }}
@@ -27,7 +27,7 @@ export default function NoGroupsFound() {
                             Maak een groep
                         </Text>
                     </TouchableOpacity>
-                </Text>
+                </View>
             </View>
             <View>
                 <Image

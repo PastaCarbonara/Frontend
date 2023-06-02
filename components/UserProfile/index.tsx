@@ -3,40 +3,46 @@ import ImagePickerComponent from '../ImagePickerComponent';
 import BackgroundImage from '../BackgroundImage';
 import tw from '../../lib/tailwind';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import Tag from '../Tag';
+import TagComponent from '../TagComponent';
 import BottomSheetComponent from '../BottomSheetComponent';
 import React, { useEffect, useState } from 'react';
 import CheckBoxComponent from '../CheckBoxComponent';
 import userService from '../../services/UserService';
-import UserService from '../../services/UserService';
+import TextInputWithLabel from '../TextInputWithLabel';
+import { User, Tag } from '../../types';
+import * as Linking from 'expo-linking';
+import { mutate } from 'swr';
 
 export default function Profile({
     user,
     userTags,
     allTags,
 }: {
-    user: any;
-    userTags: Array<object>;
-    allTags: Array<object>;
+    user: User;
+    userTags: Array<Tag>;
+    allTags: Array<Tag>;
 }) {
-    const [userImage, setUserImage] = React.useState<File | null>(null);
+    const [userImage, setUserImage] = React.useState<File | undefined>(
+        undefined
+    );
     const [visible, setVisible] = useState(false);
-
+    const [userName, setUserName] = useState<string>(user.display_name);
     const toggleBottomNavigationView = () => {
         //Toggling the visibility state of the bottom sheet
         setVisible(!visible);
-        if (visible) {
-            location.reload();
-        }
     };
-    useEffect(() => {
-        UserService.updateUser(user.display_name, userImage).then((response) =>
-            console.log(response)
-        );
-    }, [user.display_name, userImage]);
 
+    useEffect(() => {
+        userService
+            .updateUser(user.display_name, userImage)
+            .then((response) => console.log(response))
+            .then(async () => {
+                await mutate('/me');
+            })
+            .then(() => console.log(user));
+    }, [user, user.display_name, userImage]);
     return (
-        <View style={tw`bg-bg_color min-h-full max-h-screen`}>
+        <View style={tw`bg-bg_color min-h-full max-h-full w-auto`}>
             <BackgroundImage>
                 <View style={tw`w-full p-4 mt-16 gap-6`}>
                     <ImagePickerComponent
@@ -50,37 +56,40 @@ export default function Profile({
                     <Text style={tw`ml-3 text-xl text-text_primary`}>
                         Profiel
                     </Text>
-                    <Pressable
-                        onPress={() => {
-                            console.log('naem = ' + user.display_name);
-                        }}
-                        style={tw`flex-row`}
-                    >
+                    <View style={tw`flex-row`}>
                         <MaterialIcons
                             name="person"
                             size={24}
-                            color="black"
+                            color="#333333"
                             style={tw`self-center m-3`}
                         />
-                        <View
-                            style={tw`flex-column flex-15 self-center w-full`}
-                        >
-                            <Text
-                                style={tw`font-sans text-xs text-text_primary`}
-                            >
-                                Naam
-                            </Text>
-                            <Text style={tw`font-sans text-xl`}>
-                                {user.display_name}
-                            </Text>
-                        </View>
+                        <TextInputWithLabel
+                            label={'Naam'}
+                            style={tw`h-8 font-sans text-xl flex-1 w-full`}
+                            maxLength={32}
+                            defaultValue={userName}
+                            onInputChange={setUserName}
+                            onFocus={() => setUserName(user?.display_name)}
+                            onBlur={() =>
+                                userName
+                                    ? userService
+                                          .updateUser(
+                                              userName,
+                                              user.image.filename
+                                          )
+                                          .then(async () => {
+                                              await mutate('/me');
+                                          })
+                                    : console.error('Username is undefined')
+                            }
+                        />
                         <MaterialCommunityIcons
                             name="pencil"
                             size={24}
-                            color="black"
-                            style={tw`flex-end self-center m-3`}
+                            color="#333333"
+                            style={tw`self-center m-3`}
                         />
-                    </Pressable>
+                    </View>
                 </View>
                 <View style={tw`w-full self-center mb-5`}>
                     <Text style={tw`ml-3 text-xl text-text_primary`}>
@@ -93,7 +102,7 @@ export default function Profile({
                         <MaterialCommunityIcons
                             name="email"
                             size={24}
-                            color="black"
+                            color="#333333"
                             style={tw`self-center m-3`}
                         />
                         <Text style={tw`font-sans self-center text-l w-full`}>
@@ -102,8 +111,8 @@ export default function Profile({
                         <MaterialCommunityIcons
                             name="arrow-right"
                             size={24}
-                            color="black"
-                            style={tw`flex-end self-center m-3`}
+                            color="#333333"
+                            style={tw`self-center m-3`}
                         />
                     </Pressable>
                 </View>
@@ -114,15 +123,18 @@ export default function Profile({
                     <View
                         style={tw`w-full self-center mb-5 px-2 flex-row flex-wrap`}
                     >
-                        {userTags?.map((tag: any) => (
-                            <Tag
+                        {userTags?.map((tag: Tag) => (
+                            <TagComponent
                                 tagValue={tag.name}
                                 tagType={tag.tag_type}
                                 key={tag.id}
                             />
                         ))}
                         <Pressable onPress={() => toggleBottomNavigationView()}>
-                            <Tag tagValue={'Meer filters +'} tagType={'more'} />
+                            <TagComponent
+                                tagValue={'Meer filters +'}
+                                tagType={'more'}
+                            />
                         </Pressable>
                     </View>
                 </View>
@@ -137,17 +149,21 @@ export default function Profile({
                                     'Uw account wordt hiermee permanent verwijderd, dit kan niet ongedaan gemaakt worden.\nWeet u zeker dat u verder wilt gaan?'
                                 )
                             ) {
-                                alert('Uw account is verwijderd');
-                                location.reload();
-                            } else {
-                                console.log('blep');
+                                userService
+                                    .deleteMe()
+                                    .then(() => {
+                                        alert('Uw account is verwijderd');
+                                    })
+                                    .then(() => {
+                                        location.replace(
+                                            Linking.createURL('/')
+                                        );
+                                    });
                             }
                         }}
                         style={tw`w-full flex-row`}
                     >
-                        <Text
-                            style={tw`text-[#E81C00] text-xl mt-3 ml-3 flex-grow`}
-                        >
+                        <Text style={tw`text-[#E81C00] text-xl mt-3 ml-3 grow`}>
                             Account verwijderen
                         </Text>
                         <MaterialCommunityIcons
@@ -167,7 +183,7 @@ export default function Profile({
                 onBackdropPress={toggleBottomNavigationView}
             >
                 <View style={tw`flex-column`}>
-                    {allTags?.map((tag: object) =>
+                    {allTags?.map((tag: Tag) =>
                         createCheckboxComponent(tag, userTags)
                     )}
                 </View>
@@ -176,8 +192,8 @@ export default function Profile({
     );
 }
 
-const createCheckboxComponent = (tag: any, userTags: Array<object>) => {
-    let checkState = userTags.some((userTag: any) => {
+const createCheckboxComponent = (tag: Tag, userTags: Array<Tag>) => {
+    let checkState = userTags.some((userTag: Tag) => {
         return userTag.id === tag.id;
     });
 
@@ -185,12 +201,16 @@ const createCheckboxComponent = (tag: any, userTags: Array<object>) => {
     const checkboxOnChangeBehaviour = () => {
         if (!checkState) {
             newTags.push(tag.id);
-            userService.addFilter(newTags);
+            userService.addFilter(newTags).then(async () => {
+                await mutate('/me/filters');
+            });
             checkState = !checkState;
         } else {
             userTags.splice(userTags.indexOf(tag), 1);
-            newTags.splice(newTags.indexOf(tag), 1);
-            userService.deleteFilter(tag.id);
+            newTags.splice(newTags.indexOf(tag.id), 1);
+            userService.deleteFilter(tag.id).then(async () => {
+                await mutate('/me/filters');
+            });
             checkState = !checkState;
         }
     };

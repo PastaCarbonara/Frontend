@@ -29,42 +29,58 @@ function useMe() {
     };
 }
 
-async function updateUser(username: string, image?: File | null) {
+async function deleteMe() {
     const access_token = cookieHelper.getCookie('access_token');
     try {
-        let files;
-        if (image) {
-            files = await imageService.uploadImages({ images: [image] });
-        }
         const response = await fetch(`${API_URL}/me`, {
-            method: 'PATCH',
+            method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
                 Authorization: `bearer ${access_token}`,
             },
-            body: JSON.stringify({
-                display_name: username,
-                filename: files[0]?.filename,
-            }),
         });
-        return HttpErrorHandling.responseChecker(response);
+        cookieHelper.deleteAllCookies();
+        // const responsible = HttpErrorHandling.responseChecker(response); <-- causes code to break, no clue why
+        return response;
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
     }
 }
 
-async function fetchFilters() {
+async function updateUser(username: string, image: File | string | undefined) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
-        const response = await fetch(`${API_URL}/me/filters`, {
-            headers: {
-                Authorization: `bearer ${access_token}`,
-            },
-        });
-        return HttpErrorHandling.responseChecker(response);
+        let files;
+        if (typeof image === 'string') {
+            files = [{ filename: image }];
+        } else if (image) {
+            files = await imageService.uploadImages({ images: [image] });
+        }
+        if (files != null) {
+            const response = await fetch(`${API_URL}/me`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `bearer ${access_token}`,
+                },
+                body: JSON.stringify({
+                    display_name: username,
+                    filename: files[0]?.filename,
+                }),
+            });
+            return HttpErrorHandling.responseChecker(response);
+        }
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
     }
+}
+
+function useFilters() {
+    const { data, error, isLoading } = useSWR(`/me/filters`, fetcher);
+    return {
+        filters: data,
+        isLoadingFilters: isLoading,
+        isError: error,
+    };
 }
 
 async function addFilter(tags: any) {
@@ -89,7 +105,7 @@ async function addFilter(tags: any) {
 async function deleteFilter(tagId: number) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
-        const response = await fetch(`${API_URL}/me/filters?id=${tagId}`, {
+        const response = await fetch(`${API_URL}/me/filters/${tagId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `bearer ${access_token}`,
@@ -104,10 +120,11 @@ async function deleteFilter(tagId: number) {
 const userService = {
     fetchMe,
     useMe,
-    fetchFilters,
+    useFilters,
     addFilter,
     deleteFilter,
     updateUser,
+    deleteMe,
 };
 
 export default userService;

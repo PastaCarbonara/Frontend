@@ -12,7 +12,7 @@ export default function TextInputWithLabel({
 }) {
     const [wordCount, setWordCount] = React.useState(0);
     return (
-        <View>
+        <View style={tw`h-8 flex-1 w-full`}>
             <Text style={tw`text-text_primary`}>{label}</Text>
             <View style={tw`border-b flex-row items-center gap-2`}>
                 <TextInput
@@ -25,7 +25,7 @@ export default function TextInputWithLabel({
                 <Text
                     style={tw.style(
                         `${
-                            wordCount === 100
+                            wordCount === inputProps?.maxLength
                                 ? 'text-red-500'
                                 : 'text-text_primary'
                         }`

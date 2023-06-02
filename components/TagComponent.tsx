@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import tw from '../lib/tailwind';
 
-export default function Tag({
+export default function TagComponent({
     tagValue,
     tagType,
 }: {

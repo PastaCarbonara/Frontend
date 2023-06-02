@@ -16,6 +16,10 @@ export type GroupStackParamList = {
     Invite: { groupId: string };
     CreateGroup: undefined;
 };
+export type UserImage = {
+    file_url: string;
+    filename: string;
+};
 export type Group = {
     id: string;
     name: string;
@@ -27,6 +31,12 @@ export type User = {
     id: string;
     display_name: string;
     is_admin: boolean;
+    image: Image;
+};
+export type Tag = {
+    id: number;
+    name: string;
+    tag_type: string;
 };
 export type SwipeSession = {
     id: string;

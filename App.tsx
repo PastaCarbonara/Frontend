@@ -114,7 +114,10 @@ export function DrawerNavigator() {
             <Drawer.Screen
                 name="Profile"
                 component={ProfileScreen}
-                options={{ headerTransparent: true }}
+                options={{
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                }}
             />
             <Drawer.Screen
                 name="GroupsNavigator"
@@ -193,7 +196,6 @@ function SwipeScreenHeader({ ...props }: { props: any }) {
     const currentGroupObject = groups?.find(
         (group: Group) => group.id === currentGroup
     );
-
     return groups?.length > 0 ? (
         <Dropdown
             options={groups}

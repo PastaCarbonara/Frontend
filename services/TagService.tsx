@@ -1,16 +1,16 @@
-import HttpErrorHandling from './HttpErrorHandling';
-import { API_URL } from '@env';
+import useSWR from 'swr';
+import { fetcher } from './Fetcher';
 
-async function fetchAllTags() {
-    try {
-        const response = await fetch(`${API_URL}/tags`);
-        return HttpErrorHandling.responseChecker(response);
-    } catch (error) {
-        console.error(`Error fetching data: ${error}`);
-    }
+function useAllTags() {
+    const { data, error, isLoading } = useSWR(`/tags`, fetcher);
+    return {
+        allTags: data,
+        isLoadingTags: isLoading,
+        isError: error,
+    };
 }
 const tagService = {
-    fetchAllTags,
+    useAllTags,
 };
 
 export default tagService;
