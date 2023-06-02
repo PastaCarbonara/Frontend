@@ -6,6 +6,7 @@ import HighlightedSessions from '../components/GroupInfo/HighlightedSessions';
 import GroupMembers from '../components/GroupInfo/GroupMembers';
 import Sessions from '../components/GroupInfo/Sessions';
 import { Group } from '../types';
+import ImagePickerComponent from '../components/ImagePickerComponent';
 
 export default function GroupScreen({ route }: { route: any }) {
     const { groupId } = route.params;
@@ -48,12 +49,17 @@ export default function GroupScreen({ route }: { route: any }) {
                 </View>
             ) : groupData ? (
                 <View style={tw`w-full mt-16 gap-6`}>
-                    <View style={tw``}>
-                        <HighlightedSessions sessions={upcomingSessions} />
+                    <View style={tw`w-full mt-6 gap-6`}>
+                        <ImagePickerComponent
+                            initialImage={group.image?.file_url}
+                        />
+                    </View>
+                    <View style={tw`px-4`}>
+                        <GroupMembers members={groupData.users} />
                     </View>
 
-                    <View style={tw`p-4 gap-6`}>
-                        <GroupMembers members={groupData.users} />
+                    <HighlightedSessions sessions={upcomingSessions} />
+                    <View style={tw`px-4 gap-6`}>
                         <Sessions sessions={groupData.swipe_sessions} />
                     </View>
                 </View>

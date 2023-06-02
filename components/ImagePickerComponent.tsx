@@ -9,11 +9,14 @@ export default function ImagePickerComponent({
     onImageChange,
 }: {
     initialImage?: string;
-    onImageChange: (image: File) => void;
+    onImageChange?: (image: File) => void;
 }) {
     const [image, setImage] = useState<string | null>(null);
 
     const pickImage = async () => {
+        if (onImageChange === undefined) {
+            return;
+        }
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -67,25 +70,27 @@ export default function ImagePickerComponent({
                         )}
                     </View>
                 </TouchableHighlight>
-                <Pressable onPress={pickImage}>
-                    <View
-                        style={tw`w-12 h-12 -ml-9 -mb-3 rounded-full bg-indigo_secondary items-center justify-center`}
-                    >
-                        {image ? (
-                            <MaterialCommunityIcons
-                                name={'camera-flip-outline'}
-                                size={24}
-                                style={tw`text-white`}
-                            />
-                        ) : (
-                            <MaterialCommunityIcons
-                                name={'camera-outline'}
-                                size={24}
-                                style={tw`text-white`}
-                            />
-                        )}
-                    </View>
-                </Pressable>
+                {onImageChange && (
+                    <Pressable onPress={pickImage}>
+                        <View
+                            style={tw`w-12 h-12 -ml-9 -mb-3 rounded-full bg-indigo_secondary items-center justify-center`}
+                        >
+                            {image ? (
+                                <MaterialCommunityIcons
+                                    name={'camera-flip-outline'}
+                                    size={24}
+                                    style={tw`text-white`}
+                                />
+                            ) : (
+                                <MaterialCommunityIcons
+                                    name={'camera-outline'}
+                                    size={24}
+                                    style={tw`text-white`}
+                                />
+                            )}
+                        </View>
+                    </Pressable>
+                )}
             </View>
         </View>
     );
