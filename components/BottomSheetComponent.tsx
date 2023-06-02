@@ -23,7 +23,9 @@ export default function BottomSheetComponent({
             onBackdropPress={onBackdropPress}
         >
             <View style={tw`h-120 w-full bg-bg_color rounded-t-lg pt-5`}>
-                <Text style={tw`text-xl text-text_primary mb-6 px-3`}>
+                <Text
+                    style={tw`text-xl text-text_primary mb-6 px-3 font-Poppins-Bold text-center`}
+                >
                     {title}
                 </Text>
                 <ScrollView style={tw`px-3`}>{children}</ScrollView>
