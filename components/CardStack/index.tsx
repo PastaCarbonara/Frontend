@@ -4,7 +4,13 @@ import Card from '../Card';
 import { Recipe, WebSocketAction } from '../../types';
 import { SessionWebsocketContext } from '../../contexts/SessionContext';
 
-export default function CardStack({ recipes = [] }: { recipes: Recipe[] }) {
+export default function CardStack({
+    recipes = [],
+    onRecipeSwipe,
+}: {
+    recipes: Recipe[];
+    onRecipeSwipe?: () => void;
+}) {
     const swiper = useRef<Swiper<any>>(null);
     const { isReady, send } = useContext(SessionWebsocketContext);
 
@@ -66,6 +72,7 @@ export default function CardStack({ recipes = [] }: { recipes: Recipe[] }) {
             onSwipedRight={onSwipeRight}
             disableBottomSwipe
             disableTopSwipe
+            onSwiped={onRecipeSwipe}
         />
     );
 }
