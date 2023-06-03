@@ -8,7 +8,7 @@ export type RootStackParamList = {
 export type RootDrawerParamList = {
     Home: undefined;
     Profile: undefined;
-    GroupsNavigator: NavigatorScreenParams<GroupStackParamList>;
+    Groups: NavigatorScreenParams<GroupStackParamList>;
 };
 export type GroupStackParamList = {
     Groups: undefined;
