@@ -9,14 +9,8 @@ import {
 } from 'react-native';
 import React from 'react';
 import CreateSessionModal from './CreateSessionModal';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import {
-    RootStackParamList,
-    SwipeSession,
-    SwipeSessionStatus,
-} from '../../types';
-import swipeSessionService from '../../services/SwipeSessionService';
+import { SwipeSession } from '../../types';
+import SessionButton from './SessionButton';
 
 export default function HighlightedSessions({
     sessions,
@@ -130,47 +124,13 @@ function OpenSession({ session }: { session: SwipeSession }) {
                         {session.status === 'Is bezig' && 'Huidige sessie'}
                     </Text>
                 </View>
-                <Pressable
-                    style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
-                    onPress={async () => {
-                        if (
-                            session.status === 'Staat klaar' ||
-                            session.status === 'Gepauzeerd'
-                        ) {
-                            console.log('Sessie wordt gestart');
-                            await swipeSessionService.updateSwipeSessionStatus({
-                                groupId: session.group_id,
-                                swipeSessionId: session.id,
-                                status: SwipeSessionStatus.IN_PROGRESS,
-                            });
-                        }
-                        if (session.status === 'Is bezig') {
-                            console.log('Stop');
-                            await swipeSessionService.updateSwipeSessionStatus({
-                                groupId: session.group_id,
-                                swipeSessionId: session.id,
-                                status: SwipeSessionStatus.CANCELLED,
-                            });
-                        }
-                    }}
-                >
-                    <Text
-                        style={tw`font-sans font-bold text-base leading-normal text-white`}
-                    >
-                        {session.status === 'Staat klaar' ||
-                        session.status === 'Gepauzeerd'
-                            ? 'Start'
-                            : 'Stop'}
-                    </Text>
-                </Pressable>
+                <SessionButton session={session} />
             </View>
         </View>
     );
 }
 
 function ClosedSession({ session }: { session: SwipeSession }) {
-    const navigation =
-        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const { width } = useWindowDimensions();
     const cardWidth = width - 32;
     return (
@@ -214,20 +174,7 @@ function ClosedSession({ session }: { session: SwipeSession }) {
                         {session.status}
                     </Text>
                 </View>
-                <Pressable
-                    style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
-                    onPress={() => {
-                        navigation.navigate('Recipe', {
-                            id: session.matches[0].id,
-                        });
-                    }}
-                >
-                    <Text
-                        style={tw`font-sans font-bold text-base leading-normal text-white`}
-                    >
-                        Bekijk
-                    </Text>
-                </Pressable>
+                <SessionButton session={session} />
             </ImageBackground>
         </View>
     );
