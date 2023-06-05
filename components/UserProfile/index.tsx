@@ -32,6 +32,46 @@ export default function Profile({
         setVisible(!visible);
     };
 
+    allTags.sort((a: Tag, b: Tag) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+        return 0;
+    });
+    userTags.sort((a: Tag, b: Tag) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+        return 0;
+    });
+
+    const [userAllergies, userDiets] = filterTags(userTags);
+    const [allAllergies, allDiets] = filterTags(allTags);
+
+    function filterTags(tags: Array<Tag>): Array<Tag>[] {
+        let allergies: Array<Tag> = [];
+        let diet: Array<Tag> = [];
+        tags.filter((tag) => {
+            if (tag.tag_type == 'Allergieën') {
+                allergies.push(tag);
+            }
+            if (tag.tag_type == 'Dieet') {
+                diet.push(tag);
+            }
+        });
+        return [allergies, diet];
+    }
+
     useEffect(() => {
         userService
             .updateUser(user.display_name, userImage)
@@ -123,7 +163,14 @@ export default function Profile({
                     <View
                         style={tw`w-full self-center mb-5 px-2 flex-row flex-wrap`}
                     >
-                        {userTags?.map((tag: Tag) => (
+                        {userDiets?.map((tag: Tag) => (
+                            <TagComponent
+                                tagValue={tag.name}
+                                tagType={tag.tag_type}
+                                key={tag.id}
+                            />
+                        ))}
+                        {userAllergies?.map((tag: Tag) => (
                             <TagComponent
                                 tagValue={tag.name}
                                 tagType={tag.tag_type}
@@ -183,9 +230,26 @@ export default function Profile({
                 onBackdropPress={toggleBottomNavigationView}
             >
                 <View style={tw`flex-column`}>
-                    {allTags?.map((tag: Tag) =>
-                        createCheckboxComponent(tag, userTags)
-                    )}
+                    <Text
+                        style={tw`px-3 bg-indigo_primary text-xl text-white px-4 py-3 font-Poppins-Regular`}
+                    >
+                        Dieet
+                    </Text>
+                    <View style={tw`flex-column`}>
+                        {allDiets?.map((tag: Tag) =>
+                            createCheckboxComponent(tag, userTags)
+                        )}
+                    </View>
+                    <Text
+                        style={tw`bg-orange_primary text-xl text-white px-4 py-3 font-Poppins-Regular`}
+                    >
+                        Allergien
+                    </Text>
+                    <View style={tw`flex-column`}>
+                        {allAllergies?.map((tag: Tag) =>
+                            createCheckboxComponent(tag, userTags)
+                        )}
+                    </View>
                 </View>
             </BottomSheetComponent>
         </View>

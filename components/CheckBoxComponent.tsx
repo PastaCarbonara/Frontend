@@ -17,8 +17,8 @@ export default function CheckBoxComponent({
     }
     return (
         <Fragment>
-            <View style={tw`flex-row w-full`}>
-                <Text style={tw`flex-grow`}>{label}</Text>
+            <View style={tw`flex-row w-full px-4`}>
+                <Text style={tw`flex-grow my-3`}>{label}</Text>
                 <input
                     type="checkbox"
                     style={tw.style('bg-blue-100', {
@@ -29,7 +29,7 @@ export default function CheckBoxComponent({
                     defaultChecked={checkState}
                 />
             </View>
-            <Separator />
+            <Separator style={'border-indigo_primary'} />
         </Fragment>
     );
 }
