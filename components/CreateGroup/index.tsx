@@ -6,15 +6,15 @@ import TextInputWithLabel from '../TextInputWithLabel';
 import FloatingActionButton from '../FloatingActionButton';
 import groupService from '../../services/GroupService';
 import { useNavigation } from '@react-navigation/native';
-import { RootDrawerParamList } from '../../types';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { GroupStackParamList } from '../../types';
 import { mutate } from 'swr';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export default function CreateGroup() {
     const [groupName, setGroupName] = React.useState<string | null>(null);
     const [groupImage, setGroupImage] = React.useState<File | null>(null);
     const navigation =
-        useNavigation<DrawerNavigationProp<RootDrawerParamList>>();
+        useNavigation<NativeStackNavigationProp<GroupStackParamList>>();
     return (
         <ImageBackground
             source={require('../../assets/images/header_background.svg')}

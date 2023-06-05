@@ -13,6 +13,7 @@ export default function CardStack({
 }) {
     const swiper = useRef<Swiper<any>>(null);
     const { isReady, send } = useContext(SessionWebsocketContext);
+    console.log(isReady);
 
     function onLike() {
         if (swiper.current) {
@@ -35,6 +36,7 @@ export default function CardStack({
     }
 
     function swipe(isLike: boolean, cardIndex: number) {
+        console.log(isReady);
         if (isReady) {
             if (recipes[cardIndex]) {
                 send({

@@ -1,6 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as RootNavigator from '../RootNavigator';
-import { SwipeSession, WebSocketAction, WebSocketEvent } from '../types';
+import {
+    Group,
+    SwipeSession,
+    SwipeSessionStatus,
+    WebSocketAction,
+    WebSocketEvent,
+} from '../types';
 import { SOCKET_URL } from '@env';
 import groupService from '../services/GroupService';
 import { cookieHelper } from '../helpers/CookieHelper';
@@ -42,6 +48,34 @@ export const SessionWebsocketProvider = ({
     const { group } = groupService.useGroup(currentGroup);
 
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
+    const findGroupsWithActiveSession = useCallback(
+        (_groups: Group[]) =>
+            _groups?.filter((_group: Group) => {
+                for (const swipe_session of _group.swipe_sessions) {
+                    if (
+                        swipe_session.status === SwipeSessionStatus.IN_PROGRESS
+                    ) {
+                        return true;
+                    }
+                }
+                return false;
+            }),
+        []
+    );
+    const groupHasActiveSession = useCallback(
+        (_groupId: string) => {
+            const _currentGroup = groups?.find(
+                (_group: Group) => _group.id === _groupId
+            );
+            for (const swipe_session of _currentGroup.swipe_sessions) {
+                if (swipe_session.status === SwipeSessionStatus.IN_PROGRESS) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        [groups]
+    );
 
     useEffect(() => {
         if (!currentSession) {
@@ -80,12 +114,24 @@ export const SessionWebsocketProvider = ({
     }, [currentGroup, currentSession]);
 
     useEffect(() => {
+        console.log('useEffect');
         const fetchInitialData = async () => {
             if (!currentGroup && (groups === undefined || groups?.length < 1))
                 return;
-            if (!currentGroup && groups?.length > 0) {
-                setCurrentGroup(groups[0]?.id);
-                cookieHelper.setCookie('currentGroup', groups[0]?.id, 365000);
+            if (
+                (!currentGroup && groups?.length > 0) ||
+                (currentGroup &&
+                    groups?.length > 0 &&
+                    !groupHasActiveSession(currentGroup))
+            ) {
+                const groupsWithActiveSession =
+                    findGroupsWithActiveSession(groups);
+                setCurrentGroup(groupsWithActiveSession[0]?.id);
+                cookieHelper.setCookie(
+                    'currentGroup',
+                    groupsWithActiveSession[0]?.id,
+                    365000
+                );
                 return;
             }
             try {
@@ -105,11 +151,18 @@ export const SessionWebsocketProvider = ({
             }
         };
         void fetchInitialData();
-    }, [currentGroup, authData, verifyToken, groups, group]);
+    }, [
+        currentGroup,
+        authData,
+        verifyToken,
+        groups,
+        group,
+        findGroupsWithActiveSession,
+        groupHasActiveSession,
+    ]);
     const send = (webSocketEvent: WebSocketEvent) => {
         ws.current?.send(JSON.stringify(webSocketEvent));
     };
-
     const handleWebSocketEvent = (messageEvent: {
         action: any;
         payload: any;

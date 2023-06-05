@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -21,6 +21,7 @@ import {
     GroupStackParamList,
     RootDrawerParamList,
     RootStackParamList,
+    SwipeSessionStatus,
 } from './types';
 import { navigationRef } from './RootNavigator';
 import { useFonts } from 'expo-font';
@@ -200,9 +201,23 @@ function SwipeScreenHeader({ ...props }: { props: any }) {
     const currentGroupObject = groups?.find(
         (group: Group) => group.id === currentGroup
     );
+    const groupsWithActiveSession: Group[] = useMemo(
+        () =>
+            groups?.filter((group: Group) => {
+                for (const swipe_session of group.swipe_sessions) {
+                    if (
+                        swipe_session.status === SwipeSessionStatus.IN_PROGRESS
+                    ) {
+                        return true;
+                    }
+                }
+                return false;
+            }),
+        [groups]
+    );
     return groups?.length > 0 ? (
         <Dropdown
-            options={groups}
+            options={groupsWithActiveSession}
             onChange={onChange}
             initialOption={currentGroupObject}
             {...props}
