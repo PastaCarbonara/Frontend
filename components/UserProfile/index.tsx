@@ -235,7 +235,7 @@ export default function Profile({
                     <Text
                         style={tw`bg-orange_primary text-xl text-white px-4 py-3 font-Poppins-Regular`}
                     >
-                        Allergien
+                        Allergieën
                     </Text>
                     <View style={tw`flex-column`}>
                         {allAllergies?.map((tag: Tag) =>
