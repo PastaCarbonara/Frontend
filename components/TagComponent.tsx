@@ -21,7 +21,7 @@ export default function TagComponent({
 
 function setLayout(filterType: string): string {
     switch (filterType) {
-        case 'Keuken':
+        case 'Dieet':
             return 'indigo_primary text-white';
         case 'Allergieën':
             return 'orange_primary text-white';

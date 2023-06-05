@@ -1,16 +1,6 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
-
-const styles = StyleSheet.create({
-    separatingLine: {
-        borderBottomColor: '#F79F5F',
-        borderBottomWidth: 1,
-        width: '100%',
-        marginTop: 10,
-        marginBottom: 10,
-        height: 0,
-    },
-});
-export default function Separator() {
-    return <View style={styles.separatingLine} />;
+import tw from '../lib/tailwind';
+export default function Separator({ style }: { style: string }) {
+    return <View style={tw`${style} w-full h-0 border-b`} />;
 }

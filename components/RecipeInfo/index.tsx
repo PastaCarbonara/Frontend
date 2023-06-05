@@ -181,7 +181,7 @@ export default function Recipe({ recipeInfo }: any) {
                     <Text style={tw`font-sans text-center`}>
                         <i>{recipeInfo?.description}</i>
                     </Text>
-                    <Separator />
+                    <Separator style={'border-orange_primary my-4'} />
                 </View>
             </View>
             <ScrollView style={tw`w-full p-4`}>
@@ -212,7 +212,7 @@ export default function Recipe({ recipeInfo }: any) {
                         )}
                     </Text>
                 </View>
-                <Separator />
+                <Separator style={'border-orange_primary my-4'} />
                 <View>
                     <h2 style={tw`font-display text-text_primary`}>
                         Bereidingswijze:
