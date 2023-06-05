@@ -22,9 +22,9 @@ export default function BottomSheetComponent({
             onBackButtonPress={onBackButtonPress}
             onBackdropPress={onBackdropPress}
         >
-            <View style={tw`h-120 w-full bg-bg_color rounded-t-lg pt-5`}>
+            <View style={tw`h-9/10 w-full bg-bg_color rounded-t-lg pt-5`}>
                 <Text
-                    style={tw`text-xl text-text_primary  px-3 font-Poppins-Bold text-center`}
+                    style={tw`text-xl text-text_primary pb-4 px-3 font-Poppins-Bold text-center`}
                 >
                     {title}
                 </Text>

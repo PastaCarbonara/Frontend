@@ -32,7 +32,10 @@ export default function Profile({
         setVisible(!visible);
     };
 
-    allTags.sort((a: Tag, b: Tag) => {
+    allTags.sort((a: Tag, b: Tag) => tagSorter(a, b));
+    userTags.sort((a: Tag, b: Tag) => tagSorter(a, b));
+
+    function tagSorter(a: Tag, b: Tag) {
         const nameA = a.name.toUpperCase();
         const nameB = b.name.toUpperCase();
         if (nameA < nameB) {
@@ -42,23 +45,12 @@ export default function Profile({
             return 1;
         }
         return 0;
-    });
-    userTags.sort((a: Tag, b: Tag) => {
-        const nameA = a.name.toUpperCase();
-        const nameB = b.name.toUpperCase();
-        if (nameA < nameB) {
-            return -1;
-        }
-        if (nameA > nameB) {
-            return 1;
-        }
-        return 0;
-    });
+    }
 
-    const [userAllergies, userDiets] = filterTags(userTags);
-    const [allAllergies, allDiets] = filterTags(allTags);
+    const [userAllergies, userDiets] = filterTagsByType(userTags);
+    const [allAllergies, allDiets] = filterTagsByType(allTags);
 
-    function filterTags(tags: Array<Tag>): Array<Tag>[] {
+    function filterTagsByType(tags: Array<Tag>): Array<Tag>[] {
         let allergies: Array<Tag> = [];
         let diet: Array<Tag> = [];
         tags.filter((tag) => {
