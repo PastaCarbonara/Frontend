@@ -114,7 +114,6 @@ export const SessionWebsocketProvider = ({
     }, [currentGroup, currentSession]);
 
     useEffect(() => {
-        console.log('useEffect');
         const fetchInitialData = async () => {
             if (!currentGroup && (groups === undefined || groups?.length < 1))
                 return;
