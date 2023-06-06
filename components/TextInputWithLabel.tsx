@@ -10,7 +10,11 @@ export default function TextInputWithLabel({
     label: string;
     onInputChange: (name: string) => void;
 }) {
-    const [wordCount, setWordCount] = React.useState(0);
+    const [wordCount, setWordCount] = React.useState(() =>
+        inputProps.defaultValue != undefined
+            ? inputProps.defaultValue.length
+            : 0
+    );
     return (
         <View style={tw`h-8 flex-1 w-full`}>
             <Text style={tw`text-text_primary`}>{label}</Text>
