@@ -13,6 +13,7 @@ import Separator from '../Separator';
 import { LinearGradient } from 'expo-linear-gradient';
 import { RecipeIngredient } from '../../types';
 import tw from '../../lib/tailwind';
+import SpicinessIndicator from './SpicinessIndicator';
 
 const styles = StyleSheet.create({
     rcp: {
@@ -133,7 +134,7 @@ export default function Recipe({ recipeInfo }: any) {
                             />
                         </TouchableOpacity>
                         <Text style={tw`text-[#FAFAFA]`}>
-                            <View style={tw`flex-row items-end`}>
+                            <View style={tw`flex-row items-end w-full`}>
                                 <View style={tw`flex-2`}>
                                     <h1
                                         style={tw.style(
@@ -160,18 +161,17 @@ export default function Recipe({ recipeInfo }: any) {
                                             </Text>
                                         </MaterialCommunityIcons>
                                     </Text>
-                                    {/*<Text*/}
-                                    {/*    style={[*/}
-                                    {/*        styles.descriptionInfo,*/}
-                                    {/*        { textAlign: 'right' },*/}
-                                    {/*        styles.flexRow,*/}
-                                    {/*    ]}*/}
-                                    {/*>*/}
-                                    {/*    <MaterialCommunityIcons*/}
-                                    {/*        name="chili-hot"*/}
-                                    {/*        size={20}*/}
-                                    {/*    />*/}
-                                    {/*</Text>*/}
+                                    <Text
+                                        style={[
+                                            styles.descriptionInfo,
+                                            styles.flexRow,
+                                            tw`text-right`,
+                                        ]}
+                                    >
+                                        <SpicinessIndicator
+                                            spiciness={recipeInfo?.spiciness}
+                                        />
+                                    </Text>
                                 </View>
                             </View>
                         </Text>
