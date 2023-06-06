@@ -4,16 +4,16 @@ import { Image, Pressable, Text, View } from 'react-native';
 import tw from '../lib/tailwind';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types';
+import { GroupStackParamList } from '../types';
 
 export default function InviteScreen({ route }: { route: any }) {
     const { id } = route.params;
     const navigation =
-        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+        useNavigation<NativeStackNavigationProp<GroupStackParamList>>();
     const { group } = groupService.useGroupPreview(id);
     const acceptInvite = () => {
         groupService.acceptInvite(id).then(() => {
-            navigation.navigate('Group', {
+            navigation.replace('Group', {
                 groupId: group.id,
             });
         });

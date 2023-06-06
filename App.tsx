@@ -167,7 +167,11 @@ export function GroupsStackNavigator() {
                 component={MyGroupsScreen}
                 options={{ headerShown: false }}
             />
-            <GroupsStack.Screen name="Invite" component={InviteScreen} />
+            <GroupsStack.Screen
+                name="Invite"
+                component={InviteScreen}
+                options={{ headerShown: false }}
+            />
             <GroupsStack.Screen
                 name={'CreateGroup'}
                 options={{
