@@ -46,17 +46,20 @@ async function deleteMe() {
     }
 }
 
-async function updateUser(username: string, image: File | string | undefined) {
+async function updateUser(username: string, image?: File | string | null) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
         let files;
-        if (typeof image === 'string') {
-            files = [{ filename: image }];
-        } else if (image) {
-            files = await imageService.uploadImages({ images: [image] });
+        if (image) {
+            if (typeof image === 'string') {
+                files = [{ filename: image }];
+            } else if (image) {
+                files = await imageService.uploadImages({ images: [image] });
+            }
         }
+        let response;
         if (files != null) {
-            const response = await fetch(`${API_URL}/me`, {
+            response = await fetch(`${API_URL}/me`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,8 +70,19 @@ async function updateUser(username: string, image: File | string | undefined) {
                     filename: files[0]?.filename,
                 }),
             });
-            return HttpErrorHandling.responseChecker(response);
+        } else {
+            response = await fetch(`${API_URL}/me`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `bearer ${access_token}`,
+                },
+                body: JSON.stringify({
+                    display_name: username,
+                }),
+            });
         }
+        return HttpErrorHandling.responseChecker(response);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
     }

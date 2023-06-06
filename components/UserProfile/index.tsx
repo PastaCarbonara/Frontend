@@ -107,7 +107,7 @@ export default function Profile({
                                     ? userService
                                           .updateUser(
                                               userName,
-                                              user.image.filename
+                                              user?.image?.filename
                                           )
                                           .then(async () => {
                                               await mutate('/me');
