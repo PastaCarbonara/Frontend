@@ -49,8 +49,9 @@ async function deleteMe() {
 async function updateUser(username: string, image: Array<Image>) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
-        if (image != null) {
-            const response = await fetch(`${API_URL}/me`, {
+        let response;
+        if (image[0] != null) {
+            response = await fetch(`${API_URL}/me`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +63,19 @@ async function updateUser(username: string, image: Array<Image>) {
                 }),
             });
             return HttpErrorHandling.responseChecker(response);
+        } else {
+            response = await fetch(`${API_URL}/me`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `bearer ${access_token}`,
+                },
+                body: JSON.stringify({
+                    display_name: username,
+                }),
+            });
         }
+        return HttpErrorHandling.responseChecker(response);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
     }
