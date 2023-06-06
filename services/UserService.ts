@@ -5,20 +5,6 @@ import { fetcher } from './Fetcher';
 import useSWR from 'swr';
 import imageService from './ImageService';
 
-async function fetchMe() {
-    const access_token = cookieHelper.getCookie('access_token');
-    try {
-        const response = await fetch(`${API_URL}/me`, {
-            headers: {
-                Authorization: `bearer ${access_token}`,
-            },
-        });
-        return HttpErrorHandling.responseChecker(response);
-    } catch (error) {
-        console.error(`Error fetching data: ${error}`);
-    }
-}
-
 function useMe() {
     const { data, error } = useSWR('/me', fetcher);
 
@@ -118,7 +104,6 @@ async function deleteFilter(tagId: number) {
 }
 
 const userService = {
-    fetchMe,
     useMe,
     useFilters,
     addFilter,

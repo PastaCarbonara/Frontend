@@ -48,7 +48,7 @@ export default function Card({ recipe, onLike, onDislike }: cardProps) {
                     >
                         <TouchableOpacity
                             onPress={onDislike}
-                            style={tw`flex-row justify-center items-center align-center w-16 h-16 p-1.5 rounded-full bg-white shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}
+                            style={tw`flex-row justify-center items-center w-16 h-16 p-1.5 rounded-full bg-white shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}
                         >
                             <MaterialCommunityIcons
                                 name="close-thick"
@@ -62,7 +62,7 @@ export default function Card({ recipe, onLike, onDislike }: cardProps) {
                                     id: recipe.id,
                                 });
                             }}
-                            style={tw`flex-row justify-center items-center align-center w-14 h-14 p-1.5 rounded-full bg-white shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}
+                            style={tw`flex-row justify-center items-center w-14 h-14 p-1.5 rounded-full bg-white shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}
                         >
                             <Ionicons
                                 name="information"
@@ -72,7 +72,7 @@ export default function Card({ recipe, onLike, onDislike }: cardProps) {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={onLike}
-                            style={tw`flex-row justify-center items-center align-center w-16 h-16 p-1.5 rounded-full bg-white shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}
+                            style={tw`flex-row justify-center items-center w-16 h-16 p-1.5 rounded-full bg-white shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}
                         >
                             <MaterialCommunityIcons
                                 name="check-bold"
