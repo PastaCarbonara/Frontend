@@ -72,6 +72,7 @@ export type Recipe = {
     };
     creator: {};
     preparing_time: number;
+    spiciness: number;
     tags: string[];
     instructions: string[];
     ingredients: RecipeIngredient[];
