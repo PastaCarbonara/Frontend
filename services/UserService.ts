@@ -3,7 +3,7 @@ import { API_URL } from '@env';
 import { cookieHelper } from '../helpers/CookieHelper';
 import { fetcher } from './Fetcher';
 import useSWR from 'swr';
-import imageService from './ImageService';
+import { Image } from '../types';
 
 async function fetchMe() {
     const access_token = cookieHelper.getCookie('access_token');
@@ -46,20 +46,13 @@ async function deleteMe() {
     }
 }
 
-async function updateUser(username: string, image?: File | string | null) {
+async function updateUser(username: string, image: Array<Image>) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
-        let files;
-        if (image) {
-            if (typeof image === 'string') {
-                files = [{ filename: image }];
-            } else if (image) {
-                files = await imageService.uploadImages({ images: [image] });
-            }
-        }
-        let response;
-        if (files != null) {
-            response = await fetch(`${API_URL}/me`, {
+        if (image != null) {
+            console.log('IS NOT NULL');
+            console.log(image);
+            const response = await fetch(`${API_URL}/me`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,22 +60,11 @@ async function updateUser(username: string, image?: File | string | null) {
                 },
                 body: JSON.stringify({
                     display_name: username,
-                    filename: files[0]?.filename,
+                    filename: image[0].filename,
                 }),
             });
-        } else {
-            response = await fetch(`${API_URL}/me`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `bearer ${access_token}`,
-                },
-                body: JSON.stringify({
-                    display_name: username,
-                }),
-            });
+            return HttpErrorHandling.responseChecker(response);
         }
-        return HttpErrorHandling.responseChecker(response);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
     }

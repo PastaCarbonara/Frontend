@@ -5,13 +5,14 @@ import tw from '../../lib/tailwind';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import TagComponent from '../TagComponent';
 import BottomSheetComponent from '../BottomSheetComponent';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CheckBoxComponent from '../CheckBoxComponent';
 import userService from '../../services/UserService';
 import TextInputWithLabel from '../TextInputWithLabel';
 import { User, Tag } from '../../types';
 import * as Linking from 'expo-linking';
 import { mutate } from 'swr';
+import imageService from '../../services/ImageService';
 
 export default function Profile({
     user,
@@ -22,9 +23,6 @@ export default function Profile({
     userTags: Array<Tag>;
     allTags: Array<Tag>;
 }) {
-    const [userImage, setUserImage] = React.useState<File | undefined>(
-        undefined
-    );
     const [visible, setVisible] = useState(false);
     const [userName, setUserName] = useState<string>(user.display_name);
     const toggleBottomNavigationView = () => {
@@ -34,6 +32,7 @@ export default function Profile({
 
     allTags.sort((a: Tag, b: Tag) => tagSorter(a, b));
     userTags.sort((a: Tag, b: Tag) => tagSorter(a, b));
+    console.log(user);
 
     function tagSorter(a: Tag, b: Tag) {
         const nameA = a.name.toUpperCase();
@@ -54,25 +53,16 @@ export default function Profile({
         let allergies: Array<Tag> = [];
         let diet: Array<Tag> = [];
         tags.filter((tag) => {
-            if (tag.tag_type == 'Allergieën') {
+            if (tag.tag_type === 'Allergieën') {
                 allergies.push(tag);
             }
-            if (tag.tag_type == 'Dieet') {
+            if (tag.tag_type === 'Dieet') {
                 diet.push(tag);
             }
         });
         return [allergies, diet];
     }
 
-    useEffect(() => {
-        userService
-            .updateUser(user.display_name, userImage)
-            .then((response) => console.log(response))
-            .then(async () => {
-                await mutate('/me');
-            })
-            .then(() => console.log(user));
-    }, [user, user.display_name, userImage]);
     return (
         <View style={tw`bg-bg_color min-h-full max-h-full w-auto`}>
             <BackgroundImage>
@@ -80,7 +70,17 @@ export default function Profile({
                     <ImagePickerComponent
                         initialImage={user?.image?.file_url}
                         onImageChange={(image) => {
-                            setUserImage(image);
+                            imageService
+                                .uploadImages({
+                                    images: [image],
+                                })
+                                .then((imageFile) => {
+                                    userService
+                                        .updateUser(userName, imageFile)
+                                        .then(async () => {
+                                            await mutate('/me');
+                                        });
+                                });
                         }}
                     />
                 </View>
@@ -103,12 +103,11 @@ export default function Profile({
                             onInputChange={setUserName}
                             onFocus={() => setUserName(user?.display_name)}
                             onBlur={() =>
-                                userName
+                                userName.trim()
                                     ? userService
-                                          .updateUser(
-                                              userName,
-                                              user?.image?.filename
-                                          )
+                                          .updateUser(userName.trim(), [
+                                              user.image,
+                                          ])
                                           .then(async () => {
                                               await mutate('/me');
                                           })
