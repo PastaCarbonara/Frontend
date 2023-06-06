@@ -32,7 +32,6 @@ export default function Profile({
 
     allTags.sort((a: Tag, b: Tag) => tagSorter(a, b));
     userTags.sort((a: Tag, b: Tag) => tagSorter(a, b));
-    console.log(user);
 
     function tagSorter(a: Tag, b: Tag) {
         const nameA = a.name.toUpperCase();

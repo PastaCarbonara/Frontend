@@ -50,8 +50,6 @@ async function updateUser(username: string, image: Array<Image>) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
         if (image != null) {
-            console.log('IS NOT NULL');
-            console.log(image);
             const response = await fetch(`${API_URL}/me`, {
                 method: 'PATCH',
                 headers: {
