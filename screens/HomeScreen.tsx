@@ -36,7 +36,7 @@ export default function HomeScreen() {
                         Verbinding maken met de server...
                     </Text>
                 </View>
-            ) : data?.length === 0 ? (
+            ) : recipes.length === 0 ? (
                 <View style={tw`flex-1 items-center justify-center`}>
                     <Text style={tw`text-2xl text-gray-500`}>
                         Geen recepten gevonden
