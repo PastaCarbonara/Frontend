@@ -17,7 +17,7 @@ const setCookie = (name: string, value: string, days: number) => {
 
 const deleteCookie = (cookieName: string) => {
     const expires = new Date(Date.now() - 864e5).toUTCString();
-    document.cookie = `${cookieName}=0 expires=${expires}; path=/`;
+    document.cookie = `${cookieName}=; expires=${expires}; path=/`;
 };
 const deleteAllCookies = () => {
     deleteCookie('user_uuid');

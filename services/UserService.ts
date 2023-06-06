@@ -3,7 +3,7 @@ import { API_URL } from '@env';
 import { cookieHelper } from '../helpers/CookieHelper';
 import { fetcher } from './Fetcher';
 import useSWR from 'swr';
-import imageService from './ImageService';
+import { Image } from '../types';
 
 function useMe() {
     const { data, error } = useSWR('/me', fetcher);
@@ -32,17 +32,12 @@ async function deleteMe() {
     }
 }
 
-async function updateUser(username: string, image: File | string | undefined) {
+async function updateUser(username: string, image: Array<Image>) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
-        let files;
-        if (typeof image === 'string') {
-            files = [{ filename: image }];
-        } else if (image) {
-            files = await imageService.uploadImages({ images: [image] });
-        }
-        if (files != null) {
-            const response = await fetch(`${API_URL}/me`, {
+        let response;
+        if (image[0] != null) {
+            response = await fetch(`${API_URL}/me`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,11 +45,23 @@ async function updateUser(username: string, image: File | string | undefined) {
                 },
                 body: JSON.stringify({
                     display_name: username,
-                    filename: files[0]?.filename,
+                    filename: image[0].filename,
                 }),
             });
             return HttpErrorHandling.responseChecker(response);
+        } else {
+            response = await fetch(`${API_URL}/me`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `bearer ${access_token}`,
+                },
+                body: JSON.stringify({
+                    display_name: username,
+                }),
+            });
         }
+        return HttpErrorHandling.responseChecker(response);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
     }
