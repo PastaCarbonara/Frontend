@@ -63,6 +63,7 @@ async function acceptInvite(groupId: string) {
     const access_token = cookieHelper.getCookie('access_token');
     try {
         const response = await fetch(`${API_URL}/groups/${groupId}/join`, {
+            method: 'POST',
             headers: {
                 Authorization: `bearer ${access_token}`,
             },
