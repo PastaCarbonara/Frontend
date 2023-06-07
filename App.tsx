@@ -34,6 +34,9 @@ import groupService from './services/GroupService';
 import { Text } from 'react-native';
 import * as Linking from 'expo-linking';
 import InviteScreen from './screens/InviteScreen';
+import ReactGA from 'react-ga4';
+
+ReactGA.initialize('G-2LYWXREZ6Y');
 
 const prefix = Linking.createURL('/');
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
