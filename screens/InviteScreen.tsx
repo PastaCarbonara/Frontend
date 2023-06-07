@@ -25,9 +25,7 @@ export default function InviteScreen({ route }: { route: any }) {
                     <Text style={tw`font-display text-3xl mb-4`}>
                         Je bent uitgenodigd voor:
                     </Text>
-                    <View
-                        style={tw`w-16 h-16 bg-indigo_secondary/20 rounded-4`}
-                    >
+                    <View style={tw`w-16 h-16 rounded-4`}>
                         <Image
                             style={tw`w-16 h-16 rounded-4`}
                             source={{
