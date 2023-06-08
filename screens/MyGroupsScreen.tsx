@@ -5,7 +5,7 @@ import {
     ScrollView,
     View,
 } from 'react-native';
-import { GroupStackParamList } from '../types';
+import { Group, GroupStackParamList } from '../types';
 import groupService from '../services/GroupService';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -17,7 +17,8 @@ import FloatingActionButton from '../components/FloatingActionButton';
 export default function MyGroupsScreen() {
     const navigation =
         useNavigation<NativeStackNavigationProp<GroupStackParamList>>();
-    const { groups, isLoading } = groupService.useGroups();
+    const { groups, isLoading }: { groups: Array<Group>; isLoading: Boolean } =
+        groupService.useGroups();
 
     return (
         <View style={tw`bg-bg_color h-full`}>
