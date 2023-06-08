@@ -1,4 +1,4 @@
-import tw from '../../lib/tailwind';
+import tw from '../../../lib/tailwind';
 import {
     Image,
     Pressable,
@@ -11,7 +11,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { RootStackParamList } from '../../types';
+import { RootStackParamList } from '../../../types';
 import * as Linking from 'expo-linking';
 
 export default function GroupMembers({ members }: { members: any[] }) {

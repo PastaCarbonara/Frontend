@@ -2,8 +2,8 @@ import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types';
-import tw from '../../lib/tailwind';
+import { RootStackParamList } from '../../../types';
+import tw from '../../../lib/tailwind';
 
 export default function NoGroupsFound() {
     const navigation =
@@ -31,7 +31,7 @@ export default function NoGroupsFound() {
             </View>
             <View>
                 <Image
-                    source={require('../../assets/images/Sadge_Munchie.svg')}
+                    source={require('../../../assets/images/Sadge_Munchie.svg')}
                     style={tw`w-full aspect-square mt-[10%]`}
                     resizeMode={'contain'}
                 />

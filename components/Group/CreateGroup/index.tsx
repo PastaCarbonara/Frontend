@@ -1,12 +1,12 @@
 import React from 'react';
 import { ImageBackground, View } from 'react-native';
-import tw from '../../lib/tailwind';
-import ImagePickerComponent from '../ImagePickerComponent';
-import TextInputWithLabel from '../TextInputWithLabel';
-import FloatingActionButton from '../FloatingActionButton';
-import groupService from '../../services/GroupService';
+import tw from '../../../lib/tailwind';
+import ImagePickerComponent from '../../ImagePickerComponent';
+import TextInputWithLabel from '../../TextInputWithLabel';
+import FloatingActionButton from '../../FloatingActionButton';
+import groupService from '../../../services/GroupService';
 import { useNavigation } from '@react-navigation/native';
-import { GroupStackParamList } from '../../types';
+import { GroupStackParamList } from '../../../types';
 import { mutate } from 'swr';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -17,7 +17,7 @@ export default function CreateGroup() {
         useNavigation<NativeStackNavigationProp<GroupStackParamList>>();
     return (
         <ImageBackground
-            source={require('../../assets/images/header_background.svg')}
+            source={require('../../../assets/images/header_background.svg')}
             style={tw`w-full grow bg-bg_color`}
             imageStyle={tw`w-full h-[231px]`}
             resizeMode={'cover'}

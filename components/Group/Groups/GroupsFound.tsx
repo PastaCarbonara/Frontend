@@ -2,10 +2,10 @@ import React from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import tw from '../../lib/tailwind';
+import tw from '../../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GroupMembers from './GroupMembers';
-import { GroupStackParamList } from '../../types';
+import { GroupStackParamList } from '../../../types';
 
 export default function GroupsFound({ groups }: any) {
     const navigation =

@@ -1,9 +1,9 @@
 import { Image, Pressable, Text, View } from 'react-native';
-import tw from '../../lib/tailwind';
+import tw from '../../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import CreateSessionModal from './CreateSessionModal';
-import { SwipeSession } from '../../types';
+import { SwipeSession } from '../../../types';
 import SessionButton from './SessionButton';
 
 export default function Sessions({ sessions }: { sessions: SwipeSession[] }) {

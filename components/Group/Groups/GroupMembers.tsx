@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Image, Text, View } from 'react-native';
-import tw from '../../lib/tailwind';
+import tw from '../../../lib/tailwind';
 
 export default function GroupMembers({ groupMembers }: any) {
     const maxLength = 4;

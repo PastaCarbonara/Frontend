@@ -10,8 +10,8 @@ import groupService from '../services/GroupService';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '../lib/tailwind';
-import NoGroupsFound from '../components/Groups/NoGroupsFound';
-import GroupsFound from '../components/Groups/GroupsFound';
+import NoGroupsFound from '../components/Group/Groups/NoGroupsFound';
+import GroupsFound from '../components/Group/Groups/GroupsFound';
 import FloatingActionButton from '../components/FloatingActionButton';
 
 export default function MyGroupsScreen() {

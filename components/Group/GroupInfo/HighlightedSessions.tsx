@@ -1,4 +1,4 @@
-import tw from '../../lib/tailwind';
+import tw from '../../../lib/tailwind';
 import {
     ImageBackground,
     Pressable,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import CreateSessionModal from './CreateSessionModal';
-import { SwipeSession } from '../../types';
+import { SwipeSession } from '../../../types';
 import SessionButton from './SessionButton';
 
 export default function HighlightedSessions({

@@ -1,10 +1,10 @@
-import tw from '../../lib/tailwind';
-import swipeSessionService from '../../services/SwipeSessionService';
+import tw from '../../../lib/tailwind';
+import swipeSessionService from '../../../services/SwipeSessionService';
 import {
     RootStackParamList,
     SwipeSession,
     SwipeSessionStatus,
-} from '../../types';
+} from '../../../types';
 import { Pressable, Text } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';

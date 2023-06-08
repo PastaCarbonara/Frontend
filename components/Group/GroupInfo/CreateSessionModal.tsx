@@ -6,13 +6,13 @@ import {
     TouchableWithoutFeedback,
     View,
 } from 'react-native';
-import tw from '../../lib/tailwind';
+import tw from '../../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // @ts-ignore
 import DatePicker from 'react-native-modern-datepicker';
-import swipeSessionService from '../../services/SwipeSessionService';
+import swipeSessionService from '../../../services/SwipeSessionService';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { RootStackParamList } from '../../types';
+import { RootStackParamList } from '../../../types';
 
 export default function CreateSessionModal({
     isModalVisible,
