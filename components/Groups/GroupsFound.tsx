@@ -5,16 +5,16 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GroupMembers from './GroupMembers';
-import { GroupStackParamList } from '../../types';
+import { Group, GroupStackParamList } from '../../types';
 
-export default function GroupsFound({ groups }: any) {
+export default function GroupsFound({ groups }: { groups: Group[] }) {
     const navigation =
         useNavigation<NativeStackNavigationProp<GroupStackParamList>>();
     return (
         <View style={tw`flex justify-between grow h-full`}>
             <View style={tw`w-full p-4 gap-6 max-h-full`}>
                 <View style={tw`gap-2.5`}>
-                    {groups.map((group: any) => (
+                    {groups.map((group: Group) => (
                         <Pressable
                             style={tw`items-center p-4 gap-2 border border-dashed border-orange_primary rounded-3xl flex bg-bg_color`}
                             key={group?.id}
