@@ -67,18 +67,17 @@ export default function Profile({
             <BackgroundImage>
                 <View style={tw`w-full p-4 mt-16 gap-6`}>
                     <ImagePickerComponent
-                        initialImage={user?.image?.file_url}
+                        initialImage={
+                            user?.image?.file_url ??
+                            `https://api.dicebear.com/6.x/lorelei/svg?seed=${user.id}`
+                        }
                         onImageChange={(image) => {
                             imageService
                                 .uploadImages({
                                     images: [image],
                                 })
                                 .then((imageFile) => {
-                                    userService
-                                        .updateUser(userName, imageFile)
-                                        .then(async () => {
-                                            await mutate('/me');
-                                        });
+                                    userService.updateUser(userName, imageFile);
                                 });
                         }}
                     />

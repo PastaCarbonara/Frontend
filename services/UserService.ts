@@ -2,7 +2,7 @@ import HttpErrorHandling from './HttpErrorHandling';
 import { API_URL } from '@env';
 import { cookieHelper } from '../helpers/CookieHelper';
 import { fetcher } from './Fetcher';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { Image } from '../types';
 
 function useMe() {
@@ -64,6 +64,9 @@ async function updateUser(username: string, image: Array<Image>) {
         return HttpErrorHandling.responseChecker(response);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
+    } finally {
+        await mutate('/me');
+        await mutate('/me/groups');
     }
 }
 
