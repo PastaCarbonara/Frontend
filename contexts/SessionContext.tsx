@@ -22,6 +22,7 @@ export type SessionContextType = {
     setCurrentGroup: (group: string | undefined) => void;
     userId: string | undefined;
     sessionId: string | undefined;
+    groupsWithActiveSession: Group[];
 };
 
 export const SessionWebsocketContext = React.createContext<SessionContextType>(
@@ -46,22 +47,12 @@ export const SessionWebsocketProvider = ({
     const { me } = userService.useMe();
     const { groups } = groupService.useGroups();
     const { group } = groupService.useGroup(currentGroup);
+    const [groupsWithActiveSession, setGroupsWithActiveSession] = useState<
+        Group[]
+    >([]);
 
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
-    const findGroupsWithActiveSession = useCallback(
-        (_groups: Group[]) =>
-            _groups?.filter((_group: Group) => {
-                for (const swipe_session of _group.swipe_sessions) {
-                    if (
-                        swipe_session.status === SwipeSessionStatus.IN_PROGRESS
-                    ) {
-                        return true;
-                    }
-                }
-                return false;
-            }),
-        []
-    );
+
     const groupHasActiveSession = useCallback(
         (_groupId: string) => {
             const _currentGroup = groups?.find(
@@ -114,6 +105,17 @@ export const SessionWebsocketProvider = ({
     }, [currentGroup, currentSession]);
 
     useEffect(() => {
+        const findGroupsWithActiveSession = (_groups: Group[]) =>
+            _groups?.filter((_group: Group) => {
+                for (const swipe_session of _group.swipe_sessions) {
+                    if (
+                        swipe_session.status === SwipeSessionStatus.IN_PROGRESS
+                    ) {
+                        return true;
+                    }
+                }
+                return false;
+            });
         const fetchInitialData = async () => {
             if (!currentGroup && (groups === undefined || groups?.length < 1))
                 return;
@@ -123,15 +125,19 @@ export const SessionWebsocketProvider = ({
                     groups?.length > 0 &&
                     !groupHasActiveSession(currentGroup))
             ) {
-                const groupsWithActiveSession =
+                const _groupsWithActiveSession =
                     findGroupsWithActiveSession(groups);
-                setCurrentGroup(groupsWithActiveSession[0]?.id);
+                setGroupsWithActiveSession(_groupsWithActiveSession);
+                setCurrentGroup(_groupsWithActiveSession[0]?.id);
                 cookieHelper.setCookie(
                     'currentGroup',
-                    groupsWithActiveSession[0]?.id,
+                    _groupsWithActiveSession[0]?.id,
                     365000
                 );
                 return;
+            }
+            if (groups?.length > 0) {
+                setGroupsWithActiveSession(findGroupsWithActiveSession(groups));
             }
             try {
                 if (!group) return;
@@ -156,7 +162,6 @@ export const SessionWebsocketProvider = ({
         verifyToken,
         groups,
         group,
-        findGroupsWithActiveSession,
         groupHasActiveSession,
     ]);
     const send = (webSocketEvent: WebSocketEvent) => {
@@ -187,8 +192,17 @@ export const SessionWebsocketProvider = ({
             send,
             userId: me?.id,
             sessionId,
+            groupsWithActiveSession,
         }),
-        [isReady, lastMessage, currentSession, currentGroup, me, sessionId]
+        [
+            isReady,
+            lastMessage,
+            currentSession,
+            currentGroup,
+            me?.id,
+            sessionId,
+            groupsWithActiveSession,
+        ]
     );
 
     return (
