@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -153,7 +153,10 @@ export function StackNavigator() {
             <Stack.Screen
                 name="Match"
                 component={MatchScreen}
-                options={{ headerShown: false }}
+                options={{
+                    headerTransparent: true,
+                    title: '',
+                }}
             />
         </Stack.Navigator>
     );
@@ -199,12 +202,10 @@ function SwipeScreenHeader({ ...props }: { props: any }) {
         SessionWebsocketContext
     );
     const { groups } = groupService.useGroups();
+    const [currentGroupObject, setCurrentGroupObject] = useState<Group>();
     const onChange = (option: Group) => {
         setCurrentGroup(option.id);
     };
-    const currentGroupObject = groups?.find(
-        (group: Group) => group.id === currentGroup
-    );
     const groupsWithActiveSession: Group[] = useMemo(
         () =>
             groups?.filter((group: Group) => {
@@ -219,7 +220,16 @@ function SwipeScreenHeader({ ...props }: { props: any }) {
             }),
         [groups]
     );
-    return groups?.length > 0 ? (
+    useEffect(() => {
+        if (groups) {
+            const _currentGroupObject = groupsWithActiveSession.find(
+                (group: Group) => group.id === currentGroup
+            );
+            setCurrentGroupObject(_currentGroupObject);
+        }
+    }, [groups, currentGroup, groupsWithActiveSession]);
+    console.log(currentGroupObject);
+    return groupsWithActiveSession?.length > 0 ? (
         <Dropdown
             options={groupsWithActiveSession}
             onChange={onChange}

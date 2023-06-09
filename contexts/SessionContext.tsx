@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import * as RootNavigator from '../RootNavigator';
 import {
     Group,
     SwipeSession,
@@ -12,6 +11,7 @@ import groupService from '../services/GroupService';
 import { cookieHelper } from '../helpers/CookieHelper';
 import { AuthContext } from './AuthContext';
 import userService from '../services/UserService';
+import { mutate } from 'swr';
 
 export type SessionContextType = {
     isReady: boolean;
@@ -84,6 +84,23 @@ export const SessionWebsocketProvider = ({
         const access_token = cookieHelper.getCookie('access_token');
         const sessionWebSocketAddress = `${SOCKET_URL}/swipe_sessions/${currentSession}?token=${access_token}`;
         const socket = new WebSocket(sessionWebSocketAddress);
+
+        const handleWebSocketEvent = async (messageEvent: {
+            action: WebSocketAction;
+            payload: any;
+        }) => {
+            switch (messageEvent.action) {
+                case 'RECIPE_MATCH':
+                    console.log('RECIPE_MATCH', messageEvent.payload);
+                    await mutate('/me/groups');
+                    await mutate(`/groups/${currentGroup}`);
+                    cookieHelper.deleteCookie('currentGroup');
+                    // RootNavigator.navigate('Match', {
+                    //     recipe: messageEvent.payload?.recipe,
+                    // });
+                    break;
+            }
+        };
 
         socket.onopen = () => {
             socket.send(
@@ -161,19 +178,6 @@ export const SessionWebsocketProvider = ({
     ]);
     const send = (webSocketEvent: WebSocketEvent) => {
         ws.current?.send(JSON.stringify(webSocketEvent));
-    };
-    const handleWebSocketEvent = (messageEvent: {
-        action: any;
-        payload: any;
-    }) => {
-        switch (messageEvent.action) {
-            case 'RECIPE_MATCH':
-                console.log('RECIPE_MATCH', messageEvent.payload);
-                RootNavigator.navigate('Match', {
-                    recipe: messageEvent.payload?.recipe,
-                });
-                break;
-        }
     };
 
     const session: SessionContextType = React.useMemo(
