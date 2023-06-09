@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import * as RootNavigator from '../RootNavigator';
 import {
     Group,
     SwipeSession,
@@ -95,9 +96,9 @@ export const SessionWebsocketProvider = ({
                     await mutate('/me/groups');
                     await mutate(`/groups/${currentGroup}`);
                     cookieHelper.deleteCookie('currentGroup');
-                    // RootNavigator.navigate('Match', {
-                    //     recipe: messageEvent.payload?.recipe,
-                    // });
+                    RootNavigator.navigate('Match', {
+                        recipe: messageEvent.payload?.recipe,
+                    });
                     break;
             }
         };
