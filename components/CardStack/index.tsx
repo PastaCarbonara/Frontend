@@ -3,6 +3,7 @@ import Swiper from 'react-native-deck-swiper';
 import Card from '../Card';
 import { Recipe, WebSocketAction } from '../../types';
 import { SessionWebsocketContext } from '../../contexts/SessionContext';
+import ReactGA from 'react-ga4';
 
 export default function CardStack({
     recipes = [],
@@ -44,6 +45,14 @@ export default function CardStack({
                         like: isLike,
                         recipe_id: recipes[cardIndex].id,
                     },
+                });
+                ReactGA.event({
+                    category: 'RecipeCard',
+                    action: 'swipe',
+                    label: `recipeId:${recipes[cardIndex].id},
+                    title:${isLike ? 'like' : 'dislike'},
+                    
+                    `,
                 });
             } else {
                 console.error('Recipe does not exist');

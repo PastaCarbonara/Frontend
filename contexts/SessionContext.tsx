@@ -12,6 +12,7 @@ import groupService from '../services/GroupService';
 import { cookieHelper } from '../helpers/CookieHelper';
 import { AuthContext } from './AuthContext';
 import userService from '../services/UserService';
+import ReactGA from 'react-ga4';
 
 export type SessionContextType = {
     isReady: boolean;
@@ -94,6 +95,11 @@ export const SessionWebsocketProvider = ({
                     },
                 })
             );
+            ReactGA.event({
+                category: 'websocket',
+                action: 'connect',
+                nonInteraction: true,
+            });
             setIsReady(true);
         };
         socket.onclose = () => setIsReady(false);
@@ -102,8 +108,12 @@ export const SessionWebsocketProvider = ({
 
             handleWebSocketEvent(JSON.parse(event.data));
         };
-        socket.onerror = (error) => {
-            console.log(error);
+        socket.onerror = () => {
+            ReactGA.event({
+                category: 'websocket',
+                action: 'connection_error',
+                nonInteraction: true,
+            });
         };
 
         ws.current = socket;
