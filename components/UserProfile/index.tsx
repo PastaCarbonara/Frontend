@@ -225,9 +225,15 @@ export default function Profile({
                         Dieet
                     </Text>
                     <View style={tw`flex-column`}>
-                        {allDiets?.map((tag: Tag) =>
-                            createCheckboxComponent(tag, userTags)
-                        )}
+                        {allDiets?.map((tag: Tag) => {
+                            if (
+                                tag.name !== 'Veganistisch' &&
+                                tag.name !== 'Vegetarisch'
+                            ) {
+                                return;
+                            }
+                            return createCheckboxComponent(tag, userTags);
+                        })}
                     </View>
                     <Text
                         style={tw`bg-orange_primary text-xl text-white px-4 py-3 font-Poppins-Regular`}
