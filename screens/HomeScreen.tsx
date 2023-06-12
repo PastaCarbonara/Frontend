@@ -17,7 +17,9 @@ export default function HomeScreen() {
         boolean
     >((index) => `/recipes?offset=${index * pageSize}`, fetcher);
     const recipes = data?.map((page) => page.recipes).flat() ?? [];
-    const { isReady, currentGroup } = useContext(SessionWebsocketContext);
+    const { isReady, currentGroup, groupsWithActiveSession } = useContext(
+        SessionWebsocketContext
+    );
     const [numberOfCardsSwiped, setNumberOfCardsSwiped] = React.useState(0);
 
     return (
@@ -27,6 +29,12 @@ export default function HomeScreen() {
                     <ActivityIndicator size="large" color="gray" />
                     <Text style={tw`text-2xl mt-2 text-gray-500`}>
                         Gerechten worden geladen...
+                    </Text>
+                </View>
+            ) : groupsWithActiveSession.length < 1 ? (
+                <View style={tw`flex-1 items-center justify-center`}>
+                    <Text style={tw`text-2xl text-gray-500`}>
+                        Geen actieve sessies gevonden
                     </Text>
                 </View>
             ) : !isReady ? (
