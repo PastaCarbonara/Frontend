@@ -31,9 +31,12 @@ import CreateGroupScreen from './screens/CreateGroupScreen';
 import { AuthProvider } from './contexts/AuthContext';
 import Dropdown from './components/Dropdown';
 import groupService from './services/GroupService';
-import { Text } from 'react-native';
+import { Pressable, Text } from 'react-native';
 import * as Linking from 'expo-linking';
 import InviteScreen from './screens/InviteScreen';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import tw from './lib/tailwind';
+import EditGroupScreen from './screens/EditGroupScreen';
 
 const prefix = Linking.createURL('/');
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
@@ -59,6 +62,7 @@ export default function App() {
                                 Group: 'group/:groupId',
                                 Invite: 'group/:id/join',
                                 CreateGroup: 'groups/new',
+                                EditGroupScreen: 'group/:groupId/edit',
                             },
                         },
                     },
@@ -185,6 +189,28 @@ export function GroupsStackNavigator() {
             <GroupsStack.Screen
                 name="Group"
                 component={GroupScreen}
+                options={({ navigation, route }) => ({
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                    headerRight: () => (
+                        <Pressable
+                            style={tw`text-white mr-4`}
+                            onPress={() => {
+                                console.log(route.path);
+                                console.log(route.params);
+                                navigation.navigate('EditGroupScreen', {
+                                    groupId: route.params.groupId,
+                                });
+                            }}
+                        >
+                            <MaterialCommunityIcons name="cog" size={24} />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <GroupsStack.Screen
+                name={'EditGroupScreen'}
+                component={EditGroupScreen}
                 options={{
                     headerTransparent: true,
                     headerTitleAlign: 'center',

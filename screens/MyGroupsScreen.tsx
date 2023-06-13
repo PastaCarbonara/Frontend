@@ -24,7 +24,7 @@ export default function MyGroupsScreen() {
         <View style={tw`bg-bg_color h-full`}>
             <ImageBackground
                 style={tw`w-full self-center grow`}
-                imageStyle={tw`w-full h-[231px] object-cover`}
+                imageStyle={tw`w-full h-[231px]`}
                 source={require('../assets/images/header_background.svg')}
             />
             <ScrollView

@@ -42,7 +42,7 @@ function memberImage(groupMember: any) {
                 source={{
                     uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${groupMember?.id}`,
                 }}
-                style={tw`w-9 h-9 rounded 2x1 align-middle`}
+                style={tw`w-9 h-9 rounded`}
             />
         </Fragment>
     );

@@ -15,6 +15,7 @@ export type GroupStackParamList = {
     Group: { groupId: string };
     Invite: { groupId: string };
     CreateGroup: undefined;
+    EditGroupScreen: { groupId: string };
 };
 export type UserImage = {
     file_url: string;

@@ -74,7 +74,7 @@ function ListSession({ session }: { session: SwipeSession }) {
                 >
                     {session.matches[0]?.name}
                 </Text>
-                <Text style={tw`font-sans text-xs text-text-primary`}>
+                <Text style={tw`font-sans text-xs text-text_primary`}>
                     {session.session_date}
                 </Text>
             </View>

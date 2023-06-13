@@ -12,7 +12,7 @@ export default function TagComponent({
     const layout = setLayout(tagType);
     return (
         <Text
-            style={tw`bg-${layout} rounded-full m-1 w-min text-l px-5 py-1 text-center align-middle`}
+            style={tw`bg-${layout} rounded-full m-1 w-min text-l px-5 py-1 text-center align-center`}
         >
             {tagValue}
         </Text>

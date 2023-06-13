@@ -21,7 +21,7 @@ function useGroup(groupId: string | undefined) {
     );
     return {
         group: data,
-        isLoading,
+        isLoadingGroup: isLoading,
         isError: error,
     };
 }
