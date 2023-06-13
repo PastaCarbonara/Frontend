@@ -26,6 +26,7 @@ async function createSwipeSession({
             }
         );
         await mutate(`/groups/${groupId}`);
+        await mutate('/me/groups');
         return response.json();
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
@@ -58,6 +59,7 @@ async function updateSwipeSessionStatus({
             }
         );
         await mutate(`/groups/${groupId}`);
+        await mutate('/me/groups');
         return response.json();
     } catch (error) {
         console.error(`Error fetching data: ${error}`);

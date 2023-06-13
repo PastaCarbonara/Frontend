@@ -67,18 +67,17 @@ export default function Profile({
             <BackgroundImage>
                 <View style={tw`w-full p-4 mt-16 gap-6`}>
                     <ImagePickerComponent
-                        initialImage={user?.image?.file_url}
+                        initialImage={
+                            user?.image?.file_url ??
+                            `https://api.dicebear.com/6.x/lorelei/svg?seed=${user.id}`
+                        }
                         onImageChange={(image) => {
                             imageService
                                 .uploadImages({
                                     images: [image],
                                 })
                                 .then((imageFile) => {
-                                    userService
-                                        .updateUser(userName, imageFile)
-                                        .then(async () => {
-                                            await mutate('/me');
-                                        });
+                                    userService.updateUser(userName, imageFile);
                                 });
                         }}
                     />
@@ -226,9 +225,15 @@ export default function Profile({
                         Dieet
                     </Text>
                     <View style={tw`flex-column`}>
-                        {allDiets?.map((tag: Tag) =>
-                            createCheckboxComponent(tag, userTags)
-                        )}
+                        {allDiets?.map((tag: Tag) => {
+                            if (
+                                tag.name !== 'Veganistisch' &&
+                                tag.name !== 'Vegetarisch'
+                            ) {
+                                return;
+                            }
+                            return createCheckboxComponent(tag, userTags);
+                        })}
                     </View>
                     <Text
                         style={tw`bg-orange_primary text-xl text-white px-4 py-3 font-Poppins-Regular`}

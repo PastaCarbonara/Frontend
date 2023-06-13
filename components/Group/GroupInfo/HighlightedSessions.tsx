@@ -133,6 +133,7 @@ function OpenSession({ session }: { session: SwipeSession }) {
 function ClosedSession({ session }: { session: SwipeSession }) {
     const { width } = useWindowDimensions();
     const cardWidth = width - 32;
+    console.log(session);
     return (
         <View style={tw`pl-4`}>
             <ImageBackground
