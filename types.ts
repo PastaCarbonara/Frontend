@@ -46,7 +46,7 @@ export type SwipeSession = {
     user_id: string;
     group_id: string;
     swipes: Swipe[];
-    matches: Match[];
+    swipe_match: Match;
 };
 export type Swipe = {
     id: string;

@@ -137,7 +137,7 @@ function ClosedSession({ session }: { session: SwipeSession }) {
     return (
         <View style={tw`pl-4`}>
             <ImageBackground
-                source={{ uri: session.matches[0]?.image.file_url }}
+                source={{ uri: session.swipe_match?.image.file_url }}
                 style={tw.style(
                     `flex-row w-[${cardWidth}px] items-center py-8 px-4 mr-4 gap-2 bg-black border border-white shadow-md rounded-3xl`
                 )}
@@ -169,7 +169,7 @@ function ClosedSession({ session }: { session: SwipeSession }) {
                 </View>
                 <View style={tw`gap-0 grow`}>
                     <Text style={tw`font-sans text-base font-bold text-white`}>
-                        {session.matches[0]?.name}
+                        {session.swipe_match?.name}
                     </Text>
                     <Text style={tw`font-sans text-sm text-white`}>
                         {session.status}

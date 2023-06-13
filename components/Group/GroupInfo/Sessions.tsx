@@ -62,7 +62,7 @@ function ListSession({ session }: { session: SwipeSession }) {
                 <Image
                     source={{
                         uri:
-                            session.matches[0]?.image.file_url ??
+                            session?.swipe_match?.image.file_url ??
                             'https://placehold.co/400',
                     }}
                     style={tw`w-12 h-12 rounded-2xl`}
@@ -72,7 +72,7 @@ function ListSession({ session }: { session: SwipeSession }) {
                 <Text
                     style={tw`font-sans text-base font-bold text-text_primary`}
                 >
-                    {session.matches[0]?.name}
+                    {session?.swipe_match?.name}
                 </Text>
                 <Text style={tw`font-sans text-xs text-text_primary`}>
                     {session.session_date}
