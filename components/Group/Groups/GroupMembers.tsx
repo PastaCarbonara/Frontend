@@ -3,7 +3,11 @@ import { Image, Text, View } from 'react-native';
 import tw from '../../../lib/tailwind';
 import { User } from '../../../types';
 
-export default function GroupMembers({ groupMembers }: any) {
+export default function GroupMembers({
+    groupMembers,
+}: {
+    groupMembers: Array<User>;
+}) {
     const maxLength = 4;
     const modifier = 1;
     return (
@@ -11,7 +15,7 @@ export default function GroupMembers({ groupMembers }: any) {
             <View style={tw`w-full gap-1`}>
                 {groupMembers?.length <= maxLength ? (
                     <View style={tw`flex flex-row`}>
-                        {groupMembers?.map((groupMember: any) => (
+                        {groupMembers?.map((groupMember: User) => (
                             <View key={groupMembers?.indexOf(groupMember)}>
                                 {memberImage(groupMember)}
                             </View>
@@ -21,7 +25,7 @@ export default function GroupMembers({ groupMembers }: any) {
                     <View style={tw`flex flex-row`}>
                         {groupMembers
                             ?.slice(0, maxLength - modifier)
-                            ?.map((groupMember: any) => (
+                            ?.map((groupMember: User) => (
                                 <View key={groupMembers?.indexOf(groupMember)}>
                                     {memberImage(groupMember)}
                                 </View>
