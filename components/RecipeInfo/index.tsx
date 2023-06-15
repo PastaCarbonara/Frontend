@@ -113,7 +113,7 @@ export default function Recipe({ recipeInfo }: any) {
                 <ImageBackground
                     style={tw`w-full`}
                     source={{
-                        uri: recipeInfo?.image.file_url,
+                        uri: recipeInfo?.image?.urls.lg,
                     }}
                     imageStyle={tw`w-full`}
                 >

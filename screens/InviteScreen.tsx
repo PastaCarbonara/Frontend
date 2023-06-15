@@ -29,7 +29,9 @@ export default function InviteScreen({ route }: { route: any }) {
                         <Image
                             style={tw`w-16 h-16 rounded-4`}
                             source={{
-                                uri: group.image.file_url,
+                                uri:
+                                    group.image?.urls.lg ||
+                                    `https://placehold.co/400`,
                             }}
                         />
                     </View>

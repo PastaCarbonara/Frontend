@@ -136,7 +136,7 @@ function ClosedSession({ session }: { session: SwipeSession }) {
     return (
         <View style={tw`pl-4`}>
             <ImageBackground
-                source={{ uri: session.matches[0]?.image.file_url }}
+                source={{ uri: session.matches[0]?.image?.urls.lg }}
                 style={tw.style(
                     `flex-row w-[${cardWidth}px] items-center py-8 px-4 mr-4 gap-2 bg-black border border-white shadow-md rounded-3xl`
                 )}
