@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -17,6 +17,11 @@ export default function Dropdown({
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(initialOption);
+    const [optionsList, setOptionsList] = useState(options);
+    useEffect(() => {
+        setSelectedOption(initialOption);
+        setOptionsList(options);
+    }, [initialOption, options]);
     return (
         <View style={tw`relative items-center`}>
             <TouchableOpacity
@@ -37,7 +42,7 @@ export default function Dropdown({
                 <View
                     style={tw`absolute top-10 right-0 w-40 bg-white rounded-lg shadow-lg`}
                 >
-                    {options.map((option) => (
+                    {optionsList.map((option) => (
                         <TouchableOpacity
                             key={option.id}
                             onPress={() => {

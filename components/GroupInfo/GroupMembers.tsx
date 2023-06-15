@@ -1,21 +1,21 @@
 import tw from '../../lib/tailwind';
 import {
+    Alert,
     Image,
     Pressable,
     ScrollView,
+    Share,
     Text,
     View,
-    Share,
-    Alert,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { RootStackParamList } from '../../types';
+import { GroupStackParamList, User } from '../../types';
 import * as Linking from 'expo-linking';
 
-export default function GroupMembers({ members }: { members: any[] }) {
-    const route = useRoute<RouteProp<RootStackParamList, 'Group'>>();
+export default function GroupMembers({ members }: { members: User[] }) {
+    const route = useRoute<RouteProp<GroupStackParamList, 'Group'>>();
     const groupId = route.params?.groupId;
     const [origin, setOrigin] = useState<string | undefined>(undefined);
     Linking.getInitialURL().then((url) => {
@@ -73,7 +73,9 @@ export default function GroupMembers({ members }: { members: any[] }) {
                         <Image
                             style={tw`w-16 h-16 rounded-4`}
                             source={{
-                                uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
+                                uri:
+                                    member.image?.file_url ??
+                                    `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
                             }}
                         />
                     </View>

@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GroupMembers from './GroupMembers';
 import { Group, GroupStackParamList } from '../../types';
 
-export default function GroupsFound({ groups }: any) {
+export default function GroupsFound({ groups }: { groups: Group[] }) {
     const navigation =
         useNavigation<NativeStackNavigationProp<GroupStackParamList>>();
     return (

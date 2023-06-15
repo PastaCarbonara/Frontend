@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Image, Text, View } from 'react-native';
 import tw from '../../lib/tailwind';
+import { User } from '../../types';
 
 export default function GroupMembers({ groupMembers }: any) {
     const maxLength = 4;
@@ -35,12 +36,14 @@ export default function GroupMembers({ groupMembers }: any) {
     );
 }
 
-function memberImage(groupMember: any) {
+function memberImage(groupMember: User) {
     return (
         <Fragment>
             <Image
                 source={{
-                    uri: `https://api.dicebear.com/6.x/lorelei/svg?seed=${groupMember?.id}`,
+                    uri:
+                        groupMember.image?.file_url ??
+                        `https://api.dicebear.com/6.x/lorelei/svg?seed=${groupMember?.id}`,
                 }}
                 style={tw`w-9 h-9 rounded 2x1 align-middle`}
             />
