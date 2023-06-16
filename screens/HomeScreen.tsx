@@ -5,7 +5,7 @@ import tw from '../lib/tailwind';
 import { SessionWebsocketContext } from '../contexts/SessionContext';
 import useSWRInfinite from 'swr/infinite';
 import { fetcher } from '../services/Fetcher';
-import { Recipe } from '../types';
+import { Recipe, WebSocketAction } from '../types';
 
 export default function HomeScreen() {
     const pageSize = 10;
@@ -16,10 +16,10 @@ export default function HomeScreen() {
         },
         boolean
     >((index) => `/recipes?offset=${index * pageSize}`, fetcher);
-    const recipes = data?.map((page) => page.recipes).flat() ?? [];
-    const { isReady, currentGroup, groupsWithActiveSession } = useContext(
-        SessionWebsocketContext
-    );
+    const recipes2 = data?.map((page) => page.recipes).flat() ?? [];
+    const { recipes, isReady, currentGroup, groupsWithActiveSession, send } =
+        useContext(SessionWebsocketContext);
+    console.log(recipes);
     const [numberOfCardsSwiped, setNumberOfCardsSwiped] = React.useState(0);
 
     return (
@@ -57,8 +57,13 @@ export default function HomeScreen() {
                     onRecipeSwipe={async () => {
                         setNumberOfCardsSwiped(numberOfCardsSwiped + 1);
                         console.log(numberOfCardsSwiped);
-                        if (numberOfCardsSwiped === size * pageSize - 5) {
-                            setSize(size + 1);
+                        // if (numberOfCardsSwiped === size * pageSize - 5) {
+                        //     setSize(size + 1);
+                        // }
+                        if (numberOfCardsSwiped === 5) {
+                            send({
+                                action: WebSocketAction.GET_RECIPES,
+                            });
                         }
                     }}
                 />

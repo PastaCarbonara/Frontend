@@ -17,7 +17,7 @@ type cardProps = {
 export default function Card({ recipe, onLike, onDislike }: cardProps) {
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-    console.log(recipe.image);
+    console.log();
     return (
         <View
             style={tw`w-full h-9/10 flex-col rounded-3xl shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}

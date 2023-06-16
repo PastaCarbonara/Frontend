@@ -97,7 +97,7 @@ function ViewSessionButton({ session }: { session: SwipeSession }) {
             style={tw`items-center justify-center p-4 gap-4 h-9 bg-orange_primary rounded-lg `}
             onPress={() => {
                 navigation.navigate('Recipe', {
-                    id: session.matches[0]?.id,
+                    id: session.swipe_match?.id,
                 });
             }}
         >

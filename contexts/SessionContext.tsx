@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as RootNavigator from '../RootNavigator';
 import {
     Group,
+    Recipe,
     SwipeSession,
     SwipeSessionStatus,
     WebSocketAction,
@@ -24,6 +25,7 @@ export type SessionContextType = {
     userId: string | undefined;
     sessionId: string | undefined;
     groupsWithActiveSession: Group[];
+    recipes: Recipe[];
 };
 
 export const SessionWebsocketContext = React.createContext<SessionContextType>(
@@ -51,6 +53,12 @@ export const SessionWebsocketProvider = ({
     const [groupsWithActiveSession, setGroupsWithActiveSession] = useState<
         Group[]
     >([]);
+    const [recipes, setRecipes] = useState<Recipe[]>(
+        //json parse the cookie or return an empty array, but the cookie could also be undefined so we need to check for that
+        cookieHelper.getCookie('recipes') === undefined
+            ? []
+            : JSON.parse(cookieHelper.getCookie('recipes') || '[]')
+    );
 
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
@@ -91,6 +99,24 @@ export const SessionWebsocketProvider = ({
                         recipe: messageEvent.payload?.recipe,
                     });
                     break;
+                case 'RECIPE_SWIPE':
+                    console.log('RECIPE_SWIPE', messageEvent.payload);
+                    break;
+                case 'GET_RECIPES':
+                    console.log('GET_RECIPES', messageEvent.payload);
+                    const newRecipes = [
+                        ...recipes,
+                        ...messageEvent.payload?.recipes,
+                    ];
+                    console.log('newRecipes', JSON.stringify(newRecipes));
+                    console.log('setting cookie');
+                    cookieHelper.setCookie(
+                        'recipes',
+                        JSON.stringify(newRecipes),
+                        14
+                    );
+                    console.log('cookie set');
+                    break;
             }
         };
 
@@ -103,6 +129,8 @@ export const SessionWebsocketProvider = ({
                     },
                 })
             );
+            // If recipes are not set, get them from the server
+            getRecipes();
             setIsReady(true);
         };
         socket.onclose = () => setIsReady(false);
@@ -182,9 +210,16 @@ export const SessionWebsocketProvider = ({
         group,
         groupHasActiveSession,
     ]);
-    const send = (webSocketEvent: WebSocketEvent) => {
+    const send = useCallback((webSocketEvent: WebSocketEvent) => {
         ws.current?.send(JSON.stringify(webSocketEvent));
-    };
+    }, []);
+
+    const getRecipes = useCallback(() => {
+        if (recipes.length > 0) return;
+        send({
+            action: WebSocketAction.GET_RECIPES,
+        });
+    }, [recipes.length, send]);
 
     const session: SessionContextType = React.useMemo(
         () => ({
@@ -198,15 +233,18 @@ export const SessionWebsocketProvider = ({
             userId: me?.id,
             sessionId,
             groupsWithActiveSession,
+            recipes,
         }),
         [
             isReady,
             lastMessage,
             currentSession,
             currentGroup,
+            send,
             me?.id,
             sessionId,
             groupsWithActiveSession,
+            recipes,
         ]
     );
 
