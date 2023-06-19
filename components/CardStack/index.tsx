@@ -9,7 +9,7 @@ export default function CardStack({
     onRecipeSwipe,
 }: {
     recipes: Recipe[];
-    onRecipeSwipe?: () => void;
+    onRecipeSwipe?: (recipeId: number) => void;
 }) {
     const swiper = useRef<Swiper<any>>(null);
     const { isReady, send } = useContext(SessionWebsocketContext);
@@ -35,7 +35,6 @@ export default function CardStack({
     }
 
     function swipe(isLike: boolean, cardIndex: number) {
-        console.log(isReady);
         if (isReady) {
             if (recipes[cardIndex]) {
                 send({
@@ -56,10 +55,10 @@ export default function CardStack({
     return (
         <Swiper
             cards={recipes || []}
-            renderCard={(card, index) => (
+            renderCard={(card) => (
                 <Card
                     recipe={card}
-                    key={index}
+                    key={card.id}
                     onLike={onLike}
                     onDislike={onDislike}
                 />
@@ -73,7 +72,13 @@ export default function CardStack({
             onSwipedRight={onSwipeRight}
             disableBottomSwipe
             disableTopSwipe
-            onSwiped={onRecipeSwipe}
+            onSwiped={(cardIndex) => {
+                const recipeId = recipes[cardIndex]?.id;
+                if (recipeId && onRecipeSwipe) {
+                    return onRecipeSwipe(recipeId);
+                }
+            }}
+            key={recipes.length}
         />
     );
 }

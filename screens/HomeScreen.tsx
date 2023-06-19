@@ -1,30 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import CardStack from '../components/CardStack';
 import { ActivityIndicator, Text, View } from 'react-native';
 import tw from '../lib/tailwind';
 import { SessionWebsocketContext } from '../contexts/SessionContext';
-import useSWRInfinite from 'swr/infinite';
-import { fetcher } from '../services/Fetcher';
-import { Recipe } from '../types';
+import { WebSocketAction } from '../types';
 
 export default function HomeScreen() {
-    const pageSize = 10;
-    const { data, isLoading, size, setSize } = useSWRInfinite<
-        {
-            recipes: Recipe[];
-            total_count: number;
-        },
-        boolean
-    >((index) => `/recipes?offset=${index * pageSize}`, fetcher);
-    const recipes = data?.map((page) => page.recipes).flat() ?? [];
-    const { isReady, currentGroup, groupsWithActiveSession } = useContext(
-        SessionWebsocketContext
-    );
-    const [numberOfCardsSwiped, setNumberOfCardsSwiped] = React.useState(0);
+    const {
+        isReady,
+        currentGroup,
+        groupsWithActiveSession,
+        recipes,
+        setRecipes,
+        send,
+        fetchingRecipes,
+    } = useContext(SessionWebsocketContext);
+    useEffect(() => {
+        if (isReady && !fetchingRecipes && recipes.length < 3) {
+            send({
+                action: WebSocketAction.GET_RECIPES,
+            });
+        }
+    }, [fetchingRecipes, isReady, recipes, send]);
 
     return (
         <View style={tw`w-full h-full overflow-hidden`}>
-            {isLoading ? (
+            {fetchingRecipes ? (
                 <View style={tw`flex-1 items-center justify-center`}>
                     <ActivityIndicator size="large" color="gray" />
                     <Text style={tw`text-2xl mt-2 text-gray-500`}>
@@ -54,12 +55,15 @@ export default function HomeScreen() {
                 <CardStack
                     recipes={recipes}
                     key={currentGroup}
-                    onRecipeSwipe={async () => {
-                        setNumberOfCardsSwiped(numberOfCardsSwiped + 1);
-                        console.log(numberOfCardsSwiped);
-                        if (numberOfCardsSwiped === size * pageSize - 5) {
-                            setSize(size + 1);
-                        }
+                    onRecipeSwipe={(recipeId) => {
+                        const newRecipes = recipes.filter(
+                            (recipe) => recipe.id !== recipeId
+                        );
+                        localStorage.setItem(
+                            `${currentGroup}-recipes`,
+                            JSON.stringify(newRecipes)
+                        );
+                        setRecipes(newRecipes);
                     }}
                 />
             )}
