@@ -133,11 +133,10 @@ function OpenSession({ session }: { session: SwipeSession }) {
 function ClosedSession({ session }: { session: SwipeSession }) {
     const { width } = useWindowDimensions();
     const cardWidth = width - 32;
-    console.log(session);
     return (
         <View style={tw`pl-4`}>
             <ImageBackground
-                source={{ uri: session.swipe_match?.image.file_url }}
+                source={{ uri: session.swipe_match?.image?.urls.lg }}
                 style={tw.style(
                     `flex-row w-[${cardWidth}px] items-center py-8 px-4 mr-4 gap-2 bg-black border border-white shadow-md rounded-3xl`
                 )}

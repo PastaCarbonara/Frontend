@@ -62,7 +62,7 @@ function ListSession({ session }: { session: SwipeSession }) {
                 <Image
                     source={{
                         uri:
-                            session.swipe_match?.image.file_url ??
+                            session.swipe_match?.image?.urls.lg ??
                             'https://placehold.co/400',
                     }}
                     style={tw`w-12 h-12 rounded-2xl`}

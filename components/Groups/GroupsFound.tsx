@@ -33,7 +33,7 @@ export default function GroupsFound({ groups }: { groups: Group[] }) {
                                     <Image
                                         source={{
                                             uri:
-                                                group.image.file_url ||
+                                                group.image?.urls.lg ||
                                                 `https://placehold.co/400`,
                                         }}
                                         style={tw`w-18 h-18 rounded`}

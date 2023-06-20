@@ -17,15 +17,14 @@ type cardProps = {
 export default function Card({ recipe, onLike, onDislike }: cardProps) {
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    console.log(recipe.image);
     return (
         <View
             style={tw`w-full h-9/10 flex-col rounded-3xl shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}
         >
             <ImageBackground
                 style={tw`w-full rounded-3xl flex-1 justify-between`}
-                source={{
-                    uri: recipe?.image.file_url,
-                }}
+                source={{ uri: recipe.image?.urls.lg }}
                 resizeMode={'cover'}
                 imageStyle={tw`w-full rounded-3xl flex-1 justify-between`}
             >

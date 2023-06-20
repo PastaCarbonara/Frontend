@@ -16,10 +16,6 @@ export type GroupStackParamList = {
     Invite: { groupId: string };
     CreateGroup: undefined;
 };
-export type UserImage = {
-    file_url: string;
-    filename: string;
-};
 export type Group = {
     id: string;
     name: string;
@@ -59,17 +55,20 @@ export type Match = {
     image: Image;
 };
 export type Image = {
-    file_url: string;
+    urls: {
+        xs: string;
+        sm: string;
+        md: string;
+        lg: string;
+        thumbnail: string;
+    };
     filename: string;
 };
 export type Recipe = {
     id: number;
     name: string;
     description: string;
-    image: {
-        file_url: string;
-        filename: string;
-    };
+    image: Image;
     creator: {};
     preparing_time: number;
     spiciness: number;
