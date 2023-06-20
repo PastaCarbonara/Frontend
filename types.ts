@@ -87,7 +87,7 @@ export type Ingredient = {
 };
 export type WebSocketEvent = {
     action: WebSocketAction;
-    payload: any;
+    payload?: any;
 };
 
 export enum SwipeSessionStatus {
@@ -105,4 +105,5 @@ export enum WebSocketAction {
     'RECIPE_SWIPE' = 'RECIPE_SWIPE',
     'POOL_MESSAGE' = 'POOL_MESSAGE',
     'SESSION_STATUS_UPDATE' = 'SESSION_STATUS_UPDATE',
+    'GET_RECIPES' = 'GET_RECIPES',
 }

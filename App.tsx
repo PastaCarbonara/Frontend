@@ -211,7 +211,12 @@ function SwipeScreenHeader({ ...props }: { props: any }) {
             groups?.filter((group: Group) => {
                 for (const swipe_session of group.swipe_sessions) {
                     if (
-                        swipe_session.status === SwipeSessionStatus.IN_PROGRESS
+                        swipe_session.status ===
+                            SwipeSessionStatus.IN_PROGRESS &&
+                        !(
+                            new Date(swipe_session.session_date) <=
+                            new Date(new Date().toDateString())
+                        )
                     ) {
                         return true;
                     }
@@ -228,7 +233,6 @@ function SwipeScreenHeader({ ...props }: { props: any }) {
             setCurrentGroupObject(_currentGroupObject);
         }
     }, [groups, currentGroup, groupsWithActiveSession]);
-    console.log(currentGroupObject);
     return groupsWithActiveSession?.length > 0 ? (
         <Dropdown
             options={groupsWithActiveSession}

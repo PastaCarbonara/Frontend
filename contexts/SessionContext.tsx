@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as RootNavigator from '../RootNavigator';
 import {
     Group,
+    Recipe,
     SwipeSession,
     SwipeSessionStatus,
     WebSocketAction,
@@ -24,6 +25,9 @@ export type SessionContextType = {
     userId: string | undefined;
     sessionId: string | undefined;
     groupsWithActiveSession: Group[];
+    recipes: Recipe[];
+    setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>;
+    fetchingRecipes: boolean;
 };
 
 export const SessionWebsocketContext = React.createContext<SessionContextType>(
@@ -51,6 +55,11 @@ export const SessionWebsocketProvider = ({
     const [groupsWithActiveSession, setGroupsWithActiveSession] = useState<
         Group[]
     >([]);
+    const [recipes, setRecipes] = useState<Recipe[]>(() => {
+        const localData = localStorage.getItem(`${currentGroup}-recipes`);
+        return localData !== null ? JSON.parse(localData) : [];
+    });
+    const [fetchingRecipes, setFetchingRecipes] = useState(false);
 
     const ws: React.MutableRefObject<WebSocket | null> = useRef(null);
 
@@ -87,9 +96,31 @@ export const SessionWebsocketProvider = ({
                     await mutate('/me/groups');
                     await mutate(`/groups/${currentGroup}`);
                     cookieHelper.deleteCookie('currentGroup');
+                    localStorage.removeItem(`${currentGroup}-recipes`);
+                    socket.close();
                     RootNavigator.navigate('Match', {
                         recipe: messageEvent.payload?.recipe,
                     });
+                    break;
+                case 'GET_RECIPES':
+                    console.log('GET_RECIPES', messageEvent.payload);
+                    setFetchingRecipes(true);
+                    //append new recipes to existing recipes in localstorage
+                    const localData = localStorage.getItem(
+                        `${currentGroup}-recipes`
+                    );
+                    const localRecipes =
+                        localData !== null ? JSON.parse(localData) : [];
+                    const newRecipes = [
+                        ...localRecipes,
+                        ...messageEvent.payload?.recipes,
+                    ];
+                    localStorage.setItem(
+                        `${currentGroup}-recipes`,
+                        JSON.stringify(newRecipes)
+                    );
+                    setRecipes(newRecipes);
+                    setFetchingRecipes(false);
                     break;
             }
         };
@@ -103,13 +134,22 @@ export const SessionWebsocketProvider = ({
                     },
                 })
             );
+            setRecipes(
+                JSON.parse(
+                    localStorage.getItem(`${currentGroup}-recipes`) || '[]'
+                )
+            );
             setIsReady(true);
+            console.log('User connected succesfully');
         };
-        socket.onclose = () => setIsReady(false);
-        socket.onmessage = (event) => {
+        socket.onclose = () => {
+            console.log('Session closed');
+            setIsReady(false);
+        };
+        socket.onmessage = async (event) => {
             setLastMessage(event.data);
 
-            handleWebSocketEvent(JSON.parse(event.data));
+            await handleWebSocketEvent(JSON.parse(event.data));
         };
         socket.onerror = (error) => {
             console.log(error);
@@ -127,7 +167,12 @@ export const SessionWebsocketProvider = ({
             _groups?.filter((_group: Group) => {
                 for (const swipe_session of _group.swipe_sessions) {
                     if (
-                        swipe_session.status === SwipeSessionStatus.IN_PROGRESS
+                        swipe_session.status ===
+                            SwipeSessionStatus.IN_PROGRESS &&
+                        !(
+                            new Date(swipe_session.session_date) <=
+                            new Date(new Date().toDateString())
+                        )
                     ) {
                         return true;
                     }
@@ -198,6 +243,9 @@ export const SessionWebsocketProvider = ({
             userId: me?.id,
             sessionId,
             groupsWithActiveSession,
+            recipes,
+            setRecipes,
+            fetchingRecipes,
         }),
         [
             isReady,
@@ -207,6 +255,8 @@ export const SessionWebsocketProvider = ({
             me?.id,
             sessionId,
             groupsWithActiveSession,
+            recipes,
+            fetchingRecipes,
         ]
     );
 
