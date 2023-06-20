@@ -68,7 +68,7 @@ export default function Profile({
                 <View style={tw`w-full p-4 mt-16 gap-6`}>
                     <ImagePickerComponent
                         initialImage={
-                            user?.image?.file_url ??
+                            user?.image?.urls.lg ??
                             `https://api.dicebear.com/6.x/lorelei/svg?seed=${user.id}`
                         }
                         onImageChange={(image) => {

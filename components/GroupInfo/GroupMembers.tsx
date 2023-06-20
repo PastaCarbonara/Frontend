@@ -74,7 +74,7 @@ export default function GroupMembers({ members }: { members: User[] }) {
                             style={tw`w-16 h-16 rounded-4`}
                             source={{
                                 uri:
-                                    member.image?.file_url ??
+                                    member.image?.urls.lg ??
                                     `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
                             }}
                         />
