@@ -42,7 +42,7 @@ function memberImage(groupMember: User) {
             <Image
                 source={{
                     uri:
-                        groupMember.image?.file_url ??
+                        groupMember.image?.urls.lg ??
                         `https://api.dicebear.com/6.x/lorelei/svg?seed=${groupMember?.id}`,
                 }}
                 style={tw`w-9 h-9 rounded 2x1 align-middle`}
