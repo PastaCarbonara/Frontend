@@ -38,7 +38,8 @@
     "swr": "^2.1.5",
     "tsparticles": "^2.9.3",
     "twrnc": "^3.6.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "expo-image": "~1.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
