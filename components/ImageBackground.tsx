@@ -1,16 +1,18 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 
 import { Image, ImageProps, ImageStyle } from 'expo-image';
 import tw from '../lib/tailwind';
 
 interface ImageBackgroundProps extends ImageProps {
-    imageStyle: ImageStyle;
+    imageStyle: ImageStyle | ImageStyle[];
+    childrenContainerStyle?: ViewStyle | ViewStyle[];
     children?: React.ReactNode;
 }
 
 export default function ImageBackground({
     imageStyle,
+    childrenContainerStyle,
     children,
     ...props
 }: ImageBackgroundProps) {
@@ -20,9 +22,15 @@ export default function ImageBackground({
                 {...props}
                 placeholderContentFit={'cover'}
                 transition={200}
-                style={[imageStyle]}
+                style={imageStyle}
             />
-            <View style={[StyleSheet.absoluteFill, tw`h-full`]}>
+            <View
+                style={[
+                    tw`h-full`,
+                    StyleSheet.absoluteFill,
+                    childrenContainerStyle,
+                ]}
+            >
                 {children}
             </View>
         </View>
