@@ -90,7 +90,7 @@ export default function Recipe({ recipeInfo }: any) {
     return (
         <View style={[tw`bg-bg_color`]}>
             <ImageBackground
-                style={tw`w-full aspect-256/187`}
+                style={tw`w-full h-72`}
                 imageStyle={tw`w-full h-full`}
                 placeholder={{
                     uri: recipeInfo?.image?.urls?.xs,
@@ -169,7 +169,7 @@ export default function Recipe({ recipeInfo }: any) {
                     </Text>
                 </LinearGradient>
             </ImageBackground>
-            <View style={tw`w-full p-4 rounded-t-xl -mt-4 bg-bg_color`}>
+            <View style={tw`w-full p-4 rounded-t-xl -mt-4 bg-white`}>
                 <Text style={tw`font-sans text-center`}>
                     <i>{recipeInfo?.description}</i>
                 </Text>
