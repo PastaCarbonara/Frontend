@@ -20,22 +20,19 @@ export default function Card({ recipe, onLike, onDislike }: cardProps) {
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
         <View
-            style={tw`w-full h-9/10 flex-col rounded-3xl shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6`}
+            style={tw`w-full h-9/10 flex-col rounded-3xl shadow-black shadow-opacity-25 shadow-offset-[0px]/[4px] shadow-radius-1 elevation-6 bg-white`}
         >
             <ImageBackground
                 style={tw`w-full rounded-3xl flex-1 justify-between`}
                 placeholder={{
                     uri: recipe?.image?.urls?.xs,
                 }}
-                placeholderContentFit={'cover'}
                 source={[
                     { uri: recipe?.image?.urls?.lg, width: 1000, height: 1000 },
                     { uri: recipe?.image?.urls?.md, width: 800, height: 800 },
                     { uri: recipe?.image?.urls?.sm, width: 250, height: 250 },
                 ]}
-                contentFit={'cover'}
                 imageStyle={tw`w-full rounded-3xl flex-1 justify-between absolute`}
-                transition={200}
             >
                 <LinearGradient
                     colors={['#000000B8', '#00000000']}

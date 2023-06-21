@@ -63,7 +63,7 @@ export default function Profile({
     }
 
     return (
-        <View style={tw`bg-bg_color min-h-full max-h-full w-auto`}>
+        <>
             <BackgroundImage>
                 <View style={tw`w-full p-4 mt-16 gap-6`}>
                     <ImagePickerComponent
@@ -247,7 +247,7 @@ export default function Profile({
                     </View>
                 </View>
             </BottomSheetComponent>
-        </View>
+        </>
     );
 }
 

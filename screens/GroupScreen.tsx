@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import groupService from '../services/GroupService';
 import tw from '../lib/tailwind';
-import { ActivityIndicator, ImageBackground, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import HighlightedSessions from '../components/GroupInfo/HighlightedSessions';
 import GroupMembers from '../components/GroupInfo/GroupMembers';
 import Sessions from '../components/GroupInfo/Sessions';
@@ -9,6 +9,7 @@ import { Group, GroupStackParamList } from '../types';
 import ImagePickerComponent from '../components/ImagePickerComponent';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import BackgroundImage from '../components/BackgroundImage';
 
 export default function GroupScreen({ route }: { route: any }) {
     const { groupId } = route.params;
@@ -42,12 +43,7 @@ export default function GroupScreen({ route }: { route: any }) {
         void fetchData();
     }, [group, groupId, navigation]);
     return (
-        <ImageBackground
-            source={require('../assets/images/header_background.svg')}
-            style={tw`w-full grow bg-bg_color`}
-            imageStyle={tw`w-full h-[231px]`}
-            resizeMode={'cover'}
-        >
+        <BackgroundImage>
             {isLoading ? (
                 <View style={tw`flex-1 grow items-center justify-center`}>
                     <ActivityIndicator size="large" color="gray" />
@@ -71,6 +67,6 @@ export default function GroupScreen({ route }: { route: any }) {
             ) : (
                 <>Groep bestaat niet!</>
             )}
-        </ImageBackground>
+        </BackgroundImage>
     );
 }
