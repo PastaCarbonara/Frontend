@@ -1,18 +1,11 @@
 import tw from '../../lib/tailwind';
-import {
-    Alert,
-    Image,
-    Pressable,
-    ScrollView,
-    Share,
-    Text,
-    View,
-} from 'react-native';
+import { Alert, Pressable, ScrollView, Share, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { GroupStackParamList, User } from '../../types';
 import * as Linking from 'expo-linking';
+import { Image } from 'expo-image';
 
 export default function GroupMembers({ members }: { members: User[] }) {
     const route = useRoute<RouteProp<GroupStackParamList, 'Group'>>();
@@ -72,11 +65,34 @@ export default function GroupMembers({ members }: { members: User[] }) {
                     >
                         <Image
                             style={tw`w-16 h-16 rounded-4`}
-                            source={{
+                            placeholder={{
                                 uri:
-                                    member.image?.urls.lg ??
+                                    member.image?.urls.xs ??
                                     `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
                             }}
+                            source={[
+                                {
+                                    uri:
+                                        member.image?.urls.lg ??
+                                        `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
+                                    width: 1000,
+                                    height: 1000,
+                                },
+                                {
+                                    uri:
+                                        member.image?.urls.md ??
+                                        `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
+                                    width: 800,
+                                    height: 800,
+                                },
+                                {
+                                    uri:
+                                        member.image?.urls.sm ??
+                                        `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
+                                    width: 250,
+                                    height: 250,
+                                },
+                            ]}
                         />
                     </View>
                 ))}

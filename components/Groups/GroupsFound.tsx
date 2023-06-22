@@ -1,11 +1,12 @@
 import React from 'react';
-import { Image, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GroupMembers from './GroupMembers';
 import { Group, GroupStackParamList } from '../../types';
+import { Image } from 'expo-image';
 
 export default function GroupsFound({ groups }: { groups: Group[] }) {
     const navigation =
@@ -31,11 +32,26 @@ export default function GroupsFound({ groups }: { groups: Group[] }) {
                                     style={tw`w-18 h-18 items-center bg-white border border-white shadow-md rounded`}
                                 >
                                     <Image
-                                        source={{
-                                            uri:
-                                                group.image?.urls.lg ||
-                                                `https://placehold.co/400`,
+                                        placeholder={{
+                                            uri: group.image?.urls.xs,
                                         }}
+                                        source={[
+                                            {
+                                                uri: group.image?.urls.lg,
+                                                width: 1000,
+                                                height: 1000,
+                                            },
+                                            {
+                                                uri: group.image?.urls.md,
+                                                width: 800,
+                                                height: 800,
+                                            },
+                                            {
+                                                uri: group.image?.urls.sm,
+                                                width: 250,
+                                                height: 250,
+                                            },
+                                        ]}
                                         style={tw`w-18 h-18 rounded`}
                                     />
                                 </View>

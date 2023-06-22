@@ -1,10 +1,11 @@
-import { Image, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import tw from '../../lib/tailwind';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import CreateSessionModal from './CreateSessionModal';
 import { SwipeSession } from '../../types';
 import SessionButton from './SessionButton';
+import { Image } from 'expo-image';
 
 export default function Sessions({ sessions }: { sessions: SwipeSession[] }) {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -60,11 +61,34 @@ function ListSession({ session }: { session: SwipeSession }) {
                 style={tw`w-12 h-12 items-center bg-white border border-white shadow-md rounded-2xl`}
             >
                 <Image
-                    source={{
+                    placeholder={{
                         uri:
-                            session.swipe_match?.image?.urls.lg ??
-                            'https://placehold.co/400',
+                            session.swipe_match?.image?.urls.xs ??
+                            `https://placehold.co/400`,
                     }}
+                    source={[
+                        {
+                            uri:
+                                session.swipe_match?.image?.urls.lg ??
+                                `https://placehold.co/400`,
+                            width: 1000,
+                            height: 1000,
+                        },
+                        {
+                            uri:
+                                session.swipe_match?.image?.urls.md ??
+                                `https://placehold.co/400`,
+                            width: 800,
+                            height: 800,
+                        },
+                        {
+                            uri:
+                                session.swipe_match?.image?.urls.sm ??
+                                `https://placehold.co/250`,
+                            width: 250,
+                            height: 250,
+                        },
+                    ]}
                     style={tw`w-12 h-12 rounded-2xl`}
                 />
             </View>
