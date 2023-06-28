@@ -104,7 +104,6 @@ export const SessionWebsocketProvider = ({
                     break;
                 case 'GET_RECIPES':
                     console.log('GET_RECIPES', messageEvent.payload);
-                    setFetchingRecipes(true);
                     //append new recipes to existing recipes in localstorage
                     const localData = localStorage.getItem(
                         `${currentGroup}-recipes`
@@ -228,6 +227,9 @@ export const SessionWebsocketProvider = ({
         groupHasActiveSession,
     ]);
     const send = (webSocketEvent: WebSocketEvent) => {
+        if (webSocketEvent.action === 'GET_RECIPES') {
+            setFetchingRecipes(true);
+        }
         ws.current?.send(JSON.stringify(webSocketEvent));
     };
 

@@ -14,8 +14,10 @@ import ImageBackground from '../ImageBackground';
 
 export default function HighlightedSessions({
     sessions,
+    showControls = true,
 }: {
     sessions: SwipeSession[];
+    showControls?: boolean;
 }) {
     const orderedSessions = sessions.sort(
         (a, b) =>
@@ -35,21 +37,33 @@ export default function HighlightedSessions({
                     session.status === 'Gepauzeerd' ||
                     session.status === 'Is bezig'
                 ) {
-                    return <OpenSession session={session} key={session.id} />;
+                    return (
+                        <OpenSession
+                            session={session}
+                            showControls={showControls}
+                            key={session.id}
+                        />
+                    );
                 } else if (
                     session.status === 'Voltooid' ||
                     session.status === 'Gestopt'
                 ) {
-                    return <ClosedSession session={session} key={session.id} />;
+                    return (
+                        <ClosedSession
+                            session={session}
+                            showControls={showControls}
+                            key={session.id}
+                        />
+                    );
                 }
             })}
         </ScrollView>
     ) : (
-        <NoOpenSessions />
+        <NoOpenSessions showControls={showControls} />
     );
 }
 
-function NoOpenSessions() {
+function NoOpenSessions({ showControls }: { showControls?: boolean }) {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const { width } = useWindowDimensions();
     const cardWidth = width - 32;
@@ -60,18 +74,22 @@ function NoOpenSessions() {
             <Text style={tw`font-sans text-base font-bold text-text_primary`}>
                 Je hebt nog geen sessies
             </Text>
-            <Pressable
-                style={tw`items-center justify-center p-4 gap-4 min-w-28 h-9 bg-orange_primary rounded-lg `}
-                onPress={() => {
-                    setIsModalVisible(true);
-                }}
-            >
-                <Text
-                    style={tw`font-sans font-bold text-base leading-normal text-white`}
+            {showControls ? (
+                <Pressable
+                    style={tw`items-center justify-center p-4 gap-4 min-w-28 h-9 bg-orange_primary rounded-lg `}
+                    onPress={() => {
+                        setIsModalVisible(true);
+                    }}
                 >
-                    Maak sessie
-                </Text>
-            </Pressable>
+                    <Text
+                        style={tw`font-sans font-bold text-base leading-normal text-white`}
+                    >
+                        Maak sessie
+                    </Text>
+                </Pressable>
+            ) : (
+                <></>
+            )}
             <CreateSessionModal
                 isModalVisible={isModalVisible}
                 setIsModalVisible={setIsModalVisible}
@@ -80,7 +98,13 @@ function NoOpenSessions() {
     );
 }
 
-function OpenSession({ session }: { session: SwipeSession }) {
+function OpenSession({
+    session,
+    showControls,
+}: {
+    session: SwipeSession;
+    showControls?: boolean;
+}) {
     const { width } = useWindowDimensions();
     const cardWidth = width - 32;
     return (
@@ -124,13 +148,19 @@ function OpenSession({ session }: { session: SwipeSession }) {
                         {session.status === 'Is bezig' && 'Huidige sessie'}
                     </Text>
                 </View>
-                <SessionButton session={session} />
+                {showControls ? <SessionButton session={session} /> : <></>}
             </View>
         </View>
     );
 }
 
-function ClosedSession({ session }: { session: SwipeSession }) {
+function ClosedSession({
+    session,
+    showControls,
+}: {
+    session: SwipeSession;
+    showControls?: boolean;
+}) {
     const { width } = useWindowDimensions();
     const cardWidth = width - 32;
     return (
@@ -194,7 +224,7 @@ function ClosedSession({ session }: { session: SwipeSession }) {
                         {session.status}
                     </Text>
                 </View>
-                <SessionButton session={session} />
+                {showControls ? <SessionButton session={session} /> : <></>}
             </ImageBackground>
         </View>
     );

@@ -7,7 +7,13 @@ import { SwipeSession } from '../../types';
 import SessionButton from './SessionButton';
 import { Image } from 'expo-image';
 
-export default function Sessions({ sessions }: { sessions: SwipeSession[] }) {
+export default function Sessions({
+    sessions,
+    showControls,
+}: {
+    sessions: SwipeSession[];
+    showControls?: boolean;
+}) {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const orderedSessions = sessions.sort(
         (a, b) =>
@@ -25,19 +31,23 @@ export default function Sessions({ sessions }: { sessions: SwipeSession[] }) {
                 <Text style={tw`font-sans text-lg font-bold text-text_primary`}>
                     Sessies
                 </Text>
-                <Pressable
-                    style={tw`flex flex-row items-center`}
-                    onPress={openCreateSessionModal}
-                >
-                    <Text style={tw`font-sans text-sm text-text_primary`}>
-                        Sessie toevoegen
-                    </Text>
-                    <MaterialCommunityIcons
-                        name={'plus'}
-                        size={28}
-                        style={tw`text-text_primary`}
-                    />
-                </Pressable>
+                {showControls ? (
+                    <Pressable
+                        style={tw`flex flex-row items-center`}
+                        onPress={openCreateSessionModal}
+                    >
+                        <Text style={tw`font-sans text-sm text-text_primary`}>
+                            Sessie toevoegen
+                        </Text>
+                        <MaterialCommunityIcons
+                            name={'plus'}
+                            size={28}
+                            style={tw`text-text_primary`}
+                        />
+                    </Pressable>
+                ) : (
+                    <></>
+                )}
             </View>
             <View style={tw`gap-2.5`}>
                 {orderedSessions.map((session) => (

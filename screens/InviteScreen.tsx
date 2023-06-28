@@ -32,23 +32,9 @@ export default function InviteScreen({ route }: { route: any }) {
                             placeholder={{
                                 uri: group.image?.urls.xs,
                             }}
-                            source={[
-                                {
-                                    uri: group.image?.urls.lg,
-                                    width: 1000,
-                                    height: 1000,
-                                },
-                                {
-                                    uri: group.image?.urls.md,
-                                    width: 800,
-                                    height: 800,
-                                },
-                                {
-                                    uri: group.image?.urls.sm,
-                                    width: 250,
-                                    height: 250,
-                                },
-                            ]}
+                            source={{
+                                uri: group.image?.urls.lg,
+                            }}
                         />
                     </View>
                     <Text style={tw`font-sans`}>{group.name}</Text>
