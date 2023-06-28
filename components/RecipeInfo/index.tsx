@@ -1,11 +1,4 @@
-import {
-    Text,
-    TouchableOpacity,
-    View,
-    StyleSheet,
-    ScrollView,
-    ImageBackground,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
@@ -14,20 +7,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { RecipeIngredient } from '../../types';
 import tw from '../../lib/tailwind';
 import SpicinessIndicator from './SpicinessIndicator';
+import ImageBackground from '../ImageBackground';
 
 const styles = StyleSheet.create({
-    rcp: {
-        height: '100%',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        alignSelf: 'center',
-        shadowColor: '#000000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        backgroundColor: '#FFFFFF',
-    },
     title: {
         width: '100%',
         alignSelf: 'center',
@@ -57,22 +39,20 @@ const styles = StyleSheet.create({
         padding: 5,
         alignItems: 'center',
     },
-    flexColumn: {
-        flexDirection: 'column',
-        width: '100%',
-    },
     flexRow: {
         flexDirection: 'row',
         width: '100%',
     },
     btn: {
+        position: 'absolute',
+        top: 4,
+        left: 4,
         alignSelf: 'flex-start',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         alignContent: 'center',
         height: 36,
-        margin: 9,
         aspectRatio: 1,
         borderRadius: 35,
         backgroundColor: '#00000054',
@@ -108,145 +88,142 @@ const styles = StyleSheet.create({
 export default function Recipe({ recipeInfo }: any) {
     const navigation = useNavigation();
     return (
-        <View style={[styles.rcp, styles.flexColumn]}>
-            <View style={tw`w-full`}>
-                <ImageBackground
-                    style={tw`w-full`}
-                    source={{
-                        uri: recipeInfo?.image?.urls.lg,
-                    }}
-                    imageStyle={tw`w-full`}
+        <View style={[tw`bg-bg_color`]}>
+            <ImageBackground
+                style={tw`w-full h-72`}
+                imageStyle={tw`w-full h-full`}
+                placeholder={{
+                    uri: recipeInfo?.image?.urls?.xs,
+                }}
+                source={[
+                    {
+                        uri: recipeInfo?.image?.urls?.lg,
+                        width: 1000,
+                        height: 1000,
+                    },
+                    {
+                        uri: recipeInfo?.image?.urls?.md,
+                        width: 800,
+                        height: 800,
+                    },
+                    {
+                        uri: recipeInfo?.image?.urls?.sm,
+                        width: 250,
+                        height: 250,
+                    },
+                ]}
+            >
+                <LinearGradient
+                    colors={['#00000000', '#00000065', '#000000']}
+                    style={tw`p-4 h-full w-full justify-end`}
                 >
-                    <LinearGradient
-                        colors={['#00000000', '#00000065', '#000000']}
-                        style={tw`p-4`}
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.goBack();
+                        }}
+                        style={tw`absolute top-4 left-4 bg-black/50 p-2 rounded-full aspect-square`}
                     >
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigation.goBack();
-                            }}
-                            style={styles.btn}
-                        >
-                            <AntDesign
-                                name="arrowleft"
-                                size={24}
-                                color="white"
-                            />
-                        </TouchableOpacity>
-                        <Text style={tw`text-[#FAFAFA]`}>
-                            <View style={tw`flex-row items-end w-full`}>
-                                <View style={tw`flex-2`}>
-                                    <h1
-                                        style={tw.style(
-                                            'font-display',
-                                            'text-2xl',
-                                            'mb-0',
-                                            { lineHeight: '36px' }
-                                        )}
-                                    >
-                                        {recipeInfo?.name}
-                                    </h1>
-                                </View>
-                                <View
-                                    style={tw`w-full content-end flex-1 flex-col`}
+                        <AntDesign name="arrowleft" size={24} color="white" />
+                    </TouchableOpacity>
+                    <Text style={tw`text-[#FAFAFA]`}>
+                        <View style={tw`flex-row items-end w-full pb-4`}>
+                            <View style={tw`flex-2`}>
+                                <h1
+                                    style={tw.style(
+                                        'font-display',
+                                        'text-2xl',
+                                        'mb-0',
+                                        { lineHeight: '36px' }
+                                    )}
                                 >
-                                    <Text style={tw`text-right`}>
-                                        <MaterialCommunityIcons
-                                            name="clock"
-                                            size={20}
-                                            style={tw`p-1`}
-                                        >
-                                            <Text style={tw`font-sans ml-2`}>
-                                                {recipeInfo?.preparation_time}
-                                            </Text>
-                                        </MaterialCommunityIcons>
-                                    </Text>
-                                    <Text
-                                        style={[
-                                            styles.descriptionInfo,
-                                            styles.flexRow,
-                                            tw`text-right`,
-                                        ]}
-                                    >
-                                        <SpicinessIndicator
-                                            spiciness={recipeInfo?.spiciness}
-                                        />
-                                    </Text>
-                                </View>
+                                    {recipeInfo?.name}
+                                </h1>
                             </View>
-                        </Text>
-                    </LinearGradient>
-                </ImageBackground>
-                <View style={styles.description}>
-                    <Text style={tw`font-sans text-center`}>
-                        <i>{recipeInfo?.description}</i>
-                    </Text>
-                    <Separator style={'border-orange_primary my-4'} />
-                </View>
-            </View>
-            <ScrollView style={tw`w-full p-4`}>
-                <View>
-                    <h2 style={tw`font-display text-text_primary`}>
-                        Ingredient:
-                    </h2>
-                    <Text style={tw`flex-col font-sans`}>
-                        {recipeInfo?.ingredients?.map(
-                            (ingredient: RecipeIngredient) => (
-                                <li
-                                    key={recipeInfo?.ingredients?.indexOf(
-                                        ingredient
-                                    )}
+                            <View
+                                style={tw`w-full content-end flex-1 flex-col`}
+                            >
+                                <Text style={tw`text-right`}>
+                                    <MaterialCommunityIcons
+                                        name="clock"
+                                        size={20}
+                                        style={tw`p-1`}
+                                    >
+                                        <Text style={tw`font-sans ml-2`}>
+                                            {recipeInfo?.preparation_time}
+                                        </Text>
+                                    </MaterialCommunityIcons>
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.descriptionInfo,
+                                        styles.flexRow,
+                                        tw`text-right`,
+                                    ]}
                                 >
-                                    <View style={styles.infoBox}>
-                                        <Text style={tw`flex-7`}>
-                                            {ingredient.name}
-                                        </Text>
-                                        <Text style={tw`flex-3 text-right`}>
-                                            {ingredient.amount +
-                                                ' ' +
-                                                ingredient.unit}
-                                        </Text>
-                                    </View>
-                                </li>
-                            )
-                        )}
+                                    <SpicinessIndicator
+                                        spiciness={recipeInfo?.spiciness}
+                                    />
+                                </Text>
+                            </View>
+                        </View>
                     </Text>
-                </View>
+                </LinearGradient>
+            </ImageBackground>
+            <View style={tw`w-full p-4 rounded-t-xl -mt-4 bg-white`}>
+                <Text style={tw`font-sans text-center`}>
+                    <i>{recipeInfo?.description}</i>
+                </Text>
                 <Separator style={'border-orange_primary my-4'} />
-                <View>
-                    <h2 style={tw`font-display text-text_primary`}>
-                        Bereidingswijze:
-                    </h2>
-                    <Text style={tw`flex-col font-sans`}>
-                        {recipeInfo?.instructions?.map(
-                            (instruction: string) => (
-                                <li
-                                    key={recipeInfo?.instructions?.indexOf(
-                                        instruction
-                                    )}
-                                >
-                                    <View style={styles.infoBox}>
-                                        <View style={styles.stepCounter}>
-                                            <Text style={styles.centerText}>
-                                                {(
-                                                    recipeInfo?.instructions.indexOf(
-                                                        instruction
-                                                    ) + 1
-                                                ).toString()}
-                                            </Text>
-                                        </View>
-                                        <Text
-                                            style={tw`flex-8 text-text_primary ml-2`}
-                                        >
-                                            {instruction}
-                                        </Text>
-                                    </View>
-                                </li>
-                            )
-                        )}
-                    </Text>
-                </View>
-            </ScrollView>
+                <h2 style={tw`font-display text-text_primary`}>Ingredient:</h2>
+                <Text style={tw`flex-col font-sans`}>
+                    {recipeInfo?.ingredients?.map(
+                        (ingredient: RecipeIngredient) => (
+                            <li
+                                key={recipeInfo?.ingredients?.indexOf(
+                                    ingredient
+                                )}
+                            >
+                                <View style={styles.infoBox}>
+                                    <Text style={tw`flex-7`}>
+                                        {ingredient.name}
+                                    </Text>
+                                    <Text style={tw`flex-3 text-right`}>
+                                        {ingredient.amount +
+                                            ' ' +
+                                            ingredient.unit}
+                                    </Text>
+                                </View>
+                            </li>
+                        )
+                    )}
+                </Text>
+                <Separator style={'border-orange_primary my-4'} />
+                <h2 style={tw`font-display text-text_primary`}>
+                    Bereidingswijze:
+                </h2>
+                <Text style={tw`flex-col font-sans`}>
+                    {recipeInfo?.instructions?.map((instruction: string) => (
+                        <li
+                            key={recipeInfo?.instructions?.indexOf(instruction)}
+                        >
+                            <View style={styles.infoBox}>
+                                <View style={styles.stepCounter}>
+                                    <Text style={styles.centerText}>
+                                        {(
+                                            recipeInfo?.instructions.indexOf(
+                                                instruction
+                                            ) + 1
+                                        ).toString()}
+                                    </Text>
+                                </View>
+                                <Text style={tw`flex-8 text-text_primary ml-2`}>
+                                    {instruction}
+                                </Text>
+                            </View>
+                        </li>
+                    ))}
+                </Text>
+            </View>
         </View>
     );
 }

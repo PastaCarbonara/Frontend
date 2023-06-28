@@ -1,10 +1,11 @@
 import React from 'react';
 import groupService from '../services/GroupService';
-import { Image, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import tw from '../lib/tailwind';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { GroupStackParamList } from '../types';
+import { Image } from 'expo-image';
 
 export default function InviteScreen({ route }: { route: any }) {
     const { id } = route.params;
@@ -28,11 +29,26 @@ export default function InviteScreen({ route }: { route: any }) {
                     <View style={tw`w-16 h-16 rounded-4`}>
                         <Image
                             style={tw`w-16 h-16 rounded-4`}
-                            source={{
-                                uri:
-                                    group.image?.urls.lg ||
-                                    `https://placehold.co/400`,
+                            placeholder={{
+                                uri: group.image?.urls.xs,
                             }}
+                            source={[
+                                {
+                                    uri: group.image?.urls.lg,
+                                    width: 1000,
+                                    height: 1000,
+                                },
+                                {
+                                    uri: group.image?.urls.md,
+                                    width: 800,
+                                    height: 800,
+                                },
+                                {
+                                    uri: group.image?.urls.sm,
+                                    width: 250,
+                                    height: 250,
+                                },
+                            ]}
                         />
                     </View>
                     <Text style={tw`font-sans`}>{group.name}</Text>

@@ -1,6 +1,5 @@
 import tw from '../../lib/tailwind';
 import {
-    ImageBackground,
     Pressable,
     ScrollView,
     Text,
@@ -11,6 +10,7 @@ import React from 'react';
 import CreateSessionModal from './CreateSessionModal';
 import { SwipeSession } from '../../types';
 import SessionButton from './SessionButton';
+import ImageBackground from '../ImageBackground';
 
 export default function HighlightedSessions({
     sessions,
@@ -136,11 +136,31 @@ function ClosedSession({ session }: { session: SwipeSession }) {
     return (
         <View style={tw`pl-4`}>
             <ImageBackground
-                source={{ uri: session.swipe_match?.image?.urls.lg }}
-                style={tw.style(
-                    `flex-row w-[${cardWidth}px] items-center py-8 px-4 mr-4 gap-2 bg-black border border-white shadow-md rounded-3xl`
+                style={tw`w-[${cardWidth}px] h-32 bg-black rounded-3xl`}
+                childrenContainerStyle={tw.style(
+                    `flex-row w-[${cardWidth}px] h-full items-center py-8 px-4 mr-4 gap-2 border border-white shadow-md rounded-3xl`
                 )}
-                imageStyle={tw.style(`rounded-3xl opacity-50`)}
+                imageStyle={tw.style(`rounded-3xl opacity-50 w-full h-full`)}
+                placeholder={{
+                    uri: session.swipe_match?.image?.urls.xs,
+                }}
+                source={[
+                    {
+                        uri: session.swipe_match?.image?.urls.lg,
+                        width: 1000,
+                        height: 1000,
+                    },
+                    {
+                        uri: session.swipe_match?.image?.urls.md,
+                        width: 800,
+                        height: 800,
+                    },
+                    {
+                        uri: session.swipe_match?.image?.urls.sm,
+                        width: 250,
+                        height: 250,
+                    },
+                ]}
             >
                 <View
                     style={tw`w-16 h-16 items-center bg-white border border-white shadow-md rounded-2xl`}

@@ -2,12 +2,12 @@ import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types';
+import { GroupStackParamList } from '../../types';
 import tw from '../../lib/tailwind';
 
 export default function NoGroupsFound() {
     const navigation =
-        useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+        useNavigation<NativeStackNavigationProp<GroupStackParamList>>();
     return (
         <View style={tw`w-full items-center`}>
             <View

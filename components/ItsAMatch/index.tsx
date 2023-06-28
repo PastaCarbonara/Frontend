@@ -1,8 +1,10 @@
-import { Image, ImageBackground, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import React from 'react';
 import tw from '../../lib/tailwind';
 import { Recipe } from '../../types';
 import Confetti from './Confetti';
+import ImageBackground from '../ImageBackground';
+import { Image } from 'expo-image';
 
 export default function ItsAMatch({
     matchedRecipe,
@@ -23,9 +25,33 @@ export default function ItsAMatch({
             />
             <View style={tw`absolute self-center top-34`}>
                 <ImageBackground
-                    source={{ uri: matchedRecipe?.image?.urls.lg }}
                     style={tw`w-24 h-24 rounded-full bg-orange_primary self-center`}
                     imageStyle={tw`w-24 h-24 rounded-full border-4 border-white`}
+                    placeholder={{
+                        uri: matchedRecipe?.image?.urls?.xs,
+                    }}
+                    source={[
+                        {
+                            uri: matchedRecipe?.image?.urls.lg,
+                            width: 1000,
+                            height: 1000,
+                        },
+                        {
+                            uri: matchedRecipe?.image?.urls?.md,
+                            width: 800,
+                            height: 800,
+                        },
+                        {
+                            uri: matchedRecipe?.image?.urls?.sm,
+                            width: 250,
+                            height: 250,
+                        },
+                        {
+                            uri: matchedRecipe?.image?.urls?.thumbnail,
+                            width: 100,
+                            height: 100,
+                        },
+                    ]}
                 />
                 <Text style={tw`text-2xl font-display text-white self-center`}>
                     {matchedRecipe.name}

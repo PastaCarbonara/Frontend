@@ -63,12 +63,12 @@ export default function Profile({
     }
 
     return (
-        <View style={tw`bg-bg_color min-h-full max-h-full w-auto`}>
+        <>
             <BackgroundImage>
                 <View style={tw`w-full p-4 mt-16 gap-6`}>
                     <ImagePickerComponent
                         initialImage={
-                            user?.image?.urls.lg ??
+                            user?.image?.urls.sm ??
                             `https://api.dicebear.com/6.x/lorelei/svg?seed=${user.id}`
                         }
                         onImageChange={(image) => {
@@ -247,7 +247,7 @@ export default function Profile({
                     </View>
                 </View>
             </BottomSheetComponent>
-        </View>
+        </>
     );
 }
 
