@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import groupService from '../services/GroupService';
 import tw from '../lib/tailwind';
 import { ActivityIndicator, View } from 'react-native';
@@ -10,9 +10,11 @@ import ImagePickerComponent from '../components/ImagePickerComponent';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import BackgroundImage from '../components/BackgroundImage';
+import { SessionWebsocketContext } from '../contexts/SessionContext';
 
 export default function GroupScreen({ route }: { route: any }) {
     const { groupId } = route.params;
+    const { userId } = useContext(SessionWebsocketContext);
     const [groupData, setGroupData] = useState<Group>();
     const [isLoading, setIsLoading] = useState(true);
     const [upcomingSessions, setUpcomingSessions] = useState<any>();
@@ -24,6 +26,7 @@ export default function GroupScreen({ route }: { route: any }) {
         const fetchData = async () => {
             if (!group) return;
             navigation.setOptions({ title: group.name });
+            console.log(group);
             try {
                 setGroupData(group);
                 setUpcomingSessions(
@@ -59,9 +62,27 @@ export default function GroupScreen({ route }: { route: any }) {
                         <GroupMembers members={groupData.users} />
                     </View>
 
-                    <HighlightedSessions sessions={upcomingSessions} />
+                    <HighlightedSessions
+                        sessions={upcomingSessions}
+                        showControls={
+                            groupData?.users
+                                ? groupData.users?.find(
+                                      (user) => user.id === userId
+                                  )?.is_admin
+                                : false
+                        }
+                    />
                     <View style={tw`px-4 mb-8 gap-6`}>
-                        <Sessions sessions={groupData.swipe_sessions} />
+                        <Sessions
+                            sessions={groupData.swipe_sessions}
+                            showControls={
+                                groupData?.users
+                                    ? groupData.users?.find(
+                                          (user) => user.id === userId
+                                      )?.is_admin
+                                    : false
+                            }
+                        />
                     </View>
                 </View>
             ) : (
