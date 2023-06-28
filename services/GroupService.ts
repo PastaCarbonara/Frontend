@@ -2,7 +2,7 @@ import HttpErrorHandling from './HttpErrorHandling';
 import { API_URL } from '@env';
 import imageService from './ImageService';
 import { cookieHelper } from '../helpers/CookieHelper';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { fetcher } from './Fetcher';
 
 function useGroups() {
@@ -68,6 +68,7 @@ async function acceptInvite(groupId: string) {
                 Authorization: `bearer ${access_token}`,
             },
         });
+        await mutate('/me/groups');
         return HttpErrorHandling.responseChecker(response);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);

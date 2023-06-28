@@ -70,29 +70,11 @@ export default function GroupMembers({ members }: { members: User[] }) {
                                     member.image?.urls.xs ??
                                     `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
                             }}
-                            source={[
-                                {
-                                    uri:
-                                        member.image?.urls.lg ??
-                                        `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
-                                    width: 1000,
-                                    height: 1000,
-                                },
-                                {
-                                    uri:
-                                        member.image?.urls.md ??
-                                        `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
-                                    width: 800,
-                                    height: 800,
-                                },
-                                {
-                                    uri:
-                                        member.image?.urls.sm ??
-                                        `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
-                                    width: 250,
-                                    height: 250,
-                                },
-                            ]}
+                            source={{
+                                uri:
+                                    member.image?.urls.lg ??
+                                    `https://api.dicebear.com/6.x/lorelei/svg?seed=${member.id}`,
+                            }}
                         />
                     </View>
                 ))}

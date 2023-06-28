@@ -35,23 +35,9 @@ export default function GroupsFound({ groups }: { groups: Group[] }) {
                                         placeholder={{
                                             uri: group.image?.urls.xs,
                                         }}
-                                        source={[
-                                            {
-                                                uri: group.image?.urls.lg,
-                                                width: 1000,
-                                                height: 1000,
-                                            },
-                                            {
-                                                uri: group.image?.urls.md,
-                                                width: 800,
-                                                height: 800,
-                                            },
-                                            {
-                                                uri: group.image?.urls.sm,
-                                                width: 250,
-                                                height: 250,
-                                            },
-                                        ]}
+                                        source={{
+                                            uri: group.image?.urls.lg,
+                                        }}
                                         style={tw`w-18 h-18 rounded`}
                                     />
                                 </View>

@@ -52,7 +52,7 @@ export default function GroupScreen({ route }: { route: any }) {
                 <View style={tw`w-full mt-16 gap-6`}>
                     <View style={tw`w-full mt-6 gap-6`}>
                         <ImagePickerComponent
-                            initialImage={group.image?.urls.sm}
+                            initialImage={group.image?.urls.lg}
                         />
                     </View>
                     <View style={tw`px-4`}>
