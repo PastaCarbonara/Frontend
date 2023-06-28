@@ -203,6 +203,14 @@ function SwipeScreenHeader({ ...props }: { props: any }) {
     );
     const { groups } = groupService.useGroups();
     const [currentGroupObject, setCurrentGroupObject] = useState<Group>();
+    useEffect(() => {
+        if (groups) {
+            const _currentGroupObject = groups.find(
+                (group: Group) => group.id === currentGroup
+            );
+            setCurrentGroupObject(_currentGroupObject);
+        }
+    }, [groups, currentGroup]);
     const onChange = (option: Group) => {
         setCurrentGroup(option.id);
     };
