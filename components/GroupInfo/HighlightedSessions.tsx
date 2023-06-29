@@ -29,7 +29,9 @@ export default function HighlightedSessions({
         <ScrollView
             horizontal
             pagingEnabled
-            contentContainerStyle={tw`w-full gap-4 pb-4 pl-4`}
+            contentContainerStyle={tw`w-full gap-4 pb-4 ${
+                sessions.length > 1 ? 'pl-4' : ''
+            }`}
         >
             {orderedSessions.map((session) => {
                 if (
