@@ -53,7 +53,9 @@ export default function ItsAMatch({
                         },
                     ]}
                 />
-                <Text style={tw`text-2xl font-display text-white self-center`}>
+                <Text
+                    style={tw`text-2xl font-display text-white self-center text-center mt-4`}
+                >
                     {matchedRecipe.name}
                 </Text>
             </View>

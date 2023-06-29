@@ -9,6 +9,7 @@ export default function HomeScreen() {
     const {
         isReady,
         currentGroup,
+        sessionId,
         groupsWithActiveSession,
         recipes,
         setRecipes,
@@ -25,7 +26,7 @@ export default function HomeScreen() {
 
     return (
         <View style={tw`w-full h-full overflow-hidden`}>
-            {fetchingRecipes ? (
+            {fetchingRecipes && recipes.length === 0 ? (
                 <View style={tw`flex-1 items-center justify-center`}>
                     <ActivityIndicator size="large" color="gray" />
                     <Text style={tw`text-2xl mt-2 text-gray-500`}>
@@ -60,7 +61,7 @@ export default function HomeScreen() {
                             (recipe) => recipe.id !== recipeId
                         );
                         localStorage.setItem(
-                            `${currentGroup}-recipes`,
+                            `${sessionId}-recipes`,
                             JSON.stringify(newRecipes)
                         );
                         setRecipes(newRecipes);

@@ -217,7 +217,9 @@ function ClosedSession({
                     </Text>
                 </View>
                 <View style={tw`gap-0 grow`}>
-                    <Text style={tw`font-sans text-base font-bold text-white`}>
+                    <Text
+                        style={tw`font-sans text-base font-bold text-white max-w-44`}
+                    >
                         {session.swipe_match?.name}
                     </Text>
                     <Text style={tw`font-sans text-sm text-white`}>

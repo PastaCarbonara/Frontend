@@ -104,7 +104,7 @@ function ListSession({ session }: { session: SwipeSession }) {
             </View>
             <View style={tw`gap-0 grow`}>
                 <Text
-                    style={tw`font-sans text-base font-bold text-text_primary`}
+                    style={tw`font-sans text-base font-bold text-text_primary max-w-44`}
                 >
                     {session.swipe_match?.name}
                 </Text>

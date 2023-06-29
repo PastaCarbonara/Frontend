@@ -56,7 +56,7 @@ export const SessionWebsocketProvider = ({
         Group[]
     >([]);
     const [recipes, setRecipes] = useState<Recipe[]>(() => {
-        const localData = localStorage.getItem(`${currentGroup}-recipes`);
+        const localData = localStorage.getItem(`${sessionId}-recipes`);
         return localData !== null ? JSON.parse(localData) : [];
     });
     const [fetchingRecipes, setFetchingRecipes] = useState(false);
@@ -96,7 +96,7 @@ export const SessionWebsocketProvider = ({
                     await mutate('/me/groups');
                     await mutate(`/groups/${currentGroup}`);
                     cookieHelper.deleteCookie('currentGroup');
-                    localStorage.removeItem(`${currentGroup}-recipes`);
+                    localStorage.removeItem(`${sessionId}-recipes`);
                     socket.close();
                     RootNavigator.navigate('Match', {
                         recipe: messageEvent.payload?.recipe,
@@ -106,7 +106,7 @@ export const SessionWebsocketProvider = ({
                     console.log('GET_RECIPES', messageEvent.payload);
                     //append new recipes to existing recipes in localstorage
                     const localData = localStorage.getItem(
-                        `${currentGroup}-recipes`
+                        `${sessionId}-recipes`
                     );
                     const localRecipes =
                         localData !== null ? JSON.parse(localData) : [];
@@ -115,7 +115,7 @@ export const SessionWebsocketProvider = ({
                         ...messageEvent.payload?.recipes,
                     ];
                     localStorage.setItem(
-                        `${currentGroup}-recipes`,
+                        `${sessionId}-recipes`,
                         JSON.stringify(newRecipes)
                     );
                     setRecipes(newRecipes);
@@ -134,9 +134,7 @@ export const SessionWebsocketProvider = ({
                 })
             );
             setRecipes(
-                JSON.parse(
-                    localStorage.getItem(`${currentGroup}-recipes`) || '[]'
-                )
+                JSON.parse(localStorage.getItem(`${sessionId}-recipes`) || '[]')
             );
             setIsReady(true);
             console.log('User connected succesfully');
@@ -159,7 +157,7 @@ export const SessionWebsocketProvider = ({
         return () => {
             socket.close();
         };
-    }, [currentGroup, currentSession]);
+    }, [currentGroup, currentSession, sessionId]);
 
     useEffect(() => {
         const findGroupsWithActiveSession = (_groups: Group[]) =>
