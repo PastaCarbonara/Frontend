@@ -16,6 +16,7 @@ export default function CreateGroup() {
     const [groupImage, setGroupImage] = React.useState<File | null>(null);
     const navigation =
         useNavigation<NativeStackNavigationProp<GroupStackParamList>>();
+    const [isLoading, setIsLoading] = React.useState(false);
     return (
         <BackgroundImage>
             <View style={tw`w-full p-4 mt-16 gap-6`}>
@@ -35,8 +36,11 @@ export default function CreateGroup() {
             </View>
             <FloatingActionButton
                 icon={'check'}
-                disabled={groupName === null || groupImage === null}
+                disabled={
+                    groupName === null || groupImage === null || isLoading
+                }
                 onPress={() => {
+                    setIsLoading(true);
                     groupService
                         .createGroup({
                             image: groupImage!,
@@ -44,6 +48,7 @@ export default function CreateGroup() {
                         })
                         .then(async () => {
                             await mutate('/me/groups');
+                            setIsLoading(false);
                             navigation.navigate('Groups');
                         });
                 }}
